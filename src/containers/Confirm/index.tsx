@@ -22,9 +22,9 @@ export const Confirm = ({ place }: Props) => {
   const [autoLeaveHour, setAutoLeaveHour] = useState(4);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // useEffect(() => {
-  //   if (place === "") browserHistory.push("/");
-  // }, [place, browserHistory]);
+  useEffect(() => {
+    if (place === "") browserHistory.push("/");
+  }, [place, browserHistory]);
 
   const { date, year, month, day, hour, minute } = useMemo(() => {
     const date = new Date();

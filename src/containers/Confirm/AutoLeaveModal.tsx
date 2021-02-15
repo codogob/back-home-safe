@@ -83,10 +83,10 @@ export const AutoLeaveModal = ({
         },
       }}
     >
-      <ModalCrossWrapper>
-        <ModalCross src={crossBlack} onClick={onCancel} />
-      </ModalCrossWrapper>
-      <ModalTitle>設罝自動離開時間</ModalTitle>
+      <CrossWrapper>
+        <Cross src={crossBlack} onClick={onCancel} />
+      </CrossWrapper>
+      <Title>設罝自動離開時間</Title>
       <HourListWrapper>
         <HourList>
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((hour) => (
@@ -111,29 +111,29 @@ export const AutoLeaveModal = ({
           {zeroPadding(toMinute)} 自動離開
         </div>
       </TimeWrapper>
-      <ModalConfirmButton onClick={handleConfirm}>確認</ModalConfirmButton>
+      <StyledConfirmButton onClick={handleConfirm}>確認</StyledConfirmButton>
     </Modal>
   );
 };
 
-const ModalCross = styled.img`
+const Cross = styled.img`
   height: 20px;
 `;
 
-const ModalCrossWrapper = styled.div`
+const CrossWrapper = styled.div`
   display: flex;
   width: 100%;
   justify-content: flex-end;
 `;
 
-const ModalTitle = styled.h1`
+const Title = styled.h1`
   font-size: 20px;
   text-align: center;
   margin-top: 20px;
   margin-bottom: 0;
 `;
 
-const ModalConfirmButton = styled(ConfirmButton)`
+const StyledConfirmButton = styled(ConfirmButton)`
   font-size: 16px;
   padding: 12px 0;
   width: 90%;

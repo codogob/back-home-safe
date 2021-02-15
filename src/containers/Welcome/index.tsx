@@ -21,7 +21,13 @@ export const Welcome = ({ place, setPlace }: Props) => {
 
   return (
     <>
-      {!isPWA && <Message>!要新增至主畫面先似返個App架!</Message>}
+      {!isPWA && (
+        <Message>
+          <div>要新增至主畫面先似返個App架</div>
+          <div>{"IOS: 用Safari開=>分享=>新增至主畫面"}</div>
+          <div>{"Android: 用Chrome開=>右上選項=>新增至主畫面"}</div>
+        </Message>
+      )}
       <ContentWrapper>
         <Msg>我想去</Msg>
         <Place
@@ -72,10 +78,9 @@ const StyledLink = styled(Link)`
 `;
 
 const Message = styled.div`
-  background-color: #fed426;
+  color: #ffffff;
   text-align: center;
-  line-height: 48px;
   position: absolute;
   width: 100%;
-  text-shadow: none;
+  padding: 8px 0;
 `;

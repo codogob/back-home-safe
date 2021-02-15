@@ -19,3 +19,9 @@ export const ConfirmButton = styled.button<{ shadowed?: boolean }>`
     text-decoration: none;
   }
 `;
+
+export const ModalConfirmButton = styled(ConfirmButton)`
+  font-size: 16px;
+  padding: 12px 0;
+  width: 90%;
+`;

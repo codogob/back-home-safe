@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import crossBlack from "../../assets/crossBlack.svg";
 
 import styled from "styled-components";
-import { ConfirmButton } from "../../components/Button";
+import { ModalConfirmButton } from "../../components/Button";
 
 type Props = {
   isModalOpen: boolean;
@@ -39,10 +39,10 @@ export const LeaveModal = ({ isModalOpen, onCancel, onConfirm }: Props) => {
         <Cross src={crossBlack} onClick={onCancel} />
       </CrossWrapper>
       <Title>你現在要離開嗎？</Title>
-      <StyledConfirmButton onClick={onConfirm}>
+      <ModalConfirmButton onClick={onConfirm}>
         是的，我現在要離開
-      </StyledConfirmButton>
-      <StyledGreenButton onClick={onConfirm}>我現已經離開了</StyledGreenButton>
+      </ModalConfirmButton>
+      <GreenButton onClick={onConfirm}>我現已經離開了</GreenButton>
     </Modal>
   );
 };
@@ -63,13 +63,7 @@ const Title = styled.div`
   margin: 56px 0;
 `;
 
-const StyledConfirmButton = styled(ConfirmButton)`
-  font-size: 16px;
-  padding: 12px 0;
-  width: 90%;
-`;
-
-const StyledGreenButton = styled(StyledConfirmButton)`
+const GreenButton = styled(ModalConfirmButton)`
   background-color: #12b188;
   color: #fff;
 `;

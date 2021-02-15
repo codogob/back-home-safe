@@ -4,7 +4,7 @@ import crossBlack from "../../assets/crossBlack.svg";
 import greenTick from "../../assets/greenTick.svg";
 
 import styled from "styled-components";
-import { ConfirmButton } from "../../components/Button";
+import { ModalConfirmButton } from "../../components/Button";
 import { zeroPadding } from "../../utils/zeroPadding";
 
 type Props = {
@@ -111,7 +111,7 @@ export const AutoLeaveModal = ({
           {zeroPadding(toMinute)} 自動離開
         </div>
       </TimeWrapper>
-      <StyledConfirmButton onClick={handleConfirm}>確認</StyledConfirmButton>
+      <ModalConfirmButton onClick={handleConfirm}>確認</ModalConfirmButton>
     </Modal>
   );
 };
@@ -131,12 +131,6 @@ const Title = styled.h1`
   text-align: center;
   margin-top: 20px;
   margin-bottom: 0;
-`;
-
-const StyledConfirmButton = styled(ConfirmButton)`
-  font-size: 16px;
-  padding: 12px 0;
-  width: 90%;
 `;
 
 const HourListWrapper = styled.div`

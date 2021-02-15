@@ -131,7 +131,6 @@ const ModalCrossWrapper = styled.div`
 const ModalTitle = styled.h1`
   font-size: 20px;
   text-align: center;
-  text-shadow: none;
   margin-top: 20px;
   margin-bottom: 0;
 `;
@@ -155,7 +154,6 @@ const HourList = styled.ul`
 `;
 
 const HourListItem = styled.li`
-  text-shadow: none;
   line-height: 40px;
   border-bottom: 1px #eeeeee solid;
   padding: 0 8px;
@@ -163,7 +161,6 @@ const HourListItem = styled.li`
 
 const TimeWrapper = styled.div`
   font-size: 12px;
-  text-shadow: none;
   text-align: center;
   padding: 16px 0;
 `;

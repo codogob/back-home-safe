@@ -20,7 +20,7 @@ export const Welcome = ({ place, setPlace }: Props) => {
   );
 
   return (
-    <>
+    <PageWrapper>
       {!isPWA && (
         <Message>
           <div>要新增至主畫面先似返個App架</div>
@@ -48,9 +48,15 @@ export const Welcome = ({ place, setPlace }: Props) => {
         )}
         <StyledLink to="/qr">掃瞄二維碼</StyledLink>
       </ActionWrapper>
-    </>
+    </PageWrapper>
   );
 };
+
+const PageWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
+`;
 
 const ContentWrapper = styled.div`
   width: 100%;

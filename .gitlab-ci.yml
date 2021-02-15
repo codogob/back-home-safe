@@ -8,6 +8,7 @@ pages:
   script:
     - npm ci
     - npm run build
+    - rmdir ./public
     - mv ./build ./public
   artifacts:
     paths:

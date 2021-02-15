@@ -116,8 +116,6 @@ export const AutoLeaveModal = ({
   );
 };
 
-export default AutoLeaveModal;
-
 const ModalCross = styled.img`
   height: 20px;
 `;

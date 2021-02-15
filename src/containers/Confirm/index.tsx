@@ -10,7 +10,8 @@ import { Link, useHistory } from "react-router-dom";
 import { ConfirmButton } from "../../components/Button";
 import { zeroPadding } from "../../utils/zeroPadding";
 import { Place } from "../../components/Place";
-import AutoLeaveModal from "./AutoLeaveModal";
+import { AutoLeaveModal } from "./AutoLeaveModal";
+import { LeaveModal } from "./LeaveModal";
 
 type Props = {
   place: string;
@@ -20,7 +21,8 @@ export const Confirm = ({ place }: Props) => {
   const browserHistory = useHistory();
   const [autoLeave, setAutoLeave] = useState(false);
   const [autoLeaveHour, setAutoLeaveHour] = useState(4);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAutoLeaveModalOpen, setIsAutoLeaveModalOpen] = useState(false);
+  const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
 
   useEffect(() => {
     if (place === "") browserHistory.push("/");
@@ -44,7 +46,11 @@ export const Confirm = ({ place }: Props) => {
 
   const handleSetAutoLeaveHour = (value: number) => {
     setAutoLeaveHour(value);
-    setIsModalOpen(false);
+    setIsAutoLeaveModalOpen(false);
+  };
+
+  const handleLeavePage = () => {
+    browserHistory.push("/");
   };
 
   return (
@@ -71,25 +77,37 @@ export const Confirm = ({ place }: Props) => {
           </CheckBoxWrapper>
           <Change
             onClick={() => {
-              setIsModalOpen(true);
+              setIsAutoLeaveModalOpen(true);
             }}
           >
             變更
           </Change>
         </AutoLeave>
-        <Link to="/">
-          <ConfirmButton shadowed>離開</ConfirmButton>
-        </Link>
+        <ConfirmButton
+          shadowed
+          onClick={() => {
+            setIsLeaveModalOpen(true);
+          }}
+        >
+          離開
+        </ConfirmButton>
         <div>當你離開時請緊記按"離開"</div>
       </ActionWrapper>
       <AutoLeaveModal
-        isModalOpen={isModalOpen}
+        isModalOpen={isAutoLeaveModalOpen}
         onCancel={() => {
-          setIsModalOpen(false);
+          setIsAutoLeaveModalOpen(false);
         }}
         onConfirm={handleSetAutoLeaveHour}
         selectedAutoLeaveHour={autoLeaveHour}
         date={date}
+      />
+      <LeaveModal
+        isModalOpen={isLeaveModalOpen}
+        onCancel={() => {
+          setIsLeaveModalOpen(false);
+        }}
+        onConfirm={handleLeavePage}
       />
     </PageWrapper>
   );

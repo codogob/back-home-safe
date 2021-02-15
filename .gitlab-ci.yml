@@ -3,15 +3,15 @@ image: node:4.2.2
 pages:
   cache:
     paths:
-    - node_modules/
+      - node_modules/
 
   script:
-  - npm update
-  - npm install
-  - npm run build
-  - mv ./build ./public
+    - npm update
+    - npm ci
+    - npm run build
+    - mv ./build ./public
   artifacts:
     paths:
-    - public
+      - public
   only:
-  - master
+    - master

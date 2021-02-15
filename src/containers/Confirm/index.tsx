@@ -20,7 +20,7 @@ export const Confirm = ({ place }: Props) => {
 
   useEffect(() => {
     if (place === "") browserHistory.push("/");
-  }, [place]);
+  }, [place, browserHistory]);
 
   const { year, month, day, hour, minute } = useMemo(() => {
     const date = new Date();

@@ -58,7 +58,7 @@ const CrossWrapper = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: 16px;
+  font-size: 20px;
   text-align: center;
   margin: 56px 0;
 `;

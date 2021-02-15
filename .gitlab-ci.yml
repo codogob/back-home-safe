@@ -6,7 +6,6 @@ pages:
       - node_modules/
 
   script:
-    - npm update
     - npm ci
     - npm run build
     - mv ./build ./public

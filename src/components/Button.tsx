@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Button = styled.button`
+export const ConfirmButton = styled.button<{ shadowed?: boolean }>`
   display: block;
   margin: auto;
   margin-bottom: 16px;
@@ -9,9 +9,10 @@ export const Button = styled.button`
   width: 80%;
   border-radius: 48px;
   background-color: #fed426;
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
   border: 0;
   outline: none;
+  ${(props) =>
+    props.shadowed ? "box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);" : ""}
 
   &:focus {
     outline: none;

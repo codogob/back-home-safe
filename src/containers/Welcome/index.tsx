@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Button } from "../../components/Button";
+import { ConfirmButton } from "../../components/Button";
 import { Place } from "../../components/Place";
 
 type Props = {
@@ -38,10 +38,12 @@ export const Welcome = ({ place, setPlace }: Props) => {
       </ContentWrapper>
       <ActionWrapper>
         {place === "" ? (
-          <Button disabled>話去就去!</Button>
+          <ConfirmButton disabled shadowed>
+            話去就去!
+          </ConfirmButton>
         ) : (
           <Link to="/confirm">
-            <Button>話去就去!</Button>
+            <ConfirmButton shadowed>話去就去!</ConfirmButton>
           </Link>
         )}
         <StyledLink to="/qr">掃瞄二維碼</StyledLink>

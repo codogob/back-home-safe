@@ -1,14 +1,16 @@
 import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import cross from "../../assets/cross.svg";
+
 import tick from "../../assets/tick.svg";
 import checkbox from "../../assets/checkbox.svg";
 import checkboxChecked from "../../assets/checkboxChecked.svg";
 
 import { Link, useHistory } from "react-router-dom";
-import { Button } from "../../components/Button";
+import { ConfirmButton } from "../../components/Button";
 import { zeroPadding } from "../../utils/zeroPadding";
 import { Place } from "../../components/Place";
+import AutoLeaveModal from "./AutoLeaveModal";
 
 type Props = {
   place: string;
@@ -17,14 +19,17 @@ type Props = {
 export const Confirm = ({ place }: Props) => {
   const browserHistory = useHistory();
   const [autoLeave, setAutoLeave] = useState(false);
+  const [autoLeaveHour, setAutoLeaveHour] = useState(4);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    if (place === "") browserHistory.push("/");
-  }, [place, browserHistory]);
+  // useEffect(() => {
+  //   if (place === "") browserHistory.push("/");
+  // }, [place, browserHistory]);
 
-  const { year, month, day, hour, minute } = useMemo(() => {
+  const { date, year, month, day, hour, minute } = useMemo(() => {
     const date = new Date();
     return {
+      date,
       year: date.getFullYear(),
       month: date.getMonth() + 1,
       day: date.getDate(),
@@ -35,6 +40,11 @@ export const Confirm = ({ place }: Props) => {
 
   const handleCheckBoxClick = () => {
     setAutoLeave((prev) => !prev);
+  };
+
+  const handleSetAutoLeaveHour = (value: number) => {
+    setAutoLeaveHour(value);
+    setIsModalOpen(false);
   };
 
   return (
@@ -57,15 +67,30 @@ export const Confirm = ({ place }: Props) => {
               src={autoLeave ? checkboxChecked : checkbox}
               onClick={handleCheckBoxClick}
             />
-            4小時後自動離開
+            {autoLeaveHour}小時後自動離開
           </CheckBoxWrapper>
-          <Change>變更</Change>
+          <Change
+            onClick={() => {
+              setIsModalOpen(true);
+            }}
+          >
+            變更
+          </Change>
         </AutoLeave>
         <Link to="/">
-          <Button>離開</Button>
+          <ConfirmButton shadowed>離開</ConfirmButton>
         </Link>
         <div>當你離開時請緊記按"離開"</div>
       </ActionWrapper>
+      <AutoLeaveModal
+        isModalOpen={isModalOpen}
+        onCancel={() => {
+          setIsModalOpen(false);
+        }}
+        onConfirm={handleSetAutoLeaveHour}
+        selectedAutoLeaveHour={autoLeaveHour}
+        date={date}
+      />
     </>
   );
 };

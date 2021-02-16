@@ -8,7 +8,15 @@ export const ConfirmButton = styled.button<{ shadowed?: boolean }>`
   padding: 10px 0;
   width: 80%;
   border-radius: 48px;
-  background-color: #fed426;
+  ${(props) =>
+    props.disabled
+      ? `background-color: #D3D3D3;
+        color: #A1A1A1;
+        `
+      : `
+        background-color: #fed426;
+      `}
+
   border: 0;
   outline: none;
   ${(props) =>

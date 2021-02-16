@@ -12,6 +12,7 @@ import { zeroPadding } from "../../utils/zeroPadding";
 import { Place } from "../../components/Place";
 import { AutoLeaveModal } from "./AutoLeaveModal";
 import { LeaveModal } from "./LeaveModal";
+import { TimePickModal } from "./TimePickModal";
 
 type Props = {
   place: string;
@@ -23,6 +24,7 @@ export const Confirm = ({ place }: Props) => {
   const [autoLeaveHour, setAutoLeaveHour] = useState(4);
   const [isAutoLeaveModalOpen, setIsAutoLeaveModalOpen] = useState(false);
   const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
+  const [isTimePickModalOpen, setIsTimePickModalOpen] = useState(false);
 
   useEffect(() => {
     if (place === "") browserHistory.push("/");
@@ -51,6 +53,11 @@ export const Confirm = ({ place }: Props) => {
 
   const handleLeavePage = () => {
     browserHistory.push("/");
+  };
+
+  const handleLeaved = () => {
+    setIsLeaveModalOpen(false);
+    setIsTimePickModalOpen(true);
   };
 
   return (
@@ -106,6 +113,14 @@ export const Confirm = ({ place }: Props) => {
         isModalOpen={isLeaveModalOpen}
         onCancel={() => {
           setIsLeaveModalOpen(false);
+        }}
+        onLeaveNow={handleLeavePage}
+        onLeaved={handleLeaved}
+      />
+      <TimePickModal
+        isModalOpen={isTimePickModalOpen}
+        onCancel={() => {
+          setIsTimePickModalOpen(false);
         }}
         onConfirm={handleLeavePage}
       />

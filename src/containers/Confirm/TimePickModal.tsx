@@ -1,23 +1,24 @@
-import React from "react";
+import React, { useRef } from "react";
 import Modal from "react-modal";
 import crossBlack from "../../assets/crossBlack.svg";
 
 import styled from "styled-components";
 import { ModalConfirmButton } from "../../components/Button";
+import { DatePicker, DatePickerHandler } from "../../components/DatePicker";
 
 type Props = {
   isModalOpen: boolean;
   onCancel: () => void;
-  onLeaveNow: () => void;
-  onLeaved: () => void;
+  onConfirm: () => void;
 };
 
-export const LeaveModal = ({
-  isModalOpen,
-  onCancel,
-  onLeaveNow,
-  onLeaved,
-}: Props) => {
+export const TimePickModal = ({ isModalOpen, onCancel, onConfirm }: Props) => {
+  const datePickerRef = useRef<DatePickerHandler>(null);
+
+  const initPicker = () => {
+    datePickerRef.current && datePickerRef.current.init();
+  };
+
   return (
     <Modal
       isOpen={isModalOpen}
@@ -41,15 +42,16 @@ export const LeaveModal = ({
         },
       }}
       ariaHideApp={false}
+      onAfterOpen={initPicker}
     >
       <CrossWrapper>
         <Cross src={crossBlack} onClick={onCancel} />
       </CrossWrapper>
-      <Title>你現在要離開嗎？</Title>
-      <ModalConfirmButton onClick={onLeaveNow}>
-        是的，我現在要離開
-      </ModalConfirmButton>
-      <GreenButton onClick={onLeaved}>我現已經離開了</GreenButton>
+      <Title>你是什麼時候離開？</Title>
+      <TimePickerWrapper>
+        <DatePicker ref={datePickerRef} />
+      </TimePickerWrapper>
+      <ModalConfirmButton onClick={onConfirm}>確認</ModalConfirmButton>
     </Modal>
   );
 };
@@ -67,10 +69,12 @@ const CrossWrapper = styled.div`
 const Title = styled.div`
   font-size: 20px;
   text-align: center;
-  margin: 56px 0;
+  margin-top: 24px;
 `;
 
-const GreenButton = styled(ModalConfirmButton)`
-  background-color: #12b188;
-  color: #fff;
+const TimePickerWrapper = styled.div`
+  border-bottom: 1px #eeeeee solid;
+  border-top: 1px #eeeeee solid;
+  padding: 32px 0;
+  margin: 16px 0;
 `;

@@ -62,6 +62,7 @@ const Header = styled.div`
   background-color: #12b188;
   text-align: center;
   line-height: 48px;
+  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
 `;
 
 const VideoContainer = styled.div`

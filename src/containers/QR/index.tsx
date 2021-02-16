@@ -1,10 +1,11 @@
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
-import Scanner from "react-webcam-qr-scanner";
 import styled from "styled-components";
 import back from "../../assets/back.svg";
 import { qrDecode } from "../../utils/qrDecode";
 import qrOverlay from "../../assets/qrOverlay.svg";
+import { QRCodeReader } from "../../components/QRCodeReader";
+import { QRCode } from "jsqr";
 
 type Props = {
   setPlace: (input: string) => void;
@@ -13,13 +14,12 @@ type Props = {
 export const QR = ({ setPlace }: Props) => {
   const browserHistory = useHistory();
 
-  const handleScan = ({ data }: { data: string }) => {
-    if (!data) return;
+  const handleScan = ({ data }: QRCode) => {
+    if (!data || data === "") return;
     const place = qrDecode(data);
-    if (place !== "") {
-      setPlace(place);
-      browserHistory.push("/confirm");
-    }
+    if (place === "") return;
+    setPlace(place);
+    browserHistory.push("/confirm");
   };
 
   return (
@@ -33,15 +33,7 @@ export const QR = ({ setPlace }: Props) => {
       <Overlay />
       <Message>掃瞄二維碼</Message>
       <VideoContainer>
-        <StyledScanner
-          onDecode={handleScan}
-          constraints={{
-            audio: false,
-            video: {
-              facingMode: "environment",
-            },
-          }}
-        />
+        <QRCodeReader onDecode={handleScan} />
       </VideoContainer>
     </>
   );
@@ -72,22 +64,6 @@ const VideoContainer = styled.div`
   width: 100%;
   height: 100%;
   overflow: hidden;
-`;
-
-const StyledScanner = styled(Scanner)`
-  /* Make video to at least 100% wide and tall */
-  min-width: 100%;
-  min-height: 100%;
-
-  /* Setting width & height to auto prevents the browser from stretching or squishing the video */
-  width: auto;
-  height: auto;
-
-  /* Center the video */
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 `;
 
 const Overlay = styled.div`

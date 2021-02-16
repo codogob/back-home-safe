@@ -50,18 +50,18 @@ export const QRCodeReader = ({ onDecode }: Props) => {
   }, [videoRef, canvasRef, onDecode]);
 
   useEffect(() => {
-    if (!videoRef.current) return;
+    const videoElement = videoRef.current;
+    if (!videoElement) return;
 
     navigator.mediaDevices
       .getUserMedia({ video: { facingMode: "environment" } })
-      .then(function (stream) {
-        if (!videoRef.current) return;
-
-        videoRef.current.srcObject = stream;
-        videoRef.current.play();
+      .then((stream) => {
+        if (!videoElement) return;
+        videoElement.srcObject = stream;
+        videoElement.play();
         requestAnimationFrame(tick);
       });
-  }, [tick, videoRef, canvasRef]);
+  }, [tick, videoRef]);
 
   return (
     <>

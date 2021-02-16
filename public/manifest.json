@@ -4,8 +4,8 @@
   "display": "standalone",
   "scope": ".",
   "start_url": "./",
-  "name": "安心回家",
-  "short_name": "安心回家",
+  "name": "安心出行",
+  "short_name": "安心出行",
   "icons": [
     {
       "src": "icon-192x192.png",

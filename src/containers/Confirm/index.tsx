@@ -6,7 +6,7 @@ import tick from "../../assets/tick.svg";
 import checkbox from "../../assets/checkbox.svg";
 import checkboxChecked from "../../assets/checkboxChecked.svg";
 
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { ConfirmButton } from "../../components/Button";
 import { zeroPadding } from "../../utils/zeroPadding";
 import { Place } from "../../components/Place";
@@ -14,21 +14,23 @@ import { AutoLeaveModal } from "./AutoLeaveModal";
 import { LeaveModal } from "./LeaveModal";
 import { TimePickModal } from "./TimePickModal";
 
-type Props = {
-  place: string;
-};
-
-export const Confirm = ({ place }: Props) => {
+export const Confirm = () => {
   const browserHistory = useHistory();
+  const browserLocation = useLocation();
   const [autoLeave, setAutoLeave] = useState(false);
   const [autoLeaveHour, setAutoLeaveHour] = useState(4);
   const [isAutoLeaveModalOpen, setIsAutoLeaveModalOpen] = useState(false);
   const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
   const [isTimePickModalOpen, setIsTimePickModalOpen] = useState(false);
 
+  const place = useMemo(
+    () => new URLSearchParams(browserLocation.search).get("place"),
+    [browserLocation.search]
+  );
+
   useEffect(() => {
-    if (place === "") browserHistory.push("/");
-  }, [place, browserHistory]);
+    if (!place || place === "") browserHistory.push("/");
+  }, [browserHistory, place]);
 
   const { date, year, month, day, hour, minute } = useMemo(() => {
     const date = new Date();
@@ -67,7 +69,7 @@ export const Confirm = ({ place }: Props) => {
       </Link>
       <ContentWrapper>
         <Msg>你已進入場所</Msg>
-        <Place value={place} readOnly />
+        {place && <Place value={place} readOnly />}
         <Time>{`${year}-${zeroPadding(month)}-${zeroPadding(day)} ${zeroPadding(
           hour
         )}:${zeroPadding(minute)}`}</Time>

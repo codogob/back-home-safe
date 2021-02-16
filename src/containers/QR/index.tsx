@@ -7,19 +7,14 @@ import qrOverlay from "../../assets/qrOverlay.svg";
 import { QRCodeReader } from "../../components/QRCodeReader";
 import { QRCode } from "jsqr";
 
-type Props = {
-  setPlace: (input: string) => void;
-};
-
-export const QR = ({ setPlace }: Props) => {
+export const QR = () => {
   const browserHistory = useHistory();
 
   const handleScan = ({ data }: QRCode) => {
     if (!data || data === "") return;
     const place = qrDecode(data);
     if (place === "") return;
-    setPlace(place);
-    browserHistory.push("/confirm");
+    browserHistory.push({ pathname: "/confirm", search: `?place=${place}` });
   };
 
   return (

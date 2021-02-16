@@ -1,18 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { ConfirmButton } from "../../components/Button";
 import { Place } from "../../components/Place";
 
-type Props = {
-  place: string;
-  setPlace: (input: string) => void;
-};
-
-export const Welcome = ({ place, setPlace }: Props) => {
-  useEffect(() => {
-    setPlace("");
-  }, [setPlace]);
+export const Welcome = () => {
+  const [place, setPlace] = useState("");
 
   return (
     <PageWrapper>
@@ -30,7 +23,7 @@ export const Welcome = ({ place, setPlace }: Props) => {
             話去就去!
           </ConfirmButton>
         ) : (
-          <Link to="/confirm">
+          <Link to={{ pathname: "/confirm", search: `?place=${place}` }}>
             <ConfirmButton shadowed>話去就去!</ConfirmButton>
           </Link>
         )}

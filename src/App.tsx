@@ -9,7 +9,6 @@ import { PWAPrompt } from "./components/PWAPrompt";
 import { disableBodyScroll } from "body-scroll-lock";
 
 function App() {
-  const [place, setPlace] = useState("");
   const [isPWA, setPWA] = useState(false);
 
   useEffect(() => {
@@ -33,13 +32,13 @@ function App() {
         <HashRouter basename="/">
           <Switch>
             <Route exact path="/">
-              <Welcome place={place} setPlace={setPlace} />
+              <Welcome />
             </Route>
             <Route exact path="/qr">
-              <QR setPlace={setPlace} />
+              <QR />
             </Route>
             <Route exact path="/confirm">
-              <Confirm place={place} />
+              <Confirm />
             </Route>
             <Redirect to="/" />
           </Switch>

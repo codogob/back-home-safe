@@ -6,6 +6,7 @@ import greenTick from "../../assets/greenTick.svg";
 import styled from "styled-components";
 import { ModalConfirmButton } from "../../components/Button";
 import { zeroPadding } from "../../utils/zeroPadding";
+import { disableBodyScroll } from "body-scroll-lock";
 
 type Props = {
   isModalOpen: boolean;
@@ -60,6 +61,12 @@ export const AutoLeaveModal = ({
     };
   }, [date, autoLeaveHourTmp]);
 
+  const disableScroll = () => {
+    const root = document.querySelector("#scroll");
+    if (!root) return;
+    disableBodyScroll(root);
+  };
+
   return (
     <Modal
       isOpen={isModalOpen}
@@ -83,12 +90,13 @@ export const AutoLeaveModal = ({
         },
       }}
       ariaHideApp={false}
+      onAfterOpen={disableScroll}
     >
       <CrossWrapper>
         <Cross src={crossBlack} onClick={onCancel} />
       </CrossWrapper>
       <Title>設罝自動離開時間</Title>
-      <HourListWrapper>
+      <HourListWrapper id="scroll">
         <HourList>
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((hour) => (
             <HourListItem

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { createGlobalStyle } from "styled-components";
 
 import { Route, HashRouter, Switch, Redirect } from "react-router-dom";
@@ -6,6 +6,7 @@ import { Welcome } from "./containers/Welcome";
 import { Confirm } from "./containers/Confirm";
 import { QR } from "./containers/QR";
 import { PWAPrompt } from "./components/PWAPrompt";
+import { disableBodyScroll } from "body-scroll-lock";
 
 function App() {
   const [place, setPlace] = useState("");
@@ -16,6 +17,12 @@ function App() {
       window.location.hostname === "localhost",
     []
   );
+
+  useEffect(() => {
+    const root = document.querySelector("#root");
+    if (!root) return;
+    disableBodyScroll(root);
+  }, []);
 
   return (
     <>

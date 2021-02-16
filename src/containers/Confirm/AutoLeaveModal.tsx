@@ -82,6 +82,7 @@ export const AutoLeaveModal = ({
           overflow: "hidden",
         },
       }}
+      ariaHideApp={false}
     >
       <CrossWrapper>
         <Cross src={crossBlack} onClick={onCancel} />

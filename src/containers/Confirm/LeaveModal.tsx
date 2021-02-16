@@ -34,6 +34,7 @@ export const LeaveModal = ({ isModalOpen, onCancel, onConfirm }: Props) => {
           overflow: "hidden",
         },
       }}
+      ariaHideApp={false}
     >
       <CrossWrapper>
         <Cross src={crossBlack} onClick={onCancel} />

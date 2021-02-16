@@ -12,7 +12,7 @@ export const PWAPrompt = () => {
         <div>IOS</div>
         <div>{"用Safari開=>分享=>新增至主畫面"}</div>
         <div>Android</div>
-        <div>{"用Chrome開=>右上選項=>新增至主畫面"}</div>
+        <div>{"用Chrome開=>右上選項=>新增至主畫面/安裝應用程式"}</div>
       </InstructionWrapper>
     </Wrapper>
   );

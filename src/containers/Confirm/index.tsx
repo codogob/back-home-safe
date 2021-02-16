@@ -75,7 +75,9 @@ export const Confirm = () => {
         hour
       )}:${zeroPadding(minute)}`}</Time>
       <TickWrapper>
-        <Tick src={tick} />
+        <TickWrapperInner>
+          <Tick src={tick} />
+        </TickWrapperInner>
       </TickWrapper>
       <AutoLeave>
         <CheckBoxWrapper>
@@ -157,10 +159,18 @@ const TickWrapper = styled.div`
   text-align: center;
 `;
 
+const TickWrapperInner = styled.div`
+  height: 100%;
+  max-height: 280px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+`;
+
 const Tick = styled.img`
   display: inline-block;
-  margin-top: 80px;
-  width: 32%;
+  height: 100%;
+  max-height: 120px;
 `;
 
 const Msg = styled.div`

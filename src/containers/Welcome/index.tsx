@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { ConfirmButton } from "../../components/Button";
@@ -14,20 +14,8 @@ export const Welcome = ({ place, setPlace }: Props) => {
     setPlace("");
   }, [setPlace]);
 
-  const isPWA = useMemo(
-    () => window.matchMedia("(display-mode: standalone)").matches,
-    []
-  );
-
   return (
     <PageWrapper>
-      {!isPWA && (
-        <Message>
-          <div>要新增至主畫面先似返個App架</div>
-          <div>{"IOS: 用Safari開=>分享=>新增至主畫面"}</div>
-          <div>{"Android: 用Chrome開=>右上選項=>新增至主畫面"}</div>
-        </Message>
-      )}
       <ContentWrapper>
         <Msg>我想去</Msg>
         <Place
@@ -83,12 +71,4 @@ const ActionWrapper = styled.div`
 
 const StyledLink = styled(Link)`
   color: #ffffff;
-`;
-
-const Message = styled.div`
-  color: #ffffff;
-  text-align: center;
-  position: absolute;
-  width: 100%;
-  padding: 8px 0;
 `;

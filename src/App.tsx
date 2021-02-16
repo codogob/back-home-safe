@@ -1,31 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { createGlobalStyle } from "styled-components";
 
 import { Route, HashRouter, Switch, Redirect } from "react-router-dom";
 import { Welcome } from "./containers/Welcome";
 import { Confirm } from "./containers/Confirm";
 import { QR } from "./containers/QR";
+import { PWAPrompt } from "./components/PWAPrompt";
 
 function App() {
   const [place, setPlace] = useState("");
 
+  const isPWA = useMemo(
+    () =>
+      window.matchMedia("(display-mode: standalone)").matches ||
+      window.location.hostname === "localhost",
+    []
+  );
+
   return (
     <>
       <GlobalStyle />
-      <HashRouter basename="/">
-        <Switch>
-          <Route exact path="/">
-            <Welcome place={place} setPlace={setPlace} />
-          </Route>
-          <Route exact path="/qr">
-            <QR setPlace={setPlace} />
-          </Route>
-          <Route exact path="/confirm">
-            <Confirm place={place} />
-          </Route>
-          <Redirect to="/" />
-        </Switch>
-      </HashRouter>
+      {isPWA ? (
+        <HashRouter basename="/">
+          <Switch>
+            <Route exact path="/">
+              <Welcome place={place} setPlace={setPlace} />
+            </Route>
+            <Route exact path="/qr">
+              <QR setPlace={setPlace} />
+            </Route>
+            <Route exact path="/confirm">
+              <Confirm place={place} />
+            </Route>
+            <Redirect to="/" />
+          </Switch>
+        </HashRouter>
+      ) : (
+        <PWAPrompt />
+      )}
     </>
   );
 }

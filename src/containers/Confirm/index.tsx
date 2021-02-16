@@ -64,44 +64,44 @@ export const Confirm = () => {
 
   return (
     <PageWrapper>
-      <Link to="/">
-        <Cross src={cross} />
-      </Link>
-      <ContentWrapper>
-        <Msg>你已進入場所</Msg>
-        {place && <Place value={place} readOnly />}
-        <Time>{`${year}-${zeroPadding(month)}-${zeroPadding(day)} ${zeroPadding(
-          hour
-        )}:${zeroPadding(minute)}`}</Time>
+      <Header>
+        <Link to="/">
+          <Cross src={cross} />
+        </Link>
+      </Header>
+      <Msg>你已進入場所</Msg>
+      {place && <Place value={place} readOnly />}
+      <Time>{`${year}-${zeroPadding(month)}-${zeroPadding(day)} ${zeroPadding(
+        hour
+      )}:${zeroPadding(minute)}`}</Time>
+      <TickWrapper>
         <Tick src={tick} />
-      </ContentWrapper>
-      <ActionWrapper>
-        <AutoLeave>
-          <CheckBoxWrapper>
-            <CheckBox
-              src={autoLeave ? checkboxChecked : checkbox}
-              onClick={handleCheckBoxClick}
-            />
-            {autoLeaveHour}小時後自動離開
-          </CheckBoxWrapper>
-          <Change
-            onClick={() => {
-              setIsAutoLeaveModalOpen(true);
-            }}
-          >
-            變更
-          </Change>
-        </AutoLeave>
-        <ConfirmButton
-          shadowed
+      </TickWrapper>
+      <AutoLeave>
+        <CheckBoxWrapper>
+          <CheckBox
+            src={autoLeave ? checkboxChecked : checkbox}
+            onClick={handleCheckBoxClick}
+          />
+          {autoLeaveHour}小時後自動離開
+        </CheckBoxWrapper>
+        <Change
           onClick={() => {
-            setIsLeaveModalOpen(true);
+            setIsAutoLeaveModalOpen(true);
           }}
         >
-          離開
-        </ConfirmButton>
-        <div>當你離開時請緊記按"離開"</div>
-      </ActionWrapper>
+          變更
+        </Change>
+      </AutoLeave>
+      <ConfirmButton
+        shadowed
+        onClick={() => {
+          setIsLeaveModalOpen(true);
+        }}
+      >
+        離開
+      </ConfirmButton>
+      <LeaveMessage>當你離開時請緊記按"離開"</LeaveMessage>
       <AutoLeaveModal
         isModalOpen={isAutoLeaveModalOpen}
         onCancel={() => {
@@ -134,49 +134,45 @@ const PageWrapper = styled.div`
   width: 100%;
   height: 100%;
   text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+`;
+
+const Header = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  flex-shrink: 0;
 `;
 
 const Cross = styled.img`
   height: 20px;
-  float: right;
-  position: absolute;
-  top: 24px;
-  right: 24px;
+  margin: 24px;
+`;
+
+const TickWrapper = styled.div`
+  height: 100%;
+  width: 100%;
+  text-align: center;
 `;
 
 const Tick = styled.img`
-  margin: auto;
+  display: inline-block;
   margin-top: 80px;
   width: 32%;
-`;
-
-const ContentWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
 `;
 
 const Msg = styled.div`
   color: #ffffff;
   text-align: center;
   font-size: 15px;
-  margin-top: 120px;
+  margin-top: 50px;
 `;
 
 const Time = styled.div`
   color: #ffffff;
   text-align: center;
-`;
-
-const ActionWrapper = styled.div`
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  text-align: center;
-  color: #fff;
-  padding-bottom: 40px;
 `;
 
 const AutoLeave = styled.div`
@@ -203,4 +199,9 @@ const CheckBox = styled.img`
   display: inline-block;
   vertical-align: top;
   margin-right: 8px;
+`;
+
+const LeaveMessage = styled.div`
+  text-align: center;
+  padding-bottom: 40px;
 `;

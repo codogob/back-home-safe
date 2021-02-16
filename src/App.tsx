@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { createGlobalStyle } from "styled-components";
 
 import { Route, HashRouter, Switch, Redirect } from "react-router-dom";
@@ -13,7 +13,11 @@ function App() {
   const [isPWA, setPWA] = useState(false);
 
   useEffect(() => {
-    setPWA(window.matchMedia("(display-mode: standalone)").matches || /\bmode=standalone\b/.test(window.location.hash) || window.location.hostname === "localhost");
+    setPWA(
+      window.matchMedia("(display-mode: standalone)").matches ||
+        /\bmode=standalone\b/.test(window.location.hash) ||
+        window.location.hostname === "localhost"
+    );
   }, []);
 
   useEffect(() => {

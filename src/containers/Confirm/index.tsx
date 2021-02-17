@@ -63,47 +63,53 @@ export const Confirm = () => {
   };
 
   return (
-    <PageWrapper>
-      <Header>
-        <Link to="/">
-          <Cross src={cross} />
-        </Link>
-      </Header>
-      <Msg>你已進入場所</Msg>
-      {place && <Place value={place} readOnly />}
-      <Time>{`${year}-${zeroPadding(month)}-${zeroPadding(day)} ${zeroPadding(
-        hour
-      )}:${zeroPadding(minute)}`}</Time>
-      <TickWrapper>
-        <TickWrapperInner>
-          <Tick src={tick} />
-        </TickWrapperInner>
-      </TickWrapper>
-      <AutoLeave>
-        <CheckBoxWrapper>
-          <CheckBox
-            src={autoLeave ? checkboxChecked : checkbox}
-            onClick={handleCheckBoxClick}
-          />
-          {autoLeaveHour}小時後自動離開
-        </CheckBoxWrapper>
-        <Change
-          onClick={() => {
-            setIsAutoLeaveModalOpen(true);
-          }}
-        >
-          變更
-        </Change>
-      </AutoLeave>
-      <ConfirmButton
-        shadowed
-        onClick={() => {
-          setIsLeaveModalOpen(true);
-        }}
-      >
-        離開
-      </ConfirmButton>
-      <LeaveMessage>當你離開時請緊記按"離開"</LeaveMessage>
+    <>
+      <PageWrapper>
+        <Header>
+          <Link to="/">
+            <Cross src={cross} />
+          </Link>
+        </Header>
+        <MessageWrapper>
+          <Msg>你已進入場所</Msg>
+          {place && <Place value={place} readOnly />}
+          <Time>{`${year}-${zeroPadding(month)}-${zeroPadding(
+            day
+          )} ${zeroPadding(hour)}:${zeroPadding(minute)}`}</Time>
+        </MessageWrapper>
+        <TickWrapper>
+          <TickWrapperInner>
+            <Tick src={tick} />
+          </TickWrapperInner>
+        </TickWrapper>
+        <ActionGroup>
+          <AutoLeave>
+            <CheckBoxWrapper>
+              <CheckBox
+                src={autoLeave ? checkboxChecked : checkbox}
+                onClick={handleCheckBoxClick}
+              />
+              {autoLeaveHour}小時後自動離開
+            </CheckBoxWrapper>
+            <Change
+              onClick={() => {
+                setIsAutoLeaveModalOpen(true);
+              }}
+            >
+              變更
+            </Change>
+          </AutoLeave>
+          <ConfirmButton
+            shadowed
+            onClick={() => {
+              setIsLeaveModalOpen(true);
+            }}
+          >
+            離開
+          </ConfirmButton>
+          <LeaveMessage>當你離開時請緊記按"離開"</LeaveMessage>
+        </ActionGroup>
+      </PageWrapper>
       <AutoLeaveModal
         isModalOpen={isAutoLeaveModalOpen}
         onCancel={() => {
@@ -128,7 +134,7 @@ export const Confirm = () => {
         }}
         onConfirm={handleLeavePage}
       />
-    </PageWrapper>
+    </>
   );
 };
 
@@ -146,6 +152,11 @@ const Header = styled.div`
   display: flex;
   justify-content: flex-end;
   flex-shrink: 0;
+`;
+
+const MessageWrapper = styled.div`
+  flex-shrink: 0;
+  width: 100%;
 `;
 
 const Cross = styled.img`
@@ -189,6 +200,7 @@ const AutoLeave = styled.div`
   margin-bottom: 16px;
   width: 100%;
   display: flex;
+  flex-shrink: 0;
 `;
 
 const CheckBoxWrapper = styled.div`
@@ -214,4 +226,10 @@ const CheckBox = styled.img`
 const LeaveMessage = styled.div`
   text-align: center;
   padding-bottom: 40px;
+  flex-shrink: 0;
+`;
+
+const ActionGroup = styled.div`
+  width: 100%;
+  flex-shrink: 0;
 `;

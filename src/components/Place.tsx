@@ -9,6 +9,7 @@ export const Place = styled.input`
   margin: 8px 0;
   color: #fed426;
   text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
+  width: 100%;
 
   &:focus {
     outline: none;

@@ -180,7 +180,7 @@ const TickWrapperInner = styled.div`
 const Tick = styled.img`
   display: inline-block;
   height: 100%;
-  max-height: 120px;
+  max-height: 110px;
 `;
 
 const Msg = styled.div`

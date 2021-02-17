@@ -39,6 +39,6 @@ const StyledCheckbox = styled(Checkbox)`
   padding: 0 !important;
 
   &.MuiCheckbox-colorPrimary {
-    color: #fed426 !important;
+    color: ${({ checked }) => (checked ? "#fed426" : "#eee")} !important;
   }
 `;

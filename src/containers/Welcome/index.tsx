@@ -1,3 +1,4 @@
+import { isEmpty } from "ramda";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -18,7 +19,7 @@ export const Welcome = () => {
         />
       </ContentWrapper>
       <ActionWrapper>
-        {place === "" ? (
+        {isEmpty(place) ? (
           <ConfirmButton disabled shadowed>
             話去就去!
           </ConfirmButton>

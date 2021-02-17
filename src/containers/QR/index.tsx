@@ -6,14 +6,15 @@ import { qrDecode } from "../../utils/qrDecode";
 import qrOverlay from "../../assets/qrOverlay.svg";
 import { QRCodeReader } from "../../components/QRCodeReader";
 import { QRCode } from "jsqr";
+import { isEmpty } from "ramda";
 
 export const QR = () => {
   const browserHistory = useHistory();
 
   const handleScan = ({ data }: QRCode) => {
-    if (!data || data === "") return;
+    if (!data || isEmpty(data)) return;
     const place = qrDecode(data);
-    if (place === "") return;
+    if (isEmpty(place)) return;
     browserHistory.push({ pathname: "/confirm", search: `?place=${place}` });
   };
 

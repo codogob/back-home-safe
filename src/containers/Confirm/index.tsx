@@ -13,6 +13,7 @@ import { Place } from "../../components/Place";
 import { AutoLeaveModal } from "./AutoLeaveModal";
 import { LeaveModal } from "./LeaveModal";
 import { TimePickModal } from "./TimePickModal";
+import { isEmpty } from "ramda";
 
 export const Confirm = () => {
   const browserHistory = useHistory();
@@ -29,7 +30,7 @@ export const Confirm = () => {
   );
 
   useEffect(() => {
-    if (!place || place === "") browserHistory.push("/");
+    if (!place || isEmpty(place)) browserHistory.push("/");
   }, [browserHistory, place]);
 
   const { date, year, month, day, hour, minute } = useMemo(() => {

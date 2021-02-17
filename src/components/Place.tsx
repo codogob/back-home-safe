@@ -37,6 +37,7 @@ export const StyledInput = styled(TextareaAutosize)`
   padding-left: 0;
   padding-right: 0;
   line-height: 36px;
+  font-weight: 500;
 
   &:focus {
     outline: none;

@@ -89,7 +89,7 @@ const Title = styled.div`
   font-size: 20px;
   text-align: center;
   margin: 64px 0;
-  font-weight: bold;
+  font-weight: 500;
 `;
 
 const GreenButton = styled(ModalConfirmButton)`
@@ -113,7 +113,7 @@ const Place = styled.div`
   text-shadow: none;
   text-align: center;
   font-size: 28px;
-  font-weight: bold;
+  font-weight: 500;
   line-height: 48px;
   text-overflow: ellipsis;
   white-space: nowrap;

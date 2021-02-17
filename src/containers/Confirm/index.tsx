@@ -68,7 +68,7 @@ export const Confirm = () => {
         </Header>
         <MessageWrapper>
           <Msg>你已進入場所</Msg>
-          {place && <Place value={place} readOnly />}
+          <Place value={place || ""} readOnly />
           <Time>{`${year}-${zeroPadding(month)}-${zeroPadding(
             day
           )} ${zeroPadding(hour)}:${zeroPadding(minute)}`}</Time>
@@ -119,6 +119,9 @@ export const Confirm = () => {
         }}
         onLeaveNow={handleLeavePage}
         onLeaved={handleLeaved}
+        place={place || ""}
+        date={date}
+        autoLeaveHour={autoLeave ? autoLeaveHour : 0}
       />
       <TimePickModal
         isModalOpen={isTimePickModalOpen}

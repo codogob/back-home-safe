@@ -3,6 +3,7 @@ import styled from "styled-components";
 import checkbox from "../assets/checkbox.svg";
 import checkboxChecked from "../assets/checkboxChecked.svg";
 import { isAndroid } from "react-device-detect";
+import { Checkbox } from "@material-ui/core";
 
 type Props = {
   checked: boolean;
@@ -15,7 +16,7 @@ export const CheckBox = ({ onChange, checked }: Props) => {
   };
 
   return isAndroid ? (
-    <StyledCheckbox type="checkbox" checked={checked} onClick={handleClick} />
+    <StyledCheckbox checked={checked} onClick={handleClick} color="primary" />
   ) : (
     <IOSCheckBox
       src={checked ? checkboxChecked : checkbox}
@@ -31,10 +32,13 @@ const IOSCheckBox = styled.img`
   margin: 0 8px;
 `;
 
-const StyledCheckbox = styled.input`
+const StyledCheckbox = styled(Checkbox)`
   display: inline-block;
   vertical-align: top;
-  margin: 0 8px;
-  height: 32px;
-  transform: scale(1.5);
+  margin: 0 8px !important;
+  padding: 0 !important;
+
+  &.MuiCheckbox-colorPrimary {
+    color: #fed426 !important;
+  }
 `;

@@ -6,7 +6,7 @@ export const Place = styled.input`
   background-color: transparent;
   border: 0;
   outline: none;
-  margin: 8px 0;
+  margin: 4px 0;
   color: #fed426;
   text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
   width: 100%;

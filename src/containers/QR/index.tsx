@@ -19,21 +19,29 @@ export const QR = () => {
   };
 
   return (
-    <>
+    <PageWrapper>
       <Header>
         <Link to="/">
           <BackButton src={back} />
         </Link>
         掃瞄二維碼
       </Header>
-      <Overlay />
       <Message>掃瞄二維碼</Message>
       <VideoContainer>
+        <Overlay />
         <QRCodeReader onDecode={handleScan} />
       </VideoContainer>
-    </>
+    </PageWrapper>
   );
 };
+
+const PageWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+`;
 
 const BackButton = styled.img`
   height: 20px;
@@ -43,23 +51,19 @@ const BackButton = styled.img`
 `;
 
 const Header = styled.div`
-  width: 100%;
-  position: absolute;
-  z-index: 100;
   color: #ffffff;
   background-color: #12b188;
   text-align: center;
   line-height: 48px;
   text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
+  flex-shrink: 0;
 `;
 
 const VideoContainer = styled.div`
-  position: absolute;
-  top: 0;
-  bottom: 0;
   width: 100%;
   height: 100%;
   overflow: hidden;
+  position: relative;
 `;
 
 const Overlay = styled.div`
@@ -81,7 +85,7 @@ const Overlay = styled.div`
 const Message = styled.div`
   position: absolute;
   z-index: 51;
-  bottom: 25%;
+  bottom: 20%;
   width: 100%;
   text-align: center;
   color: #ffffff;

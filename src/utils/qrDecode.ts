@@ -11,5 +11,7 @@ export const qrDecode = (input: string): string => {
   if (!input.startsWith("HKEN:")) return "";
   const json: DecodedJSON = JSON.parse(window.atob(input.substring(14)));
   console.log(json);
-  return decodeURIComponent(escape(json.nameZh || json.nameEn));
+  const name = json.nameZh || json.nameEn;
+
+  return decodeURIComponent(escape(name));
 };

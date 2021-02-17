@@ -103,6 +103,7 @@ export const AutoLeaveModal = ({
               onClick={() => {
                 setAutoLeaveHourTmp(hour);
               }}
+              key={hour}
             >
               + {hour}小時
               {autoLeaveHourTmp === hour && <SelectedTick src={greenTick} />}

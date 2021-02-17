@@ -3,8 +3,6 @@ import styled from "styled-components";
 import cross from "../../assets/cross.svg";
 
 import tick from "../../assets/tick.svg";
-import checkbox from "../../assets/checkbox.svg";
-import checkboxChecked from "../../assets/checkboxChecked.svg";
 
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { ConfirmButton } from "../../components/Button";
@@ -14,11 +12,12 @@ import { AutoLeaveModal } from "./AutoLeaveModal";
 import { LeaveModal } from "./LeaveModal";
 import { TimePickModal } from "./TimePickModal";
 import { isEmpty } from "ramda";
+import { CheckBox } from "../../components/CheckBox";
 
 export const Confirm = () => {
   const browserHistory = useHistory();
   const browserLocation = useLocation();
-  const [autoLeave, setAutoLeave] = useState(false);
+  const [autoLeave, setAutoLeave] = useState(true);
   const [autoLeaveHour, setAutoLeaveHour] = useState(4);
   const [isAutoLeaveModalOpen, setIsAutoLeaveModalOpen] = useState(false);
   const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
@@ -44,10 +43,6 @@ export const Confirm = () => {
       minute: date.getMinutes(),
     };
   }, []);
-
-  const handleCheckBoxClick = () => {
-    setAutoLeave((prev) => !prev);
-  };
 
   const handleSetAutoLeaveHour = (value: number) => {
     setAutoLeaveHour(value);
@@ -86,10 +81,7 @@ export const Confirm = () => {
         <ActionGroup>
           <AutoLeave>
             <CheckBoxWrapper>
-              <CheckBox
-                src={autoLeave ? checkboxChecked : checkbox}
-                onClick={handleCheckBoxClick}
-              />
+              <CheckBox checked={autoLeave} onChange={setAutoLeave} />
               {autoLeaveHour}小時後自動離開
             </CheckBoxWrapper>
             <Change
@@ -217,13 +209,6 @@ const Change = styled.div`
   flex-shrink: 0;
   padding-right: 24px;
   line-height: 32px;
-`;
-
-const CheckBox = styled.img`
-  height: 32px;
-  display: inline-block;
-  vertical-align: top;
-  margin-right: 8px;
 `;
 
 const LeaveMessage = styled.div`

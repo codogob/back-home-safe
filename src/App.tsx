@@ -19,6 +19,8 @@ function App() {
         window.location.hostname === "localhost"
     );
     console.log(adapter.browserDetails.browser, adapter.browserDetails.version);
+
+   
   }, []);
 
   useEffect(() => {

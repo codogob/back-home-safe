@@ -7,6 +7,7 @@ import { Confirm } from "./containers/Confirm";
 import { QR } from "./containers/QR";
 import { PWAPrompt } from "./components/PWAPrompt";
 import { disableBodyScroll } from "body-scroll-lock";
+import adapter from "webrtc-adapter";
 
 function App() {
   const [isPWA, setPWA] = useState(false);
@@ -17,6 +18,7 @@ function App() {
         /\bmode=standalone\b/.test(window.location.hash) ||
         window.location.hostname === "localhost"
     );
+    console.log(adapter.browserDetails.browser, adapter.browserDetails.version);
   }, []);
 
   useEffect(() => {

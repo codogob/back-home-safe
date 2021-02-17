@@ -58,7 +58,9 @@ export const Confirm = () => {
         </Header>
         <MessageWrapper>
           <Msg>你已進入場所</Msg>
-          <Place value={place || ""} readOnly />
+          <PlaceWrapper>
+            <Place value={place || ""} readOnly />
+          </PlaceWrapper>
           <Time>{date.format("YYYY-MM-DD HH:mm")}</Time>
         </MessageWrapper>
         <TickWrapper>
@@ -141,6 +143,10 @@ const Header = styled.div`
 const Cross = styled.img`
   height: 20px;
   margin: 24px;
+`;
+
+const PlaceWrapper = styled.div`
+  padding: 0 32px;
 `;
 
 const MessageWrapper = styled.div`

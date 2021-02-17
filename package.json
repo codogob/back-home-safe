@@ -12,6 +12,7 @@
     "pickerjs": "^1.2.1",
     "ramda": "^0.27.1",
     "react": "^17.0.1",
+    "react-autosize-textarea": "^7.1.0",
     "react-device-detect": "^1.15.0",
     "react-dom": "^17.0.1",
     "react-modal": "^3.12.1",

@@ -12,11 +12,7 @@ export const Welcome = () => {
     <PageWrapper>
       <ContentWrapper>
         <Msg>我想去</Msg>
-        <Place
-          value={place}
-          onChange={(e) => setPlace(e.target.value)}
-          placeholder="輸入地址"
-        />
+        <Place value={place} onChange={setPlace} placeholder="輸入地址" />
       </ContentWrapper>
       <ActionWrapper>
         {isEmpty(place) ? (

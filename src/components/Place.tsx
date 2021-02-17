@@ -1,6 +1,29 @@
 import styled from "styled-components";
+import React from "react";
+import TextareaAutosize from "react-autosize-textarea";
 
-export const Place = styled.input`
+type Props = {
+  value: string;
+  onChange?: (value: string) => void;
+  placeholder?: string;
+  readOnly?: boolean;
+};
+
+export const Place = ({ value, onChange, placeholder, readOnly }: Props) => {
+  return (
+    <StyledInput
+      value={value}
+      placeholder={placeholder}
+      readOnly={readOnly}
+      onChange={(e: any) => {
+        onChange && onChange(e.target.value);
+      }}
+      async
+    />
+  );
+};
+
+export const StyledInput = styled(TextareaAutosize)`
   text-align: center;
   font-size: 32px;
   background-color: transparent;
@@ -13,6 +36,7 @@ export const Place = styled.input`
 
   padding-left: 0;
   padding-right: 0;
+  line-height: 36px;
 
   &:focus {
     outline: none;

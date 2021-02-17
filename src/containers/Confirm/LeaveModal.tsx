@@ -115,6 +115,9 @@ const Place = styled.div`
   font-size: 28px;
   font-weight: bold;
   line-height: 48px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `;
 
 const AutoLeave = styled.div`

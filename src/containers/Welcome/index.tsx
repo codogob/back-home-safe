@@ -38,6 +38,8 @@ const PageWrapper = styled.div`
   width: 100%;
   height: 100%;
   text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
 `;
 
 const ContentWrapper = styled.div`
@@ -56,11 +58,10 @@ const Msg = styled.div`
 
 const ActionWrapper = styled.div`
   width: 100%;
-  position: absolute;
-  bottom: 0;
   text-align: center;
   color: #fff;
-  padding-bottom: 40px;
+  padding: 40px 0;
+  flex-shrink: 0;
 `;
 
 const StyledLink = styled(Link)`

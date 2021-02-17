@@ -155,14 +155,17 @@ const Header = styled.div`
   flex-shrink: 0;
 `;
 
-const MessageWrapper = styled.div`
-  flex-shrink: 0;
-  width: 100%;
-`;
-
 const Cross = styled.img`
   height: 20px;
   margin: 24px;
+`;
+
+const MessageWrapper = styled.div`
+  width: 100%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const TickWrapper = styled.div`
@@ -173,10 +176,10 @@ const TickWrapper = styled.div`
 
 const TickWrapperInner = styled.div`
   height: 100%;
-  max-height: 280px;
+  max-height: 200px;
   display: flex;
-  justify-content: center;
   flex-direction: column;
+  justify-content: center;
 `;
 
 const Tick = styled.img`
@@ -189,7 +192,6 @@ const Msg = styled.div`
   color: #ffffff;
   text-align: center;
   font-size: 15px;
-  margin-top: 50px;
 `;
 
 const Time = styled.div`

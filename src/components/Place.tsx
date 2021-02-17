@@ -6,11 +6,13 @@ export const Place = styled.input`
   background-color: transparent;
   border: 0;
   outline: none;
-  margin: 10px 0;
+  margin: 8px 0;
   color: #fed426;
   text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
   width: 100%;
-  padding: 0;
+
+  padding-left: 0;
+  padding-right: 0;
 
   &:focus {
     outline: none;

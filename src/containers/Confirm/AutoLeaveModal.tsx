@@ -5,15 +5,15 @@ import greenTick from "../../assets/greenTick.svg";
 
 import styled from "styled-components";
 import { ModalConfirmButton } from "../../components/Button";
-import { zeroPadding } from "../../utils/zeroPadding";
 import { disableBodyScroll } from "body-scroll-lock";
+import { Dayjs } from "dayjs";
 
 type Props = {
   isModalOpen: boolean;
   onCancel: () => void;
   onConfirm: (value: number) => void;
   selectedAutoLeaveHour: number;
-  date: Date;
+  date: Dayjs;
 };
 
 export const AutoLeaveModal = ({
@@ -35,31 +35,10 @@ export const AutoLeaveModal = ({
     onConfirm(autoLeaveHourTmp);
   };
 
-  const {
-    fromMonth,
-    fromDay,
-    fromHour,
-    fromMinute,
-    toMonth,
-    toDay,
-    toHour,
-    toMinute,
-  } = useMemo(() => {
-    const toDate = new Date(date);
-    toDate.setHours(date.getHours() + autoLeaveHourTmp);
-
-    return {
-      fromMonth: date.getMonth() + 1,
-      fromDay: date.getDate(),
-      fromHour: date.getHours(),
-      fromMinute: date.getMinutes(),
-
-      toMonth: toDate.getMonth() + 1,
-      toDay: toDate.getDate(),
-      toHour: toDate.getHours(),
-      toMinute: toDate.getMinutes(),
-    };
-  }, [date, autoLeaveHourTmp]);
+  const toDate = useMemo(() => date.add(autoLeaveHourTmp, "hour"), [
+    date,
+    autoLeaveHourTmp,
+  ]);
 
   const disableScroll = () => {
     const root = document.querySelector("#scroll");
@@ -112,14 +91,8 @@ export const AutoLeaveModal = ({
         </HourList>
       </HourListWrapper>
       <TimeWrapper>
-        <div>
-          於{zeroPadding(fromMonth)}-{zeroPadding(fromDay)}{" "}
-          {zeroPadding(fromHour)}:{zeroPadding(fromMinute)} 進入場所
-        </div>
-        <div>
-          於{zeroPadding(toMonth)}-{zeroPadding(toDay)} {zeroPadding(toHour)}:
-          {zeroPadding(toMinute)} 自動離開
-        </div>
+        <div>於{date.format("MM-DD HH:mm")} 進入場所</div>
+        <div>於{toDate.format("MM-DD HH:mm")} 自動離開</div>
       </TimeWrapper>
       <ModalConfirmButton onClick={handleConfirm}>確認</ModalConfirmButton>
     </Modal>

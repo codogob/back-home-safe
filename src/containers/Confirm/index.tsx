@@ -6,13 +6,13 @@ import tick from "../../assets/tick.svg";
 
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { ConfirmButton } from "../../components/Button";
-import { zeroPadding } from "../../utils/zeroPadding";
 import { Place } from "../../components/Place";
 import { AutoLeaveModal } from "./AutoLeaveModal";
 import { LeaveModal } from "./LeaveModal";
 import { TimePickModal } from "./TimePickModal";
 import { isEmpty } from "ramda";
 import { CheckBox } from "../../components/CheckBox";
+import dayjs from "dayjs";
 
 export const Confirm = () => {
   const browserHistory = useHistory();
@@ -32,17 +32,7 @@ export const Confirm = () => {
     if (!place || isEmpty(place)) browserHistory.push("/");
   }, [browserHistory, place]);
 
-  const { date, year, month, day, hour, minute } = useMemo(() => {
-    const date = new Date();
-    return {
-      date,
-      year: date.getFullYear(),
-      month: date.getMonth() + 1,
-      day: date.getDate(),
-      hour: date.getHours(),
-      minute: date.getMinutes(),
-    };
-  }, []);
+  const date = useMemo(() => dayjs(), []);
 
   const handleSetAutoLeaveHour = (value: number) => {
     setAutoLeaveHour(value);
@@ -69,9 +59,7 @@ export const Confirm = () => {
         <MessageWrapper>
           <Msg>你已進入場所</Msg>
           <Place value={place || ""} readOnly />
-          <Time>{`${year}-${zeroPadding(month)}-${zeroPadding(
-            day
-          )} ${zeroPadding(hour)}:${zeroPadding(minute)}`}</Time>
+          <Time>{date.format("YYYY-MM-DD HH:mm")}</Time>
         </MessageWrapper>
         <TickWrapper>
           <TickWrapperInner>

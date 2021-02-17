@@ -4,7 +4,7 @@ import crossBlack from "../../assets/crossBlack.svg";
 
 import styled from "styled-components";
 import { ModalConfirmButton } from "../../components/Button";
-import { zeroPadding } from "../../utils/zeroPadding";
+import { Dayjs } from "dayjs";
 
 type Props = {
   isModalOpen: boolean;
@@ -12,7 +12,7 @@ type Props = {
   onLeaveNow: () => void;
   onLeaved: () => void;
   place: string;
-  date: Date;
+  date: Dayjs;
   autoLeaveHour: number;
 };
 
@@ -27,33 +27,10 @@ export const LeaveModal = ({
 }: Props) => {
   const shouldDisplayAutoLeave = autoLeaveHour !== 0;
 
-  const {
-    fromYear,
-    fromMonth,
-    fromDay,
-    fromHour,
-    fromMinute,
-    toMonth,
-    toDay,
-    toHour,
-    toMinute,
-  } = useMemo(() => {
-    const toDate = new Date(date);
-    toDate.setHours(date.getHours() + autoLeaveHour);
-
-    return {
-      fromYear: date.getFullYear(),
-      fromMonth: date.getMonth() + 1,
-      fromDay: date.getDate(),
-      fromHour: date.getHours(),
-      fromMinute: date.getMinutes(),
-
-      toMonth: toDate.getMonth() + 1,
-      toDay: toDate.getDate(),
-      toHour: toDate.getHours(),
-      toMinute: toDate.getMinutes(),
-    };
-  }, [date, autoLeaveHour]);
+  const toDate = useMemo(() => date.add(autoLeaveHour, "hour"), [
+    date,
+    autoLeaveHour,
+  ]);
 
   return (
     <Modal
@@ -84,15 +61,10 @@ export const LeaveModal = ({
       </CrossWrapper>
       <Msg>你已進入場所</Msg>
       <Place>{place}</Place>
-      <Time>{`${fromYear}-${zeroPadding(fromMonth)}-${zeroPadding(
-        fromDay
-      )} ${zeroPadding(fromHour)}:${zeroPadding(fromMinute)}`}</Time>
+      <Time>{date.format("YYYY-MM-DD HH:mm")}</Time>
       <Title>你現在要離開嗎？</Title>
       {shouldDisplayAutoLeave && (
-        <AutoLeave>
-          於{zeroPadding(toMonth)}-{zeroPadding(toDay)} {zeroPadding(toHour)}:
-          {zeroPadding(toMinute)} 自動離開
-        </AutoLeave>
+        <AutoLeave>於{toDate.format("MM-DD HH:mm")} 自動離開</AutoLeave>
       )}
       <ModalConfirmButton onClick={onLeaveNow}>
         是的，我現在要離開

@@ -9,6 +9,7 @@ export const ConfirmButton = styled.button<{ shadowed?: boolean }>`
   width: 80%;
   border-radius: 48px;
   flex-shrink: 0;
+  max-width: 280px;
 
   ${(props) =>
     props.disabled

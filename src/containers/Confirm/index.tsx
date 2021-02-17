@@ -197,8 +197,11 @@ const Time = styled.div`
 const AutoLeave = styled.div`
   margin-bottom: 16px;
   width: 100%;
+  max-width: 380px;
+  margin: 16px auto;
   display: flex;
   flex-shrink: 0;
+  font-size: 14px;
 `;
 
 const CheckBoxWrapper = styled.div`

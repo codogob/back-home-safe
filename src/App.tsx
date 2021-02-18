@@ -11,14 +11,15 @@ import adapter from "webrtc-adapter";
 import { QRGenerator } from "./containers/QRGeneartor";
 
 function App() {
-  const [isPWA, setPWA] = useState(false);
+  const [showPWAPrompt, setShowPWAPrompt] = useState(false);
 
   useEffect(() => {
-    setPWA(
+    const isInstalled =
       window.matchMedia("(display-mode: standalone)").matches ||
-        /\bmode=standalone\b/.test(window.location.hash) ||
-        window.location.hostname === "localhost"
-    );
+      /\bmode=standalone\b/.test(window.location.hash) ||
+      window.location.hostname === "localhost";
+
+    setShowPWAPrompt(!isInstalled);
     console.log(adapter.browserDetails.browser, adapter.browserDetails.version);
   }, []);
 
@@ -31,7 +32,13 @@ function App() {
   return (
     <>
       <GlobalStyle />
-      {isPWA ? (
+      {showPWAPrompt ? (
+        <PWAPrompt
+          onDismiss={() => {
+            setShowPWAPrompt(false);
+          }}
+        />
+      ) : (
         <HashRouter basename="/">
           <Switch>
             <Route exact path="/">
@@ -49,8 +56,6 @@ function App() {
             <Redirect to="/" />
           </Switch>
         </HashRouter>
-      ) : (
-        <PWAPrompt />
       )}
     </>
   );

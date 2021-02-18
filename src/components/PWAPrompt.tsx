@@ -1,8 +1,13 @@
+import { Button } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import plus from "../../src/assets/plus.svg";
 
-export const PWAPrompt = () => {
+type Props = {
+  onDismiss: () => void;
+};
+
+export const PWAPrompt = ({ onDismiss }: Props) => {
   return (
     <Wrapper>
       <AddIcon src={plus} />
@@ -14,6 +19,11 @@ export const PWAPrompt = () => {
         <div>Android</div>
         <div>{"用Chrome開=>右上選項=>新增至主畫面/安裝應用程式"}</div>
       </InstructionWrapper>
+      <div>
+        <Button variant="contained" onClick={onDismiss}>
+          我知我做緊乜，俾我入去
+        </Button>
+      </div>
     </Wrapper>
   );
 };
@@ -36,5 +46,5 @@ const AddIcon = styled.img`
 
 const InstructionWrapper = styled.div`
   font-size: 12px;
-  margin-top: 24px;
+  margin: 24px 0;
 `;

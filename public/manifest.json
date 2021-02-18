@@ -3,9 +3,9 @@
   "background_color": "#12b188",
   "display": "standalone",
   "scope": ".",
-  "start_url": "./",
-  "name": "安心回家",
-  "short_name": "安心回家",
+  "start_url": "./#mode=standalone",
+  "name": "安心出行",
+  "short_name": "安心出行",
   "icons": [
     {
       "src": "icon-192x192.png",

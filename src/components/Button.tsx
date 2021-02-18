@@ -8,7 +8,19 @@ export const ConfirmButton = styled.button<{ shadowed?: boolean }>`
   padding: 10px 0;
   width: 80%;
   border-radius: 48px;
-  background-color: #fed426;
+  flex-shrink: 0;
+  max-width: 280px;
+  font-weight: 500;
+
+  ${(props) =>
+    props.disabled
+      ? `background-color: #D3D3D3;
+        color: #A1A1A1;
+        `
+      : `
+        background-color: #fed426;
+      `}
+
   border: 0;
   outline: none;
   ${(props) =>
@@ -24,4 +36,5 @@ export const ModalConfirmButton = styled(ConfirmButton)`
   font-size: 16px;
   padding: 12px 0;
   width: 90%;
+  font-weight: unset;
 `;

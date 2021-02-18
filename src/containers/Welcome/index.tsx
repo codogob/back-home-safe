@@ -1,48 +1,26 @@
-import React, { useEffect, useMemo } from "react";
+import { isEmpty } from "ramda";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { ConfirmButton } from "../../components/Button";
 import { Place } from "../../components/Place";
 
-type Props = {
-  place: string;
-  setPlace: (input: string) => void;
-};
-
-export const Welcome = ({ place, setPlace }: Props) => {
-  useEffect(() => {
-    setPlace("");
-  }, [setPlace]);
-
-  const isPWA = useMemo(
-    () => window.matchMedia("(display-mode: standalone)").matches,
-    []
-  );
+export const Welcome = () => {
+  const [place, setPlace] = useState("");
 
   return (
     <PageWrapper>
-      {!isPWA && (
-        <Message>
-          <div>要新增至主畫面先似返個App架</div>
-          <div>{"IOS: 用Safari開=>分享=>新增至主畫面"}</div>
-          <div>{"Android: 用Chrome開=>右上選項=>新增至主畫面"}</div>
-        </Message>
-      )}
       <ContentWrapper>
         <Msg>我想去</Msg>
-        <Place
-          value={place}
-          onChange={(e) => setPlace(e.target.value)}
-          placeholder="輸入地址"
-        />
+        <Place value={place} onChange={setPlace} placeholder="輸入地址" />
       </ContentWrapper>
       <ActionWrapper>
-        {place === "" ? (
+        {isEmpty(place) ? (
           <ConfirmButton disabled shadowed>
             話去就去!
           </ConfirmButton>
         ) : (
-          <Link to="/confirm">
+          <Link to={{ pathname: "/confirm", search: `?place=${place}` }}>
             <ConfirmButton shadowed>話去就去!</ConfirmButton>
           </Link>
         )}
@@ -56,6 +34,8 @@ const PageWrapper = styled.div`
   width: 100%;
   height: 100%;
   text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
 `;
 
 const ContentWrapper = styled.div`
@@ -74,21 +54,12 @@ const Msg = styled.div`
 
 const ActionWrapper = styled.div`
   width: 100%;
-  position: absolute;
-  bottom: 0;
   text-align: center;
   color: #fff;
-  padding-bottom: 40px;
+  padding: 40px 0;
+  flex-shrink: 0;
 `;
 
 const StyledLink = styled(Link)`
   color: #ffffff;
-`;
-
-const Message = styled.div`
-  color: #ffffff;
-  text-align: center;
-  position: absolute;
-  width: 100%;
-  padding: 8px 0;
 `;

@@ -89,7 +89,7 @@ export const QRCodeReader = ({ onDecode }: Props) => {
     const videoElement = videoRef.current;
     if (!videoElement) return;
 
-    getUserMedia({ video: { facingMode: "environment" } }).then(
+    getUserMedia({ video: { facingMode: "environment" }, audio: false }).then(
       (stream: MediaStream) => {
         if (!videoElement) return;
         videoElement.srcObject = stream;

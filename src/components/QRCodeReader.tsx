@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import jsQR, { QRCode } from "jsqr";
 import styled from "styled-components";
+import { useRafLoop } from "react-use";
 
 type Props = {
   onDecode: (code: QRCode) => void;
@@ -46,7 +47,7 @@ export const QRCodeReader = ({ onDecode }: Props) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const tick = useCallback(() => {
+  const [loopStop, loopStart] = useRafLoop(() => {
     const canvasElement = canvasRef.current;
     const videoElement = videoRef.current;
 
@@ -82,24 +83,27 @@ export const QRCodeReader = ({ onDecode }: Props) => {
         onDecode(code);
       }
     }
-    requestAnimationFrame(tick);
-  }, [videoRef, canvasRef, onDecode]);
+  }, false);
 
   useEffect(() => {
     const videoElement = videoRef.current;
-    if (!videoElement) return;
+    if (videoElement) {
+      getUserMedia({ video: { facingMode: "environment" }, audio: false })
+        .then((stream: MediaStream) => {
+          if (!videoElement) return;
+          videoElement.srcObject = stream;
+          videoElement.play();
+          loopStart();
+        })
+        .catch((e: Error) => {
+          alert("Unable to activate camera.\n\n" + e);
+        });
+    }
 
-    getUserMedia({ video: { facingMode: "environment" }, audio: false }).then(
-      (stream: MediaStream) => {
-        if (!videoElement) return;
-        videoElement.srcObject = stream;
-        videoElement.play();
-        requestAnimationFrame(tick);
-      }
-    ).catch((e: Error) => {
-      alert("Unable to activate camera.\n\n" + e);
-    });
-  }, [tick, videoRef]);
+    return () => {
+      loopStop();
+    };
+  }, [loopStart, loopStop, videoRef]);
 
   return (
     <>

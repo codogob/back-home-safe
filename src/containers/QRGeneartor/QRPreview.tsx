@@ -70,7 +70,6 @@ export const QRPreview = ({ data, onLeave }: Props) => {
 const PageWrapper = styled.div`
   width: 100%;
   height: 100%;
-  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
   display: flex;
   flex-direction: column;
   color: #fff;

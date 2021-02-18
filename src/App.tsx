@@ -4,10 +4,11 @@ import { createGlobalStyle } from "styled-components";
 import { Route, HashRouter, Switch, Redirect } from "react-router-dom";
 import { Welcome } from "./containers/Welcome";
 import { Confirm } from "./containers/Confirm";
-import { QR } from "./containers/QR";
+import { QRReader } from "./containers/QRReader";
 import { PWAPrompt } from "./components/PWAPrompt";
 import { disableBodyScroll } from "body-scroll-lock";
 import adapter from "webrtc-adapter";
+import { QRGenerator } from "./containers/QRGeneartor";
 
 function App() {
   const [isPWA, setPWA] = useState(false);
@@ -19,8 +20,6 @@ function App() {
         window.location.hostname === "localhost"
     );
     console.log(adapter.browserDetails.browser, adapter.browserDetails.version);
-
-   
   }, []);
 
   useEffect(() => {
@@ -38,8 +37,11 @@ function App() {
             <Route exact path="/">
               <Welcome />
             </Route>
-            <Route exact path="/qr">
-              <QR />
+            <Route exact path="/qrReader">
+              <QRReader />
+            </Route>
+            <Route exact path="/qrGenerator">
+              <QRGenerator />
             </Route>
             <Route exact path="/confirm">
               <Confirm />

@@ -1,14 +1,14 @@
 import React from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import back from "../../assets/back.svg";
-import { qrDecode } from "../../utils/qrDecode";
+import { qrDecode } from "../../utils/qr";
 import qrOverlay from "../../assets/qrOverlay.svg";
 import { QRCodeReader } from "../../components/QRCodeReader";
 import { QRCode } from "jsqr";
 import { isEmpty } from "ramda";
+import { Header } from "../../components/Header";
 
-export const QR = () => {
+export const QRReader = () => {
   const browserHistory = useHistory();
 
   const handleScan = ({ data }: QRCode) => {
@@ -20,12 +20,7 @@ export const QR = () => {
 
   return (
     <PageWrapper>
-      <Header>
-        <Link to="/">
-          <BackButton src={back} />
-        </Link>
-        掃瞄二維碼
-      </Header>
+      <Header backPath="/" name="掃瞄二維碼" />
       <Message>掃瞄二維碼</Message>
       <VideoContainer>
         <Overlay />
@@ -41,22 +36,6 @@ const PageWrapper = styled.div`
   text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
   display: flex;
   flex-direction: column;
-`;
-
-const BackButton = styled.img`
-  height: 20px;
-  top: 14px;
-  left: 16px;
-  position: absolute;
-`;
-
-const Header = styled.div`
-  color: #ffffff;
-  background-color: #12b188;
-  text-align: center;
-  line-height: 48px;
-  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
-  flex-shrink: 0;
 `;
 
 const VideoContainer = styled.div`

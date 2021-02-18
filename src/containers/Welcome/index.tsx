@@ -1,3 +1,4 @@
+import { Divider } from "@material-ui/core";
 import { isEmpty } from "ramda";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
@@ -24,7 +25,11 @@ export const Welcome = () => {
             <ConfirmButton shadowed>話去就去!</ConfirmButton>
           </Link>
         )}
-        <StyledLink to="/qr">掃瞄二維碼</StyledLink>
+        <LinkWrapper>
+          <StyledLink to="/qrReader">掃瞄二維碼</StyledLink>
+          <StyledDivider orientation="vertical" flexItem />
+          <StyledLink to="/qrGenerator">生成二維碼</StyledLink>
+        </LinkWrapper>
       </ActionWrapper>
     </PageWrapper>
   );
@@ -60,6 +65,23 @@ const ActionWrapper = styled.div`
   flex-shrink: 0;
 `;
 
+const LinkWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+`;
+
+const StyledDivider = styled(Divider)`
+  margin: 0 8px;
+
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
+
+  &.MuiDivider-root {
+    background-color: #fff;
+  }
+`;
+
 const StyledLink = styled(Link)`
   color: #ffffff;
+  padding: 0 16px;
 `;

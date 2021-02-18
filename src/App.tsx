@@ -9,17 +9,12 @@ import { PWAPrompt } from "./components/PWAPrompt";
 import { disableBodyScroll } from "body-scroll-lock";
 import adapter from "webrtc-adapter";
 import { QRGenerator } from "./containers/QRGeneartor";
+import { checkPwaInstalled } from "./utils/app-check";
 
 function App() {
-  const [showPWAPrompt, setShowPWAPrompt] = useState(false);
+  const [showPWAPrompt, setShowPWAPrompt] = useState(!checkPwaInstalled());
 
   useEffect(() => {
-    const isInstalled =
-      window.matchMedia("(display-mode: standalone)").matches ||
-      /\bmode=standalone\b/.test(window.location.hash) ||
-      window.location.hostname === "localhost";
-
-    setShowPWAPrompt(!isInstalled);
     console.log(adapter.browserDetails.browser, adapter.browserDetails.version);
   }, []);
 

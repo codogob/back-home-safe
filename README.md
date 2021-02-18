@@ -1,5 +1,7 @@
 # 安心回家
 
+[![pipeline status](https://gitlab.com/codogo-b/back-home-safe/badges/master/pipeline.svg)](https://gitlab.com/codogo-b/back-home-safe/-/commits/master)
+
 一個以安心出行為例嘅 PWA
 
 ## 有用連結

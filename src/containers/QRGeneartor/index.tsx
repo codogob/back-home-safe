@@ -1,4 +1,4 @@
-import { FormGroup, TextField } from "@material-ui/core";
+import { Button, Divider, FormGroup, TextField } from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
 import { useSetState, useMount } from "react-use";
 import styled from "styled-components";
@@ -8,11 +8,13 @@ import QrCodeWithLogo from "qrcode-with-logos";
 import baseIcon from "../../assets/baseIcon.png";
 import { head } from "ramda";
 import { disableBodyScroll } from "body-scroll-lock";
+import SaveIcon from "@material-ui/icons/Save";
 
 export const QRGenerator = () => {
   const imgRef = useRef<HTMLImageElement>(null);
   const fileFieldRef = React.useRef<HTMLInputElement>(null);
 
+  const [qrCode, setQrCode] = useState<QrCodeWithLogo | null>(null);
   const [customImg, setCustomImg] = useState<string | null>(null);
   const [state, setState] = useSetState<EncodeParam>({
     typeEn: "Stores/Shopping Malls",
@@ -34,7 +36,7 @@ export const QRGenerator = () => {
     if (!imgRef.current) return;
     const encodedString = qrEncode(state);
 
-    new QrCodeWithLogo({
+    const qrCode = new QrCodeWithLogo({
       image: imgRef.current,
       content: encodedString,
       width: 380,
@@ -43,7 +45,10 @@ export const QRGenerator = () => {
         logoRadius: 8,
         borderSize: 0,
       },
-    }).toImage();
+    });
+
+    qrCode.toImage();
+    setQrCode(qrCode);
   }, [state, customImg]);
 
   const handleFileSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,6 +61,11 @@ export const QRGenerator = () => {
       reader.readAsDataURL(img);
       reader.onload = () => setCustomImg(String(reader.result));
     }
+  };
+
+  const handleDownload = () => {
+    if (!qrCode) return;
+    qrCode.downloadImage("QR Code");
   };
 
   return (
@@ -123,6 +133,17 @@ export const QRGenerator = () => {
             />
           </StyledInputWrapper>
         </StyledForm>
+        <Divider />
+        <ButtonGroup>
+          <Button
+            variant="contained"
+            size="small"
+            startIcon={<SaveIcon />}
+            onClick={handleDownload}
+          >
+            儲存
+          </Button>
+        </ButtonGroup>
         <StyledQrCode ref={imgRef} alt="qrCode" />
       </ContentWrapper>
     </PageWrapper>
@@ -158,4 +179,10 @@ const StyledFileInput = styled.input`
 
 const StyledQrCode = styled.img`
   width: 100%;
+`;
+
+const ButtonGroup = styled.div`
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
 `;

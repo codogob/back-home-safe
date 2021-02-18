@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import jsQR, { QRCode } from "jsqr";
 import styled from "styled-components";
 import { useRafLoop } from "react-use";

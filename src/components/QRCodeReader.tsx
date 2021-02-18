@@ -102,6 +102,17 @@ export const QRCodeReader = ({ onDecode }: Props) => {
 
     return () => {
       loopStop();
+      if (videoElement) {
+        const stream = videoElement.srcObject as MediaStream | null;
+        if (!stream) return;
+        const tracks = stream.getTracks();
+
+        tracks.forEach((track) => {
+          track.stop();
+        });
+
+        videoElement.srcObject = null;
+      }
     };
   }, [loopStart, loopStop, videoRef]);
 

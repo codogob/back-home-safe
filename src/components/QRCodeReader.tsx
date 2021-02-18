@@ -96,7 +96,9 @@ export const QRCodeReader = ({ onDecode }: Props) => {
         videoElement.play();
         requestAnimationFrame(tick);
       }
-    );
+    ).catch((e: Error) => {
+      alert("Unable to activate camera.\n\n" + e);
+    });
   }, [tick, videoRef]);
 
   return (

@@ -36,6 +36,11 @@ export const QRGenerator = () => {
     customImg: null,
   });
 
+  const isVenueCodeValid = state.venueCode.length === 1;
+  const isVenueIdValid = state.venueID.length === 8;
+
+  const isValidData = isVenueCodeValid && isVenueIdValid;
+
   useMount(() => {
     const root = document.querySelector("#scroll");
     if (!root) return;
@@ -43,7 +48,7 @@ export const QRGenerator = () => {
   });
 
   useEffect(() => {
-    if (!imgRef.current) return;
+    if (!imgRef.current || !isValidData) return;
     const encodedString = qrEncode(state);
 
     const qrCode = new QrCodeWithLogo({
@@ -59,7 +64,7 @@ export const QRGenerator = () => {
 
     qrCode.toImage();
     setQrCode(qrCode);
-  }, [state]);
+  }, [state, isValidData]);
 
   const handleFileSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -138,12 +143,20 @@ export const QRGenerator = () => {
             onChange={(e) => {
               setState({ venueCode: e.target.value });
             }}
+            error={!isVenueCodeValid}
+            inputProps={{
+              maxLength: 1,
+            }}
           />
           <TextField
             label="場地ID (唔知唔好搞)"
             value={state.venueID}
             onChange={(e) => {
               setState({ venueID: e.target.value });
+            }}
+            error={!isVenueIdValid}
+            inputProps={{
+              maxLength: 8,
             }}
           />
           <StyledInputWrapper>
@@ -165,6 +178,7 @@ export const QRGenerator = () => {
               size="small"
               startIcon={<SaveIcon />}
               onClick={handleDownload}
+              disabled={!isValidData}
             >
               儲存
             </Button>
@@ -175,6 +189,7 @@ export const QRGenerator = () => {
               onClick={() => {
                 setShowPreview(true);
               }}
+              disabled={!isValidData}
             >
               預覽
             </Button>

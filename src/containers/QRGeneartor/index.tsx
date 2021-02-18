@@ -88,56 +88,56 @@ export const QRGenerator = () => {
       <Header backPath="/" name="生成二維碼" />
       <ContentWrapper id="scroll">
         <StyledForm>
-          <TextField
+          <StyledTextField
             label="場所種類(中文) (typeZh)"
             value={state.typeZh}
             onChange={(e) => {
               setState({ typeZh: e.target.value });
             }}
           />
-          <TextField
+          <StyledTextField
             label="場所種類(英文) (typeEn)"
             value={state.typeEn}
             onChange={(e) => {
               setState({ typeEn: e.target.value });
             }}
           />
-          <TextField
+          <StyledTextField
             label="場所名字(中文) (nameZh)"
             value={state.nameZh}
             onChange={(e) => {
               setState({ nameZh: e.target.value });
             }}
           />
-          <TextField
+          <StyledTextField
             label="場所名字(英文) (nameEn)"
             value={state.nameEn}
             onChange={(e) => {
               setState({ nameEn: e.target.value });
             }}
           />
-          <TextField
+          <StyledTextField
             label="場所地址(中文) (預覽用)"
             value={state.addressZh}
             onChange={(e) => {
               setState({ addressZh: e.target.value });
             }}
           />
-          <TextField
+          <StyledTextField
             label="場所地址(英文) (預覽用)"
             value={state.addressEn}
             onChange={(e) => {
               setState({ addressEn: e.target.value });
             }}
           />
-          <TextField
+          <StyledTextField
             label="類型"
             value={state.type}
             onChange={(e) => {
               setState({ type: e.target.value });
             }}
           />
-          <TextField
+          <StyledTextField
             label="場地編碼 (唔知唔好搞)"
             value={state.venueCode}
             onChange={(e) => {
@@ -148,7 +148,7 @@ export const QRGenerator = () => {
               maxLength: 1,
             }}
           />
-          <TextField
+          <StyledTextField
             label="場地ID (唔知唔好搞)"
             value={state.venueID}
             onChange={(e) => {
@@ -227,9 +227,16 @@ const StyledForm = styled(FormGroup)`
   padding: 8px 16px;
 `;
 
+const StyledTextField = styled(TextField)`
+  &.MuiFormControl-root {
+    margin-top: 8px;
+  }
+`;
+
 const StyledInputWrapper = styled.div`
   font-size: 12px;
   padding: 4px 0;
+  color: rgba(0, 0, 0, 0.54);
 `;
 
 const StyledFileInput = styled.input`

@@ -1,22 +1,29 @@
-import { Button, Divider, FormGroup, TextField } from "@material-ui/core";
+import {
+  Button,
+  ButtonGroup,
+  Divider,
+  FormGroup,
+  TextField,
+} from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
 import { useSetState, useMount } from "react-use";
 import styled from "styled-components";
 import { Header } from "../../components/Header";
-import { EncodeParam, qrEncode } from "../../utils/qr";
+import { EnhancedEncodeParam, qrEncode } from "../../utils/qr";
 import QrCodeWithLogo from "qrcode-with-logos";
 import baseIcon from "../../assets/baseIcon.png";
 import { head } from "ramda";
 import { disableBodyScroll } from "body-scroll-lock";
 import SaveIcon from "@material-ui/icons/Save";
+import { QRPreview } from "./QRPreview";
 
 export const QRGenerator = () => {
   const imgRef = useRef<HTMLImageElement>(null);
   const fileFieldRef = React.useRef<HTMLInputElement>(null);
 
+  const [showPreview, setShowPreview] = useState(false);
   const [qrCode, setQrCode] = useState<QrCodeWithLogo | null>(null);
-  const [customImg, setCustomImg] = useState<string | null>(null);
-  const [state, setState] = useSetState<EncodeParam>({
+  const [state, setState] = useSetState<EnhancedEncodeParam>({
     typeEn: "Stores/Shopping Malls",
     typeZh: "商店/商場",
     nameEn: "CityWalk",
@@ -24,6 +31,9 @@ export const QRGenerator = () => {
     type: "IMPORT",
     venueCode: "0",
     venueID: "WHBvLDSa",
+    addressEn: "1 & 18 Yeung Uk Rd, Tsuen Wan, Hong Kong",
+    addressZh: "荃灣楊屋道1號",
+    customImg: null,
   });
 
   useMount(() => {
@@ -41,7 +51,7 @@ export const QRGenerator = () => {
       content: encodedString,
       width: 380,
       logo: {
-        src: customImg || baseIcon,
+        src: state.customImg || baseIcon,
         logoRadius: 8,
         borderSize: 0,
       },
@@ -49,17 +59,17 @@ export const QRGenerator = () => {
 
     qrCode.toImage();
     setQrCode(qrCode);
-  }, [state, customImg]);
+  }, [state]);
 
   const handleFileSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     const img = head(files);
     if (!img) {
-      setCustomImg(null);
+      setState({ customImg: null });
     } else {
       const reader = new FileReader();
       reader.readAsDataURL(img);
-      reader.onload = () => setCustomImg(String(reader.result));
+      reader.onload = () => setState({ customImg: String(reader.result) });
     }
   };
 
@@ -102,6 +112,20 @@ export const QRGenerator = () => {
             }}
           />
           <TextField
+            label="場所地址(中文) (預覽用)"
+            value={state.addressZh}
+            onChange={(e) => {
+              setState({ addressZh: e.target.value });
+            }}
+          />
+          <TextField
+            label="場所地址(英文) (預覽用)"
+            value={state.addressEn}
+            onChange={(e) => {
+              setState({ addressEn: e.target.value });
+            }}
+          />
+          <TextField
             label="類型"
             value={state.type}
             onChange={(e) => {
@@ -134,18 +158,38 @@ export const QRGenerator = () => {
           </StyledInputWrapper>
         </StyledForm>
         <Divider />
-        <ButtonGroup>
-          <Button
-            variant="contained"
-            size="small"
-            startIcon={<SaveIcon />}
-            onClick={handleDownload}
-          >
-            儲存
-          </Button>
-        </ButtonGroup>
+        <Actions>
+          <ButtonGroup aria-label="outlined primary button group">
+            <Button
+              variant="contained"
+              size="small"
+              startIcon={<SaveIcon />}
+              onClick={handleDownload}
+            >
+              儲存
+            </Button>
+            <Button
+              variant="contained"
+              size="small"
+              startIcon={<SaveIcon />}
+              onClick={() => {
+                setShowPreview(true);
+              }}
+            >
+              預覽
+            </Button>
+          </ButtonGroup>
+        </Actions>
         <StyledQrCode ref={imgRef} alt="qrCode" />
       </ContentWrapper>
+      {showPreview && (
+        <QRPreview
+          data={state}
+          onLeave={() => {
+            setShowPreview(false);
+          }}
+        />
+      )}
     </PageWrapper>
   );
 };
@@ -181,7 +225,7 @@ const StyledQrCode = styled.img`
   width: 100%;
 `;
 
-const ButtonGroup = styled.div`
+const Actions = styled.div`
   margin-top: 16px;
   display: flex;
   justify-content: center;

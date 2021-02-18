@@ -19,9 +19,15 @@ export type EncodeParam = {
   venueID: string;
 };
 
+export type EnhancedEncodeParam = EncodeParam & {
+  addressEn: string;
+  addressZh: string;
+  customImg: string | null;
+};
+
 // https://github.com/aaasssdddwww/back-home-safe/pull/7
-export const qrDecode = (input: string): string => {
-  if (!input.startsWith("HKEN:")) return "";
+export const qrDecode = (input: string): DecodedJSON | null => {
+  if (!input.startsWith("HKEN:")) return null;
   const venueId = input.substring(6, 14);
   const computedHash = getHash(venueId);
 
@@ -38,8 +44,16 @@ export const qrDecode = (input: string): string => {
     hashMatch: computedHash === json.hash,
   });
 
-  const trimmedZhName = json.nameZh ? trim(json.nameZh) : "";
-  const name = !isEmpty(trimmedZhName) ? trimmedZhName : json.nameEn;
+  return json;
+};
+
+export const getVenueName = (input: string) => {
+  if (!input.startsWith("HKEN:")) return "";
+  const decodedJson = qrDecode(input);
+  if (!decodedJson) return "";
+
+  const trimmedZhName = decodedJson.nameZh ? trim(decodedJson.nameZh) : "";
+  const name = !isEmpty(trimmedZhName) ? trimmedZhName : decodedJson.nameEn;
 
   return name;
 };

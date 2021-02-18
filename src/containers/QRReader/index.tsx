@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { qrDecode } from "../../utils/qr";
+import { getVenueName } from "../../utils/qr";
 import qrOverlay from "../../assets/qrOverlay.svg";
 import { QRCodeReader } from "../../components/QRCodeReader";
 import { QRCode } from "jsqr";
@@ -13,7 +13,7 @@ export const QRReader = () => {
 
   const handleScan = ({ data }: QRCode) => {
     if (!data || isEmpty(data)) return;
-    const place = qrDecode(data);
+    const place = getVenueName(data);
     if (isEmpty(place)) return;
     browserHistory.push({ pathname: "/confirm", search: `?place=${place}` });
   };

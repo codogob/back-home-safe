@@ -9,7 +9,13 @@ type Props = {
   readOnly?: boolean;
 };
 
-export const Place = ({ value, onChange, placeholder, readOnly }: Props) => {
+export const Place = ({
+  value,
+  onChange,
+  placeholder,
+  readOnly,
+  ...rest
+}: Props) => {
   return (
     <StyledInput
       value={value}
@@ -19,6 +25,7 @@ export const Place = ({ value, onChange, placeholder, readOnly }: Props) => {
         onChange && onChange(e.target.value);
       }}
       async
+      {...rest}
     />
   );
 };

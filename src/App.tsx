@@ -50,7 +50,6 @@ function App() {
             <Route exact path="/qrGenerator">
               <QRGenerator />
             </Route>
-
             <Route exact path="/confirm">
               <Confirm />
             </Route>

@@ -9,7 +9,6 @@ import { PWAPrompt } from "./components/PWAPrompt";
 import { disableBodyScroll } from "body-scroll-lock";
 import adapter from "webrtc-adapter";
 import { QRGenerator } from "./containers/QRGeneartor";
-import { QRPreview } from "./containers/QRGeneartor/QRPreview";
 
 function App() {
   const [showPWAPrompt, setShowPWAPrompt] = useState(false);

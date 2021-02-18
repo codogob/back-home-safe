@@ -33,7 +33,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint:js": "eslint .",
+    "tsc": "tsc"
   },
   "eslintConfig": {
     "extends": [
@@ -67,10 +69,13 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged && npm run tsc"
     }
   },
   "lint-staged": {
-    "*.{js,css,md,tsx,ts,html}": "prettier --write"
+    "*.{js,css,md,tsx,ts,html}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
   }
 }

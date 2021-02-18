@@ -48,7 +48,13 @@ npm start
 
 ```bash
 npm install
-npm run build
+
+# windows
+
+set PUBLIC_URL=https://dsomething.cloudfront.net&&npm run build
+
+# linux/mac
+PUBLIC_URL=https://dsomething.cloudfront.net npm run build
 ```
 
 將/build 放入自己 web server 就 okay

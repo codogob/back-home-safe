@@ -1,13 +1,21 @@
 import { Button } from "@material-ui/core";
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import plus from "../../src/assets/plus.svg";
+import { useInstallPrompt } from "../hooks/useInstallPrompt";
 
 type Props = {
   onDismiss: () => void;
 };
 
 export const PWAPrompt = ({ onDismiss }: Props) => {
+  const [prompt, promptToInstall] = useInstallPrompt();
+
+  const onInstall = useCallback(() => {
+    if (!prompt) return;
+    promptToInstall();
+  }, [prompt, promptToInstall]);
+
   return (
     <Wrapper>
       <AddIcon src={plus} />
@@ -18,6 +26,13 @@ export const PWAPrompt = ({ onDismiss }: Props) => {
         <div>{"用Safari開=>分享=>新增至主畫面"}</div>
         <div>Android</div>
         <div>{"用Chrome開=>右上選項=>新增至主畫面/安裝應用程式"}</div>
+        {prompt && (
+          <InstallButtonWrapper>
+            <Button variant="contained" onClick={onInstall}>
+              安裝
+            </Button>
+          </InstallButtonWrapper>
+        )}
       </InstructionWrapper>
       <div>
         <Button variant="contained" onClick={onDismiss}>
@@ -42,6 +57,10 @@ const Wrapper = styled.div`
 const AddIcon = styled.img`
   width: 100px;
   margin: 0 auto 32px auto;
+`;
+
+const InstallButtonWrapper = styled.div`
+  margin-top: 12px;
 `;
 
 const InstructionWrapper = styled.div`

@@ -1,12 +1,13 @@
 import { FormGroup, TextField } from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
-import { useSetState } from "react-use";
+import { useSetState, useMount } from "react-use";
 import styled from "styled-components";
 import { Header } from "../../components/Header";
 import { EncodeParam, qrEncode } from "../../utils/qr";
 import QrCodeWithLogo from "qrcode-with-logos";
 import baseIcon from "../../assets/baseIcon.png";
 import { head } from "ramda";
+import { disableBodyScroll } from "body-scroll-lock";
 
 export const QRGenerator = () => {
   const imgRef = useRef<HTMLImageElement>(null);
@@ -21,6 +22,12 @@ export const QRGenerator = () => {
     type: "IMPORT",
     venueCode: "0",
     venueID: "WHBvLDSa",
+  });
+
+  useMount(() => {
+    const root = document.querySelector("#scroll");
+    if (!root) return;
+    disableBodyScroll(root);
   });
 
   useEffect(() => {
@@ -54,7 +61,7 @@ export const QRGenerator = () => {
   return (
     <PageWrapper>
       <Header backPath="/" name="生成二維碼" />
-      <ContentWrapper>
+      <ContentWrapper id="scroll">
         <StyledForm>
           <TextField
             label="場所種類(中文) (typeZh)"

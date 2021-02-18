@@ -1,5 +1,5 @@
 import { Divider } from "@material-ui/core";
-import { isEmpty } from "ramda";
+import { isEmpty, trim } from "ramda";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -16,7 +16,7 @@ export const Welcome = () => {
         <Place value={place} onChange={setPlace} placeholder="輸入地址" />
       </ContentWrapper>
       <ActionWrapper>
-        {isEmpty(place) ? (
+        {isEmpty(trim(place)) ? (
           <ConfirmButton disabled shadowed>
             話去就去!
           </ConfirmButton>

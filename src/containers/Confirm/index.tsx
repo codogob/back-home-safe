@@ -10,7 +10,7 @@ import { Place } from "../../components/Place";
 import { AutoLeaveModal } from "./AutoLeaveModal";
 import { LeaveModal } from "./LeaveModal";
 import { TimePickModal } from "./TimePickModal";
-import { isEmpty } from "ramda";
+import { isEmpty, trim } from "ramda";
 import { CheckBox } from "../../components/CheckBox";
 import dayjs from "dayjs";
 
@@ -24,7 +24,7 @@ export const Confirm = () => {
   const [isTimePickModalOpen, setIsTimePickModalOpen] = useState(false);
 
   const place = useMemo(
-    () => new URLSearchParams(browserLocation.search).get("place"),
+    () => trim(new URLSearchParams(browserLocation.search).get("place") || ""),
     [browserLocation.search]
   );
 

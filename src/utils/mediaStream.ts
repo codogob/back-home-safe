@@ -1,7 +1,6 @@
-import { hasCameraSupport } from "./../constants/cameraSupport";
 
 export const getMediaStream = async (cameraId?: string) => {
-  if (hasCameraSupport) {
+  if ("mediaDevices" in navigator) {
     try {
       // WebRTC adapter will polyfill this
       return navigator.mediaDevices.getUserMedia({

@@ -5,9 +5,10 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { ConfirmButton } from "../../components/Button";
 import { Place } from "../../components/Place";
-import { hasCameraSupport } from "../../constants/cameraSupport";
+import { useCamera } from "../../hooks/useCamera";
 
 export const Welcome = () => {
+  const { hasCameraSupport } = useCamera();
   const [place, setPlace] = useState("");
 
   return (

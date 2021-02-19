@@ -44,5 +44,6 @@ export const [UseCameraProvider, useCamera] = constate(() => {
       : cameraId,
     cameraList: cameraList || [],
     setCameraId,
+    hasCameraSupport: "mediaDevices" in navigator,
   };
 });

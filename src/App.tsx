@@ -12,10 +12,10 @@ import { QRGenerator } from "./containers/QRGeneartor";
 import { checkPwaInstalled } from "./utils/appCheck";
 import { AnimatedSwitch } from "./components/AnimatedSwitch";
 import { CameraSetting } from "./containers/CameraSetting";
-import { hasCameraSupport } from "./constants/cameraSupport";
-import { UseCameraProvider } from "./hooks/useCamera";
+import { useCamera, UseCameraProvider } from "./hooks/useCamera";
 
 function App() {
+  const { hasCameraSupport } = useCamera();
   const [showPWAPrompt, setShowPWAPrompt] = useState(!checkPwaInstalled());
 
   useEffect(() => {

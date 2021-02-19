@@ -12,7 +12,7 @@ import { QRGenerator } from "./containers/QRGeneartor";
 import { checkPwaInstalled } from "./utils/appCheck";
 import { AnimatedSwitch } from "./components/AnimatedSwitch";
 import { CameraSetting } from "./containers/CameraSetting";
-import { useCamera, UseCameraProvider } from "./hooks/useCamera";
+import { useCamera } from "./hooks/useCamera";
 
 function App() {
   const { hasCameraSupport } = useCamera();
@@ -29,7 +29,7 @@ function App() {
   }, []);
 
   return (
-    <UseCameraProvider>
+    <>
       <GlobalStyle />
       {showPWAPrompt ? (
         <PWAPrompt
@@ -63,7 +63,7 @@ function App() {
           </AnimatedSwitch>
         </HashRouter>
       )}
-    </UseCameraProvider>
+    </>
   );
 }
 

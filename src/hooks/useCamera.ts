@@ -4,6 +4,7 @@ import constate from "constate";
 import { useCallback, useEffect, useState } from "react";
 
 export const [UseCameraProvider, useCamera] = constate(() => {
+  const [hasCameraSupport] = useState("mediaDevices" in navigator);
   const [cameraId, setCameraId] = useLocalStorage(
     "preferred_camera_id",
     "AUTO"
@@ -44,6 +45,6 @@ export const [UseCameraProvider, useCamera] = constate(() => {
       : cameraId,
     cameraList: cameraList || [],
     setCameraId,
-    hasCameraSupport: "mediaDevices" in navigator,
+    hasCameraSupport,
   };
 });

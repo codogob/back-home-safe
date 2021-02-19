@@ -1,11 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
+import { UseCameraProvider } from "./hooks/useCamera";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <UseCameraProvider>
+      <App />
+    </UseCameraProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

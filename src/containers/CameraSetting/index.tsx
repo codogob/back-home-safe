@@ -1,4 +1,5 @@
 import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
+import { isEmpty, isNil } from "ramda";
 import styled from "styled-components";
 import { Header } from "../../components/Header";
 import { MediaStream } from "../../components/MediaStream";
@@ -24,7 +25,7 @@ export const CameraSetting = () => {
             <MenuItem value="AUTO">自動</MenuItem>
             {cameraList.map(({ deviceId, label }) => (
               <MenuItem value={deviceId} key="deviceId">
-                {label}
+                {isNil(label) || isEmpty(label) ? deviceId : label}
               </MenuItem>
             ))}
           </Select>

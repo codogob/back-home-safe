@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { ConfirmButton } from "../../components/Button";
 import { Place } from "../../components/Place";
+import { hasCameraSupport } from "../../constants/cameraSupport";
 
 export const Welcome = () => {
   const [place, setPlace] = useState("");
@@ -25,9 +26,14 @@ export const Welcome = () => {
             <ConfirmButton shadowed>話去就去!</ConfirmButton>
           </Link>
         )}
+        {hasCameraSupport && (
+          <LinkWrapper>
+            <StyledLink to="/qrReader">掃瞄二維碼</StyledLink>
+            <StyledDivider orientation="vertical" flexItem />
+            <StyledLink to="/cameraSetting">相機設定</StyledLink>
+          </LinkWrapper>
+        )}
         <LinkWrapper>
-          <StyledLink to="/qrReader">掃瞄二維碼</StyledLink>
-          <StyledDivider orientation="vertical" flexItem />
           <StyledLink to="/qrGenerator">生成二維碼</StyledLink>
         </LinkWrapper>
       </ActionWrapper>
@@ -61,7 +67,7 @@ const ActionWrapper = styled.div`
   width: 100%;
   text-align: center;
   color: #fff;
-  padding: 40px 0;
+  padding: 32px 0;
   flex-shrink: 0;
 `;
 
@@ -69,6 +75,7 @@ const LinkWrapper = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
+  margin: 8px 0;
 `;
 
 const StyledDivider = styled(Divider)`

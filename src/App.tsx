@@ -11,6 +11,8 @@ import adapter from "webrtc-adapter";
 import { QRGenerator } from "./containers/QRGeneartor";
 import { checkPwaInstalled } from "./utils/appCheck";
 import { AnimatedSwitch } from "./components/AnimatedSwitch";
+import { CameraSetting } from "./containers/CameraSetting";
+import { hasCameraSupport } from "./constants/cameraSupport";
 
 function App() {
   const [showPWAPrompt, setShowPWAPrompt] = useState(!checkPwaInstalled());
@@ -40,15 +42,23 @@ function App() {
             <Route exact path="/">
               <Welcome />
             </Route>
-            <Route exact path="/qrReader">
-              <QRReader />
-            </Route>
+
             <Route exact path="/qrGenerator">
               <QRGenerator />
             </Route>
             <Route exact path="/confirm">
               <Confirm />
             </Route>
+            {hasCameraSupport && (
+              <Route exact path="/qrReader">
+                <QRReader />
+              </Route>
+            )}
+            {hasCameraSupport && (
+              <Route exact path="/cameraSetting">
+                <CameraSetting />
+              </Route>
+            )}
             <Redirect to="/" />
           </AnimatedSwitch>
         </HashRouter>

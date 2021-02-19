@@ -1,13 +1,17 @@
-export const getMediaStream = async () => {
-  if ("mediaDevices" in navigator) {
+import { hasCameraSupport } from "./../constants/cameraSupport";
+
+export const getMediaStream = async (cameraId?: string) => {
+  if (hasCameraSupport) {
     try {
       // WebRTC adapter will polyfill this
       return navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "environment" },
+        video: cameraId
+          ? { deviceId: cameraId }
+          : { facingMode: "environment" },
         audio: false,
       });
     } catch (e) {
-      alert("Unable to activate camera.\n\n" + e);
+      console.log(e);
       return null;
     }
   } else {

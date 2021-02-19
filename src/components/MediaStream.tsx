@@ -4,10 +4,11 @@ import { useRafLoop } from "react-use";
 import { getMediaStream } from "../utils/mediaStream";
 
 type Props = {
-  onFrame: (imageData: ImageData) => void;
+  onFrame?: (imageData: ImageData) => void;
+  cameraId?: string;
 };
 
-export const MediaStream = ({ onFrame }: Props) => {
+export const MediaStream = ({ onFrame, cameraId }: Props) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -40,7 +41,7 @@ export const MediaStream = ({ onFrame }: Props) => {
         canvasElement.height
       );
 
-      onFrame(imageData);
+      onFrame && onFrame(imageData);
     }
   }, false);
 
@@ -48,13 +49,17 @@ export const MediaStream = ({ onFrame }: Props) => {
     const videoElement = videoRef.current;
     if (!videoElement) return;
 
-    const stream = await getMediaStream();
+    console.log("cameraId", cameraId);
+
+    const stream = await getMediaStream(
+      cameraId === "AUTO" ? undefined : cameraId
+    );
     if (!stream) return;
 
     videoElement.srcObject = stream;
     videoElement.play();
     loopStart();
-  }, [loopStart]);
+  }, [loopStart, cameraId]);
 
   useEffect(() => {
     const videoElement = videoRef.current;
@@ -74,7 +79,7 @@ export const MediaStream = ({ onFrame }: Props) => {
         videoElement.srcObject = null;
       }
     };
-  }, [loopStart, loopStop, videoRef, initMediaStream]);
+  }, [loopStart, loopStop, videoRef, initMediaStream, cameraId]);
 
   return (
     <>

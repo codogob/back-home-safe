@@ -2,7 +2,8 @@
   "name": "back-home-safe",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://codogo-b.gitlab.io/back-home-safe",
+  "homepage": "./",
+  "repository": "gitlab:codogo-b/back-home-safe",
   "dependencies": {
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",

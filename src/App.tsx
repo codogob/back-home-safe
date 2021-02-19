@@ -10,14 +10,7 @@ import { disableBodyScroll } from "body-scroll-lock";
 import adapter from "webrtc-adapter";
 import { QRGenerator } from "./containers/QRGeneartor";
 import { checkPwaInstalled } from "./utils/appCheck";
-import { AnimatedSwitch, spring } from "react-router-transition";
-
-function glide(val: number) {
-  return spring(val, {
-    stiffness: 174,
-    damping: 24,
-  });
-}
+import { AnimatedSwitch } from "./components/AnimatedSwitch";
 
 function App() {
   const [showPWAPrompt, setShowPWAPrompt] = useState(!checkPwaInstalled());
@@ -43,17 +36,7 @@ function App() {
         />
       ) : (
         <HashRouter basename="/">
-          <AnimatedSwitch
-            atEnter={{ opacity: 1, offset: 100, zIndex: 100 }}
-            atLeave={{ opacity: 0, offset: 0, zIndex: 0 }}
-            atActive={{ opacity: 1, offset: glide(0), zIndex: 0 }}
-            className="switch-wrapper"
-            mapStyles={(styles) => ({
-              opacity: styles.opacity,
-              zIndex: styles.zIndex,
-              transform: `translateX(${styles.offset}%)`,
-            })}
-          >
+          <AnimatedSwitch>
             <Route exact path="/">
               <Welcome />
             </Route>

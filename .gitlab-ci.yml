@@ -1,27 +1,8 @@
-stages:
-  - test
-  - page
+image: node:latest
 
-"Test":
-  stage: test
-  image: node:latest
+pages:
   cache:
-    key: ${CI_COMMIT_REF_SLUG}
     paths:
-      - .npm/
-      - node_modules/
-  before_script:
-    - npm ci
-  script:
-    - npm run tsc
-
-"Page":
-  stage: page
-  image: node:latest
-  cache:
-    key: ${CI_COMMIT_REF_SLUG}
-    paths:
-      - .npm/
       - node_modules/
 
   script:

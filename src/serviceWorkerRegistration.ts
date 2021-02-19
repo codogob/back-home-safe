@@ -59,8 +59,6 @@ export function register(config?: Config) {
   }
 }
 
-let refreshing = false;
-
 function registerValidSW(swUrl: string, config?: Config) {
   navigator.serviceWorker
     .register(swUrl)
@@ -80,15 +78,6 @@ function registerValidSW(swUrl: string, config?: Config) {
                 "New content is available and will be used when all " +
                   "tabs for this page are closed. See https://cra.link/PWA."
               );
-
-              if (
-                // eslint-disable-next-line no-restricted-globals
-                confirm(
-                  "A new version available. Do you to update it by reloading the pages ?"
-                )
-              ) {
-                installingWorker.postMessage({ type: "SKIP_WAITING" });
-              }
 
               // Execute callback
               if (config && config.onUpdate) {
@@ -112,12 +101,6 @@ function registerValidSW(swUrl: string, config?: Config) {
     .catch((error) => {
       console.error("Error during service worker registration:", error);
     });
-
-  navigator.serviceWorker.addEventListener("controllerchange", () => {
-    if (refreshing) return;
-    refreshing = true;
-    window.location.reload();
-  });
 }
 
 function checkValidServiceWorker(swUrl: string, config?: Config) {

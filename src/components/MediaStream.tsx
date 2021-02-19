@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { useRafLoop } from "react-use";
-import { getMediaStream } from "../utils/mediaStram";
+import { getMediaStream } from "../utils/mediaStream";
 
 type Props = {
   onFrame: (imageData: ImageData) => void;

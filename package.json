@@ -34,6 +34,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "postbuild": "precompress build",
     "eject": "react-scripts eject",
     "lint:js": "eslint .",
     "tsc": "tsc",
@@ -69,6 +70,7 @@
     "@types/styled-components": "^5.1.7",
     "husky": "^5.0.9",
     "lint-staged": "^10.5.4",
+    "precompress": "^6.3.2",
     "prettier": "^2.2.1"
   }
 }

@@ -77,10 +77,8 @@ body {
   height: 100%;
 }
 
-textarea{
-  font-family: Rubik, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+textarea {
+  font-family: inherit;
 }
 
 

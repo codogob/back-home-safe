@@ -7,42 +7,6 @@ type Props = {
   onDecode: (code: QRCode) => void;
 };
 
-// ref: https://ithelp.ithome.com.tw/articles/10239258
-const OldGetUserMedia = () =>
-  navigator.getUserMedia ||
-  (navigator as any).webkitGetUserMedia ||
-  (navigator as any).mozGetUserMedia ||
-  (navigator as any).msGetUserMedia;
-
-// Initializes media stream.
-const getUserMedia = (constraints: MediaStreamConstraints) => {
-  if ("mediaDevices" in navigator) {
-    return navigator.mediaDevices.getUserMedia(constraints);
-  }
-  // 相容處理，依照新接口
-  (navigator as any).mediaDevices = {};
-
-  (navigator as any).mediaDevices.getUserMedia = (
-    constraints: MediaStreamConstraints
-  ) => {
-    const getUserMedia = OldGetUserMedia();
-
-    // 不支援的情況下
-    if (!getUserMedia) {
-      return Promise.reject(
-        new Error("getUserMedia is not implemented in this browser")
-      );
-    }
-
-    // 保持跟原先api一樣故將其封裝成promise
-    return new Promise(function (resolve, reject) {
-      getUserMedia.call(navigator, constraints, resolve, reject);
-    });
-  };
-
-  return (navigator as any).mediaDevices.getUserMedia(constraints);
-};
-
 export const QRCodeReader = ({ onDecode }: Props) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -87,8 +51,11 @@ export const QRCodeReader = ({ onDecode }: Props) => {
 
   useEffect(() => {
     const videoElement = videoRef.current;
-    if (videoElement) {
-      getUserMedia({ video: { facingMode: "environment" }, audio: false })
+
+    if ("mediaDevices" in navigator && videoElement) {
+      // WebRTC adapter will polyfill this
+      navigator.mediaDevices
+        .getUserMedia({ video: { facingMode: "environment" }, audio: false })
         .then((stream: MediaStream) => {
           if (!videoElement) return;
           videoElement.srcObject = stream;
@@ -98,6 +65,8 @@ export const QRCodeReader = ({ onDecode }: Props) => {
         .catch((e: Error) => {
           alert("Unable to activate camera.\n\n" + e);
         });
+    } else {
+      alert("getUserMedia is not implemented in this browser");
     }
 
     return () => {

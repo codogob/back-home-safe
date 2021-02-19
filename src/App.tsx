@@ -9,7 +9,7 @@ import { PWAPrompt } from "./components/PWAPrompt";
 import { disableBodyScroll } from "body-scroll-lock";
 import adapter from "webrtc-adapter";
 import { QRGenerator } from "./containers/QRGeneartor";
-import { checkPwaInstalled } from "./utils/app-check";
+import { checkPwaInstalled } from "./utils/appCheck";
 import { AnimatedSwitch, spring } from "react-router-transition";
 
 function glide(val: number) {

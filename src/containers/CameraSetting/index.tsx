@@ -1,45 +1,11 @@
 import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
-import { any } from "ramda";
-import React, { useCallback, useEffect, useState } from "react";
-import { useLocalStorage } from "react-use";
 import styled from "styled-components";
 import { Header } from "../../components/Header";
 import { MediaStream } from "../../components/MediaStream";
+import { useCamera } from "../../hooks/useCamera";
 
 export const CameraSetting = () => {
-  const [cameraId, setCameraId] = useLocalStorage(
-    "preferred_camera_id",
-    "AUTO"
-  );
-  const [cameraList, setCameraList] = useState<InputDeviceInfo[] | null>(null);
-
-  const initCameraList = useCallback(async () => {
-    try {
-      const deviceList = await navigator.mediaDevices.enumerateDevices();
-
-      const cameraList = deviceList.filter<InputDeviceInfo>(
-        (device): device is InputDeviceInfo => device.kind === "videoinput"
-      );
-
-      setCameraList(cameraList);
-    } catch (e) {
-      alert("Unable to list device.\n\n" + e);
-    }
-  }, []);
-
-  useEffect(() => {
-    initCameraList();
-  }, [initCameraList]);
-
-  useEffect(() => {
-    if (
-      cameraList !== null &&
-      cameraId !== "AUTO" &&
-      !any(({ deviceId }) => deviceId === cameraId, cameraList)
-    ) {
-      setCameraId("AUTO");
-    }
-  }, [cameraList, setCameraId, cameraId]);
+  const { cameraId, setCameraId, cameraList } = useCamera();
 
   return (
     <PageWrapper>
@@ -56,7 +22,7 @@ export const CameraSetting = () => {
             }}
           >
             <MenuItem value="AUTO">自動</MenuItem>
-            {(cameraList || []).map(({ deviceId, label }) => (
+            {cameraList.map(({ deviceId, label }) => (
               <MenuItem value={deviceId} key="deviceId">
                 {label}
               </MenuItem>
@@ -65,7 +31,7 @@ export const CameraSetting = () => {
         </StyledFormControl>
       </FormWrapper>
       <VideoContainer>
-        <MediaStream cameraId={cameraId} />
+        <MediaStream />
       </VideoContainer>
     </PageWrapper>
   );

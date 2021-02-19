@@ -1,6 +1,5 @@
 import jsQR, { QRCode } from "jsqr";
 import { useCallback } from "react";
-import { useLocalStorage } from "react-use";
 
 import { MediaStream } from "./MediaStream";
 
@@ -9,8 +8,6 @@ type Props = {
 };
 
 export const QRCodeReader = ({ onDecode }: Props) => {
-  const [cameraId] = useLocalStorage("preferred_camera_id", "AUTO");
-
   const handleFrame = useCallback(
     (imageData: ImageData) => {
       const code = jsQR(imageData.data, imageData.width, imageData.height, {
@@ -21,5 +18,5 @@ export const QRCodeReader = ({ onDecode }: Props) => {
     [onDecode]
   );
 
-  return <MediaStream onFrame={handleFrame} cameraId={cameraId} />;
+  return <MediaStream onFrame={handleFrame} />;
 };

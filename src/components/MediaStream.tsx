@@ -2,13 +2,15 @@ import React, { useCallback, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { useRafLoop } from "react-use";
 import { getMediaStream } from "../utils/mediaStream";
+import { useCamera } from "../hooks/useCamera";
 
 type Props = {
   onFrame?: (imageData: ImageData) => void;
-  cameraId?: string;
 };
 
-export const MediaStream = ({ onFrame, cameraId }: Props) => {
+export const MediaStream = ({ onFrame }: Props) => {
+  const { cameraId } = useCamera();
+
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 

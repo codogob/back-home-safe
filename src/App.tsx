@@ -13,6 +13,7 @@ import { checkPwaInstalled } from "./utils/appCheck";
 import { AnimatedSwitch } from "./components/AnimatedSwitch";
 import { CameraSetting } from "./containers/CameraSetting";
 import { hasCameraSupport } from "./constants/cameraSupport";
+import { UseCameraProvider } from "./hooks/useCamera";
 
 function App() {
   const [showPWAPrompt, setShowPWAPrompt] = useState(!checkPwaInstalled());
@@ -28,7 +29,7 @@ function App() {
   }, []);
 
   return (
-    <>
+    <UseCameraProvider>
       <GlobalStyle />
       {showPWAPrompt ? (
         <PWAPrompt
@@ -42,7 +43,6 @@ function App() {
             <Route exact path="/">
               <Welcome />
             </Route>
-
             <Route exact path="/qrGenerator">
               <QRGenerator />
             </Route>
@@ -63,7 +63,7 @@ function App() {
           </AnimatedSwitch>
         </HashRouter>
       )}
-    </>
+    </UseCameraProvider>
   );
 }
 

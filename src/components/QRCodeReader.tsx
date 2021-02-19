@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import jsQR, { QRCode } from "jsqr";
 import styled from "styled-components";
 import { useRafLoop } from "react-use";
+import { getMediaStream } from "../utils/mediaStram";
 
 type Props = {
   onDecode: (code: QRCode) => void;
@@ -49,25 +50,21 @@ export const QRCodeReader = ({ onDecode }: Props) => {
     }
   }, false);
 
+  const initMediaStream = useCallback(async () => {
+    const videoElement = videoRef.current;
+    if (!videoElement) return;
+
+    const stream = await getMediaStream();
+    if (!stream) return;
+
+    videoElement.srcObject = stream;
+    videoElement.play();
+    loopStart();
+  }, [loopStart]);
+
   useEffect(() => {
     const videoElement = videoRef.current;
-
-    if ("mediaDevices" in navigator && videoElement) {
-      // WebRTC adapter will polyfill this
-      navigator.mediaDevices
-        .getUserMedia({ video: { facingMode: "environment" }, audio: false })
-        .then((stream: MediaStream) => {
-          if (!videoElement) return;
-          videoElement.srcObject = stream;
-          videoElement.play();
-          loopStart();
-        })
-        .catch((e: Error) => {
-          alert("Unable to activate camera.\n\n" + e);
-        });
-    } else {
-      alert("getUserMedia is not implemented in this browser");
-    }
+    initMediaStream();
 
     return () => {
       loopStop();
@@ -83,7 +80,7 @@ export const QRCodeReader = ({ onDecode }: Props) => {
         videoElement.srcObject = null;
       }
     };
-  }, [loopStart, loopStop, videoRef]);
+  }, [loopStart, loopStop, videoRef, initMediaStream]);
 
   return (
     <>

@@ -3,7 +3,7 @@ import React, { useCallback } from "react";
 import styled from "styled-components";
 import plus from "../../src/assets/plus.svg";
 import { useInstallPrompt } from "../hooks/useInstallPrompt";
-import RefreshIcon from '@material-ui/icons/Refresh';
+
 type Props = {
   onDismiss: () => void;
 };
@@ -42,42 +42,6 @@ export const PWAPrompt = ({ onDismiss }: Props) => {
     </Wrapper>
   );
 };
-interface PWAUpdatePromptProps {
-  version?: string;
-  skipWaiting: () => void;
-  onDismiss: () => void;
-}
-export const PWAUpdatePrompt : React.FC<PWAUpdatePromptProps> = (props : PWAUpdatePromptProps) => {
-  const {skipWaiting} = props;
-  const reload = useCallback(
-    () => {
-      skipWaiting();
-      window.location.reload();
-    },
-    [skipWaiting]
-  );
-  const version = { props };
-  const title = version !== undefined ? `隻APP有更新了(${version})` : '隻APP有更新了';
-  return (
-    <Wrapper>
-      <div><RefreshIcon style={{ fontSize: 100 }} /></div>
-      <InstructionWrapper>
-        <div>{title}</div>
-        <div>Reload隻APP然後享用新版安心回家</div>
-      </InstructionWrapper>
-      <div style={{ margin: 10 }}>
-        <Button variant="contained" onClick={reload}>
-          好
-        </Button>
-      </div>
-      <div style={{ margin: 10 }}>
-        <Button variant="contained" onClick={props.onDismiss}>
-          我知我做緊乜，俾我入去
-        </Button>
-      </div>
-    </Wrapper>
-  );
-}
 
 const Wrapper = styled.div`
   display: flex;

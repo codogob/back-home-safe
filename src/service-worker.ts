@@ -13,7 +13,6 @@ import { ExpirationPlugin } from "workbox-expiration";
 import { precacheAndRoute, createHandlerBoundToURL } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
 import { StaleWhileRevalidate } from "workbox-strategies";
-
 declare const self: ServiceWorkerGlobalScope;
 
 clientsClaim();
@@ -75,6 +74,13 @@ registerRoute(
 self.addEventListener("message", (event) => {
   if (event.data && event.data.type === "SKIP_WAITING") {
     self.skipWaiting();
+  }
+  if (event.data && event.data.type === "CHECK_VERSION") {
+    self.clients.matchAll({includeUncontrolled: true, type: 'window'}).then(all => all.map(client => client.postMessage({
+      type: "CURRENT_VERSION",
+      payload: `${process.env.REACT_APP_NAME} ${process.env.REACT_APP_VERSION}`,
+    })));
+    const swVersionListener = new BroadcastChannel('CHECK_VERSION');
   }
 });
 

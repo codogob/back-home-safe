@@ -40,6 +40,9 @@ export const Confirm = () => {
   };
 
   const handleLeavePage = () => {
+    setIsAutoLeaveModalOpen(false);
+    setIsLeaveModalOpen(false);
+    setIsTimePickModalOpen(false);
     browserHistory.push("/");
   };
 

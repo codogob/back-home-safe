@@ -10,6 +10,12 @@
 
 [Build Status](https://gitlab.com/codogo-b/back-home-safe/-/pipelines)
 
+## 聲明 [20-02-2021]
+
+最近社會各界給予的壓力太大，決定離開這個項目，希望大家原諒
+
+此 Project 將不會再有任何更新，並將在不久將來完全移除
+
 ## 聲明
 
 對於政府與社會各界將第一個 post 嘅標題以及文章重點放響 "安心出行" 以及 "翻版"

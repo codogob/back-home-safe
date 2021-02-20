@@ -14,7 +14,7 @@ import { isEmpty, trim } from "ramda";
 import { CheckBox } from "../../components/CheckBox";
 import dayjs from "dayjs";
 
-const Confirm = () => {
+export const Confirm = () => {
   const browserHistory = useHistory();
   const browserLocation = useLocation();
   const [autoLeave, setAutoLeave] = useState(true);
@@ -126,8 +126,6 @@ const Confirm = () => {
     </>
   );
 };
-
-export default Confirm;
 
 const PageWrapper = styled.div`
   width: 100%;

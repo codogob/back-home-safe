@@ -1,20 +1,18 @@
-import React, { useState, useEffect, lazy, Suspense } from "react";
+import React, { useState, useEffect } from "react";
 import { createGlobalStyle } from "styled-components";
-import { LinearProgress } from "@material-ui/core";
-import { Route, HashRouter, Redirect } from "react-router-dom";
-import { disableBodyScroll } from "body-scroll-lock";
 
+import { Route, HashRouter, Redirect } from "react-router-dom";
+import { Welcome } from "./containers/Welcome";
+import { Confirm } from "./containers/Confirm";
+import { QRReader } from "./containers/QRReader";
 import { PWAPrompt } from "./components/PWAPrompt";
+import { disableBodyScroll } from "body-scroll-lock";
 import adapter from "webrtc-adapter";
+import { QRGenerator } from "./containers/QRGeneartor";
 import { checkPwaInstalled } from "./utils/appCheck";
 import { AnimatedSwitch } from "./components/AnimatedSwitch";
+import { CameraSetting } from "./containers/CameraSetting";
 import { useCamera } from "./hooks/useCamera";
-import Welcome from "./containers/Welcome";
-import Confirm from "./containers/Confirm";
-import QRReader from "./containers/QRReader";
-import CameraSetting from "./containers/CameraSetting";
-
-const QRGenerator = lazy(() => import("./containers/QRGeneartor"));
 
 function App() {
   const { hasCameraSupport } = useCamera();
@@ -41,30 +39,28 @@ function App() {
         />
       ) : (
         <HashRouter basename="/">
-          <Suspense fallback={<LinearProgress />}>
-            <AnimatedSwitch>
-              <Route exact path="/">
-                <Welcome />
+          <AnimatedSwitch>
+            <Route exact path="/">
+              <Welcome />
+            </Route>
+            <Route exact path="/qrGenerator">
+              <QRGenerator />
+            </Route>
+            <Route exact path="/confirm">
+              <Confirm />
+            </Route>
+            {hasCameraSupport && (
+              <Route exact path="/qrReader">
+                <QRReader />
               </Route>
-              <Route exact path="/qrGenerator">
-                <QRGenerator />
+            )}
+            {hasCameraSupport && (
+              <Route exact path="/cameraSetting">
+                <CameraSetting />
               </Route>
-              <Route exact path="/confirm">
-                <Confirm />
-              </Route>
-              {hasCameraSupport && (
-                <>
-                  <Route exact path="/qrReader">
-                    <QRReader />
-                  </Route>
-                  <Route exact path="/cameraSetting">
-                    <CameraSetting />
-                  </Route>
-                </>
-              )}
-              <Redirect to="/" />
-            </AnimatedSwitch>
-          </Suspense>
+            )}
+            <Redirect to="/" />
+          </AnimatedSwitch>
         </HashRouter>
       )}
     </>

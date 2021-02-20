@@ -17,7 +17,7 @@ import { disableBodyScroll } from "body-scroll-lock";
 import SaveIcon from "@material-ui/icons/Save";
 import { QRPreview } from "./QRPreview";
 
-export const QRGenerator = () => {
+const QRGenerator = () => {
   const imgRef = useRef<HTMLImageElement>(null);
   const fileFieldRef = React.useRef<HTMLInputElement>(null);
 
@@ -208,6 +208,8 @@ export const QRGenerator = () => {
     </PageWrapper>
   );
 };
+
+export default QRGenerator;
 
 const PageWrapper = styled.div`
   width: 100%;

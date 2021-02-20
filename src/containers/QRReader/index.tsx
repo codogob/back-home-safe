@@ -8,7 +8,7 @@ import { QRCode } from "jsqr";
 import { isEmpty } from "ramda";
 import { Header } from "../../components/Header";
 
-const QRReader = () => {
+export const QRReader = () => {
   const browserHistory = useHistory();
 
   const handleScan = ({ data }: QRCode) => {
@@ -29,8 +29,6 @@ const QRReader = () => {
     </PageWrapper>
   );
 };
-
-export default QRReader;
 
 const PageWrapper = styled.div`
   width: 100%;

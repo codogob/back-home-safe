@@ -7,7 +7,7 @@ import { ConfirmButton } from "../../components/Button";
 import { Place } from "../../components/Place";
 import { useCamera } from "../../hooks/useCamera";
 
-const Welcome = () => {
+export const Welcome = () => {
   const { hasCameraSupport } = useCamera();
   const [place, setPlace] = useState("");
 
@@ -41,8 +41,6 @@ const Welcome = () => {
     </PageWrapper>
   );
 };
-
-export default Welcome;
 
 const PageWrapper = styled.div`
   width: 100%;

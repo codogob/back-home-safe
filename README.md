@@ -14,7 +14,7 @@
 
 最近社會各界給予的壓力太大，決定離開這個項目，希望大家原諒
 
-此 Project consider **DEV DONE** ，將不會再有任何更新
+此 Project consider **DEV DONE** ，除Bug fix外將不會再有任何更新
 
 並將在不久將來完全移除
 
@@ -28,7 +28,7 @@
 
 好感謝過去一星期有Contribute過的巴打／絲打，識到大家真係好好
 
-亦都感謝40多個有Fork report嘅人，真係唔知點多謝你地
+亦都所有Fork repo嘅人，真係唔知點多謝你地
 
 最後，響我走之前，大家響moon前跟我大聲讀一句
 

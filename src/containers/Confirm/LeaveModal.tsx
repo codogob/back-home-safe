@@ -69,7 +69,7 @@ export const LeaveModal = ({
       <ModalConfirmButton onClick={onLeaveNow}>
         是的，我現在要離開
       </ModalConfirmButton>
-      <GreenButton onClick={onLeaved}>我現已經離開了</GreenButton>
+      <GreenButton onClick={onLeaved}>我已經離開了</GreenButton>
     </Modal>
   );
 };

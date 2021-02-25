@@ -6,9 +6,10 @@ import { useCamera } from "../hooks/useCamera";
 
 type Props = {
   onFrame?: (imageData: ImageData) => void;
+  suppressError?: boolean;
 };
 
-export const MediaStream = ({ onFrame }: Props) => {
+export const MediaStream = ({ onFrame, suppressError = false }: Props) => {
   const { preferredCameraId } = useCamera();
 
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -54,14 +55,15 @@ export const MediaStream = ({ onFrame }: Props) => {
     console.log("preferredCameraId", preferredCameraId);
 
     const stream = await getMediaStream(
-      preferredCameraId === "AUTO" ? undefined : preferredCameraId
+      preferredCameraId === "AUTO" ? undefined : preferredCameraId,
+      suppressError
     );
     if (!stream) return;
 
     videoElement.srcObject = stream;
     videoElement.play();
     loopStart();
-  }, [loopStart, preferredCameraId]);
+  }, [loopStart, preferredCameraId, suppressError]);
 
   useEffect(() => {
     const videoElement = videoRef.current;

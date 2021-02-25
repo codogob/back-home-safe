@@ -32,7 +32,7 @@ export const CameraSetting = () => {
         </StyledFormControl>
       </FormWrapper>
       <VideoContainer>
-        <MediaStream />
+        <MediaStream suppressError />
       </VideoContainer>
     </PageWrapper>
   );

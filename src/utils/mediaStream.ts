@@ -1,6 +1,9 @@
 import { isIOS } from "react-device-detect";
 
-export const getMediaStream = async (cameraId?: string) => {
+export const getMediaStream = async (
+  cameraId?: string,
+  suppressError = false
+) => {
   if ("mediaDevices" in navigator) {
     try {
       // WebRTC adapter will polyfill this
@@ -11,16 +14,17 @@ export const getMediaStream = async (cameraId?: string) => {
         audio: false,
       });
     } catch (e) {
-      alert("未能開啟相機鏡頭，請到相機設定進行設置");
+      !suppressError && alert("未能開啟相機鏡頭，請到相機設定進行設置");
       console.log(e);
       return null;
     }
   } else {
-    alert(
-      isIOS
-        ? "getUserMedia is not implemented in this browser, 請確保裝置在IOS 14或以上"
-        : "getUserMedia is not implemented in this browser"
-    );
+    !suppressError &&
+      alert(
+        isIOS
+          ? "getUserMedia is not implemented in this browser, 請確保裝置在IOS 14或以上"
+          : "getUserMedia is not implemented in this browser"
+      );
     return null;
   }
 };

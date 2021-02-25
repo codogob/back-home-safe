@@ -1,15 +1,11 @@
-import { Button } from "@material-ui/core";
 import React, { useCallback } from "react";
 import styled from "styled-components";
-import plus from "../../src/assets/plus.svg";
-import { useInstallPrompt } from "../hooks/useInstallPrompt";
+import plus from "../../assets/plus.svg";
+import { Button } from "@material-ui/core";
+import { usePWA } from "../../hooks/usePWA";
 
-type Props = {
-  onDismiss: () => void;
-};
-
-export const PWAPrompt = ({ onDismiss }: Props) => {
-  const [prompt, promptToInstall] = useInstallPrompt();
+export const AddToHomeScreen = () => {
+  const { prompt, promptToInstall } = usePWA();
 
   const onInstall = useCallback(() => {
     if (!prompt) return;
@@ -34,11 +30,6 @@ export const PWAPrompt = ({ onDismiss }: Props) => {
           </InstallButtonWrapper>
         )}
       </InstructionWrapper>
-      <div>
-        <Button variant="contained" onClick={onDismiss}>
-          我知我做緊乜，俾我入去
-        </Button>
-      </div>
     </Wrapper>
   );
 };
@@ -46,12 +37,11 @@ export const PWAPrompt = ({ onDismiss }: Props) => {
 const Wrapper = styled.div`
   display: flex;
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   justify-content: center;
   vertical-align: middle;
   flex-direction: column;
   text-align: center;
-  color: #fff;
 `;
 
 const AddIcon = styled.img`

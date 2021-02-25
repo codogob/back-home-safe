@@ -1,17 +1,27 @@
+import { createMuiTheme, ThemeProvider } from "@material-ui/core";
+import { yellow } from "@material-ui/core/colors";
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import { UseCameraProvider } from "./hooks/useCamera";
-import { UseLocalStorageProvider } from "./hooks/usePreference";
+import { UseLocalStorageProvider } from "./hooks/useLocalStorage";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: yellow[600] },
+  },
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <UseLocalStorageProvider>
-      <UseCameraProvider>
-        <App />
-      </UseCameraProvider>
-    </UseLocalStorageProvider>
+    <ThemeProvider theme={theme}>
+      <UseLocalStorageProvider>
+        <UseCameraProvider>
+          <App />
+        </UseCameraProvider>
+      </UseLocalStorageProvider>
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

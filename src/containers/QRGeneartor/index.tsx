@@ -6,14 +6,13 @@ import {
   TextField,
 } from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
-import { useSetState, useMount } from "react-use";
+import { useSetState } from "react-use";
 import styled from "styled-components";
 import { Header } from "../../components/Header";
 import { EnhancedEncodeParam, qrEncode } from "../../utils/qr";
 import QrCodeWithLogo from "qrcode-with-logos";
 import baseIcon from "../../assets/baseIcon.png";
 import { head } from "ramda";
-import { disableBodyScroll } from "body-scroll-lock";
 import SaveIcon from "@material-ui/icons/Save";
 import { QRPreview } from "./QRPreview";
 
@@ -40,12 +39,6 @@ export const QRGenerator = () => {
   const isVenueIdValid = state.venueID.length === 8;
 
   const isValidData = isVenueCodeValid && isVenueIdValid;
-
-  useMount(() => {
-    const root = document.querySelector("#scroll");
-    if (!root) return;
-    disableBodyScroll(root);
-  });
 
   useEffect(() => {
     if (!imgRef.current || !isValidData) return;

@@ -1,7 +1,7 @@
 import { any, hasIn } from "ramda";
 import constate from "constate";
 import { useCallback, useEffect, useState } from "react";
-import { useLocalStorage } from "./usePreference";
+import { useLocalStorage } from "./useLocalStorage";
 
 export const [UseCameraProvider, useCamera] = constate(() => {
   const [hasCameraSupport] = useState("mediaDevices" in navigator);

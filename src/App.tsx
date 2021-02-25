@@ -1,43 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, {  useEffect } from "react";
 import { createGlobalStyle } from "styled-components";
 
 import { Route, HashRouter, Redirect } from "react-router-dom";
 import { Welcome } from "./containers/Welcome";
 import { Confirm } from "./containers/Confirm";
 import { QRReader } from "./containers/QRReader";
-import { PWAPrompt } from "./components/PWAPrompt";
-import { disableBodyScroll } from "body-scroll-lock";
 import adapter from "webrtc-adapter";
 import { QRGenerator } from "./containers/QRGeneartor";
-import { checkPwaInstalled } from "./utils/appCheck";
 import { AnimatedSwitch } from "./components/AnimatedSwitch";
 import { CameraSetting } from "./containers/CameraSetting";
 import { useCamera } from "./hooks/useCamera";
+import { useLocalStorage } from "./hooks/useLocalStorage";
+import { Tutorial } from "./containers/Tutorial";
 
 function App() {
   const { hasCameraSupport } = useCamera();
-  const [showPWAPrompt, setShowPWAPrompt] = useState(!checkPwaInstalled());
+  const { finishedTutorial } = useLocalStorage();
 
   useEffect(() => {
     console.log(adapter.browserDetails.browser, adapter.browserDetails.version);
   }, []);
 
-  useEffect(() => {
-    const root = document.querySelector("#root");
-    if (!root) return;
-    disableBodyScroll(root);
-  }, []);
-
   return (
     <>
       <GlobalStyle />
-      {showPWAPrompt ? (
-        <PWAPrompt
-          onDismiss={() => {
-            setShowPWAPrompt(false);
-          }}
-        />
-      ) : (
+      {finishedTutorial ? (
         <HashRouter basename="/">
           <AnimatedSwitch>
             <Route exact path="/">
@@ -62,6 +49,8 @@ function App() {
             <Redirect to="/" />
           </AnimatedSwitch>
         </HashRouter>
+      ) : (
+        <Tutorial />
       )}
     </>
   );

@@ -12,10 +12,17 @@ export const [UseLocalStorageProvider, useLocalStorage] = constate(() => {
     false
   );
 
+  const [finishedTutorial, setFinishedTutorial] = useLS(
+    "finished_tutorial",
+    false
+  );
+
   return {
     preferredCameraId,
     setPreferredCameraId,
     acceptedDisclaimer,
     setAcceptedDisclaimer,
+    finishedTutorial,
+    setFinishedTutorial,
   };
 });

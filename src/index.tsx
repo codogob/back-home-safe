@@ -2,13 +2,16 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import { UseCameraProvider } from "./hooks/useCamera";
+import { UseLocalStorageProvider } from "./hooks/usePreference";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
 ReactDOM.render(
   <React.StrictMode>
-    <UseCameraProvider>
-      <App />
-    </UseCameraProvider>
+    <UseLocalStorageProvider>
+      <UseCameraProvider>
+        <App />
+      </UseCameraProvider>
+    </UseLocalStorageProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

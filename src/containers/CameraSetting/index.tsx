@@ -6,7 +6,7 @@ import { MediaStream } from "../../components/MediaStream";
 import { useCamera } from "../../hooks/useCamera";
 
 export const CameraSetting = () => {
-  const { cameraId, setCameraId, cameraList } = useCamera();
+  const { preferredCameraId, setPreferredCameraId, cameraList } = useCamera();
 
   return (
     <PageWrapper>
@@ -17,9 +17,9 @@ export const CameraSetting = () => {
           <Select
             labelId="cameraId"
             id="demo-simple-select"
-            value={cameraId}
+            value={preferredCameraId}
             onChange={(e) => {
-              setCameraId((e.target.value as string) || "AUTO");
+              setPreferredCameraId((e.target.value as string) || "AUTO");
             }}
           >
             <MenuItem value="AUTO">自動</MenuItem>

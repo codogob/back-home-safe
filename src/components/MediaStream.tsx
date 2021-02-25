@@ -9,7 +9,7 @@ type Props = {
 };
 
 export const MediaStream = ({ onFrame }: Props) => {
-  const { cameraId } = useCamera();
+  const { preferredCameraId } = useCamera();
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -51,17 +51,17 @@ export const MediaStream = ({ onFrame }: Props) => {
     const videoElement = videoRef.current;
     if (!videoElement) return;
 
-    console.log("cameraId", cameraId);
+    console.log("preferredCameraId", preferredCameraId);
 
     const stream = await getMediaStream(
-      cameraId === "AUTO" ? undefined : cameraId
+      preferredCameraId === "AUTO" ? undefined : preferredCameraId
     );
     if (!stream) return;
 
     videoElement.srcObject = stream;
     videoElement.play();
     loopStart();
-  }, [loopStart, cameraId]);
+  }, [loopStart, preferredCameraId]);
 
   useEffect(() => {
     const videoElement = videoRef.current;
@@ -81,7 +81,7 @@ export const MediaStream = ({ onFrame }: Props) => {
         videoElement.srcObject = null;
       }
     };
-  }, [loopStart, loopStop, videoRef, initMediaStream, cameraId]);
+  }, [loopStart, loopStop, videoRef, initMediaStream, preferredCameraId]);
 
   return (
     <>

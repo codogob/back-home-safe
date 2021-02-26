@@ -74,7 +74,3 @@ const ContentWrapper = styled.div`
   height: 100%;
   overflow: auto;
 `;
-
-const StyledLink = styled(Link)`
-  color: unset;
-`;

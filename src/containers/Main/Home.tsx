@@ -8,17 +8,31 @@ import {
 import React, { useMemo, useState } from "react";
 import styled from "styled-components";
 import { Place } from "../../components/Place";
-import { Link } from "react-router-dom";
-import { useCamera } from "../../hooks/useCamera";
+import { Link, useHistory } from "react-router-dom";
 import { dayjs } from "../../utils/dayjs";
-import { isEmpty, trim } from "ramda";
+import { isEmpty, isNil, trim } from "ramda";
+import { useTravelRecord, travelRecordType } from "../../hooks/useTravelRecord";
+import { useTime } from "../../hooks/useTime";
 
 export const Home = () => {
   const [place, setPlace] = useState("");
+  const browserHistory = useHistory();
+  const { createTravelRecord, currentTravelRecord } = useTravelRecord();
+  const { currentTime } = useTime();
 
   const today = useMemo(() => {
-    return dayjs().format("YYYY-MM-DD, dddd");
-  }, []);
+    return currentTime.format("YYYY-MM-DD, dddd");
+  }, [currentTime]);
+
+  const handlePlaceSubmit = () => {
+    createTravelRecord({
+      nameZh: place,
+      type: travelRecordType.MANUALLY,
+      inTime: dayjs().toISOString(),
+    });
+
+    browserHistory.push({ pathname: "/confirm" });
+  };
 
   return (
     <>
@@ -36,22 +50,24 @@ export const Home = () => {
               value={place}
               onChange={setPlace}
               placeholder="輸入地址"
+              readOnly={!isNil(currentTravelRecord)}
             />
           </CardContent>
           <CardActions>
-            {isEmpty(trim(place)) ? (
-              <Button size="small" color="primary" disabled>
-                話去就去!
-              </Button>
-            ) : (
-              <Link to={{ pathname: "/confirm", search: `?place=${place}` }}>
-                <Button size="small" color="primary">
-                  話去就去!
-                </Button>
-              </Link>
-            )}
+            <Button
+              size="small"
+              color="primary"
+              disabled={isEmpty(trim(place)) || !isNil(currentTravelRecord)}
+              onClick={handlePlaceSubmit}
+            >
+              話去就去!
+            </Button>
             <Link to="/qrReader">
-              <Button size="small" color="primary">
+              <Button
+                size="small"
+                color="primary"
+                disabled={!isNil(currentTravelRecord)}
+              >
                 掃瞄二維碼
               </Button>
             </Link>

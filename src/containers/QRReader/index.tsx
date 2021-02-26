@@ -1,21 +1,35 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { getVenueName } from "../../utils/qr";
+import { getVenueName, qrDecode } from "../../utils/qr";
 import qrOverlay from "../../assets/qrOverlay.svg";
 import { QRCodeReader } from "../../components/QRCodeReader";
 import { QRCode } from "jsqr";
-import { isEmpty } from "ramda";
+import { isEmpty, trim } from "ramda";
 import { Header } from "../../components/Header";
+import { travelRecordType, useTravelRecord } from "../../hooks/useTravelRecord";
+import { dayjs } from "../../utils/dayjs";
 
 const QRReader = () => {
   const browserHistory = useHistory();
+  const { createTravelRecord } = useTravelRecord();
 
   const handleScan = ({ data }: QRCode) => {
     if (!data || isEmpty(data)) return;
-    const place = getVenueName(data);
-    if (isEmpty(place)) return;
-    browserHistory.push({ pathname: "/confirm", search: `?place=${place}` });
+    const decodedJson = qrDecode(data);
+
+    const place = getVenueName(decodedJson);
+    if (!decodedJson || isEmpty(place)) return;
+
+    createTravelRecord({
+      venueId: decodedJson.venueId,
+      nameZh: trim(decodedJson.nameZh),
+      nameEn: trim(decodedJson.nameEn),
+      type: travelRecordType.SCAN,
+      inTime: dayjs().toISOString(),
+    });
+
+    browserHistory.push({ pathname: "/confirm" });
   };
 
   return (

@@ -4,35 +4,34 @@ import cross from "../../assets/cross.svg";
 
 import tick from "../../assets/tick.svg";
 
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { ConfirmButton } from "../../components/Button";
 import { Place } from "../../components/Place";
 import { AutoLeaveModal } from "./AutoLeaveModal";
-import { LeaveModal } from "./LeaveModal";
-import { TimePickModal } from "./TimePickModal";
-import { isEmpty, trim } from "ramda";
 import { CheckBox } from "../../components/CheckBox";
 import { dayjs } from "../../utils/dayjs";
+import { useTravelRecord } from "../../hooks/useTravelRecord";
+import { getVenueName } from "../../utils/qr";
+import { Dayjs } from "dayjs";
+import { LeaveModal } from "../../components/LeaveModal";
 
 export const Confirm = () => {
   const browserHistory = useHistory();
-  const browserLocation = useLocation();
+  const { currentTravelRecord, updateCurrentTravelRecord } = useTravelRecord();
   const [autoLeave, setAutoLeave] = useState(true);
   const [autoLeaveHour, setAutoLeaveHour] = useState(4);
   const [isAutoLeaveModalOpen, setIsAutoLeaveModalOpen] = useState(false);
   const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
-  const [isTimePickModalOpen, setIsTimePickModalOpen] = useState(false);
-
-  const place = useMemo(
-    () => trim(new URLSearchParams(browserLocation.search).get("place") || ""),
-    [browserLocation.search]
-  );
 
   useEffect(() => {
-    if (!place || isEmpty(place)) browserHistory.push("/");
-  }, [browserHistory, place]);
+    if (!currentTravelRecord) browserHistory.push("/");
+  }, [currentTravelRecord, browserHistory]);
 
   const date = useMemo(() => dayjs(), []);
+
+  const place = useMemo(() => getVenueName(currentTravelRecord), [
+    currentTravelRecord,
+  ]);
 
   const handleSetAutoLeaveHour = (value: number) => {
     setAutoLeaveHour(value);
@@ -42,14 +41,22 @@ export const Confirm = () => {
   const handleLeavePage = () => {
     setIsAutoLeaveModalOpen(false);
     setIsLeaveModalOpen(false);
-    setIsTimePickModalOpen(false);
     browserHistory.push("/");
   };
 
-  const handleLeaved = () => {
-    setIsLeaveModalOpen(false);
-    setIsTimePickModalOpen(true);
+  const handleLeave = (date: Dayjs) => {
+    updateCurrentTravelRecord({
+      outTime: date.startOf("minute").toISOString(),
+    });
+    handleLeavePage();
   };
+
+  useEffect(() => {
+    const toDate = date.add(autoLeaveHour, "hour");
+    updateCurrentTravelRecord({
+      outTime: autoLeave ? toDate.toISOString() : undefined,
+    });
+  }, [autoLeave, date, autoLeaveHour, updateCurrentTravelRecord]);
 
   return (
     <>
@@ -106,22 +113,11 @@ export const Confirm = () => {
         date={date}
       />
       <LeaveModal
-        isModalOpen={isLeaveModalOpen}
-        onCancel={() => {
+        visible={isLeaveModalOpen}
+        onDiscard={() => {
           setIsLeaveModalOpen(false);
         }}
-        onLeaveNow={handleLeavePage}
-        onLeaved={handleLeaved}
-        place={place || ""}
-        date={date}
-        autoLeaveHour={autoLeave ? autoLeaveHour : 0}
-      />
-      <TimePickModal
-        isModalOpen={isTimePickModalOpen}
-        onCancel={() => {
-          setIsTimePickModalOpen(false);
-        }}
-        onConfirm={handleLeavePage}
+        onFinish={handleLeave}
       />
     </>
   );

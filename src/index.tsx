@@ -5,6 +5,8 @@ import ReactDOM from "react-dom";
 import { App } from "./App";
 import { UseCameraProvider } from "./hooks/useCamera";
 import { UseLocalStorageProvider } from "./hooks/useLocalStorage";
+import { UseTimeProvider } from "./hooks/useTime";
+import { UseTravelRecordProvider } from "./hooks/useTravelRecord";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
 const theme = createMuiTheme({
@@ -17,11 +19,15 @@ const theme = createMuiTheme({
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <UseLocalStorageProvider>
-        <UseCameraProvider>
-          <App />
-        </UseCameraProvider>
-      </UseLocalStorageProvider>
+      <UseTimeProvider>
+        <UseLocalStorageProvider>
+          <UseTravelRecordProvider>
+            <UseCameraProvider>
+              <App />
+            </UseCameraProvider>
+          </UseTravelRecordProvider>
+        </UseLocalStorageProvider>
+      </UseTimeProvider>
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById("root")

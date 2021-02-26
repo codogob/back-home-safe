@@ -3,8 +3,8 @@ import Modal from "react-modal";
 import crossBlack from "../../assets/crossBlack.svg";
 
 import styled from "styled-components";
-import { ModalConfirmButton } from "../../components/Button";
-import { Dayjs } from "dayjs";
+import { ModalConfirmButton } from "../Button";
+import dayjs, { Dayjs } from "dayjs";
 
 type Props = {
   isModalOpen: boolean;
@@ -13,24 +13,19 @@ type Props = {
   onLeaved: () => void;
   place: string;
   date: Dayjs;
-  autoLeaveHour: number;
+  outTime?: string;
 };
 
-export const LeaveModal = ({
+export const Prompt = ({
   isModalOpen,
   onCancel,
   onLeaveNow,
   onLeaved,
   place,
   date,
-  autoLeaveHour,
+  outTime,
 }: Props) => {
-  const shouldDisplayAutoLeave = autoLeaveHour !== 0;
-
-  const toDate = useMemo(() => date.add(autoLeaveHour, "hour"), [
-    date,
-    autoLeaveHour,
-  ]);
+  const toDate = useMemo(() => dayjs(outTime), [outTime]);
 
   return (
     <Modal
@@ -50,7 +45,7 @@ export const LeaveModal = ({
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          height: shouldDisplayAutoLeave ? "430px" : "390px",
+          height: outTime ? "430px" : "390px",
           overflow: "hidden",
         },
       }}
@@ -63,7 +58,7 @@ export const LeaveModal = ({
       <Place>{place}</Place>
       <Time>{date.format("YYYY-MM-DD HH:mm")}</Time>
       <Title>你現在要離開嗎？</Title>
-      {shouldDisplayAutoLeave && (
+      {outTime && (
         <AutoLeave>於{toDate.format("MM-DD HH:mm")} 自動離開</AutoLeave>
       )}
       <ModalConfirmButton onClick={onLeaveNow}>

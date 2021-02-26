@@ -5,6 +5,11 @@ import HomeIcon from "@material-ui/icons/Home";
 import { Home } from "./Home";
 import SettingsIcon from "@material-ui/icons/Settings";
 import { Settings } from "./Settings";
+import { useTravelRecord } from "../../hooks/useTravelRecord";
+import { Fab } from "@material-ui/core";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import { LeaveModal } from "../../components/LeaveModal";
+import { Dayjs } from "dayjs";
 
 enum tabs {
   HOME = "HOME",
@@ -28,7 +33,17 @@ const tabsArr = [
 
 const Main = () => {
   const [activePage, setActivePage] = useState(0);
+  const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
+
+  const { currentTravelRecord, updateCurrentTravelRecord } = useTravelRecord();
   const { component } = useMemo(() => tabsArr[activePage] || {}, [activePage]);
+
+  const handleLeave = (date: Dayjs) => {
+    updateCurrentTravelRecord({
+      outTime: date.startOf("minute").toISOString(),
+    });
+    setIsLeaveModalOpen(false);
+  };
 
   return (
     <PageWrapper>
@@ -44,6 +59,29 @@ const Main = () => {
           <BottomNavigationAction key={key} label={label} icon={icon} />
         ))}
       </BottomNavigation>
+      {currentTravelRecord && (
+        <>
+          <FloatingButton>
+            <Fab
+              variant="extended"
+              color="secondary"
+              onClick={() => {
+                setIsLeaveModalOpen(true);
+              }}
+            >
+              <ExitToAppIcon />
+              離開
+            </Fab>
+          </FloatingButton>
+          <LeaveModal
+            visible={isLeaveModalOpen}
+            onDiscard={() => {
+              setIsLeaveModalOpen(false);
+            }}
+            onFinish={handleLeave}
+          />
+        </>
+      )}
     </PageWrapper>
   );
 };
@@ -55,4 +93,19 @@ const PageWrapper = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+`;
+
+const FloatingButton = styled.div`
+  position: absolute;
+  z-index: 1000;
+  bottom: 80px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+
+  & button {
+    pointer-events: all;
+  }
 `;

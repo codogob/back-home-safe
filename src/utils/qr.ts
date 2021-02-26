@@ -1,3 +1,4 @@
+import { TravelRecord } from "./../hooks/useTravelRecord";
 import { isEmpty, trim } from "ramda";
 import { sha256 } from "js-sha256";
 
@@ -7,6 +8,7 @@ type DecodedJSON = {
   nameEn: string;
   nameZh: string;
   type: string;
+  venueId?: string;
 };
 
 export type EncodeParam = {
@@ -44,16 +46,22 @@ export const qrDecode = (input: string): DecodedJSON | null => {
     hashMatch: computedHash === json.hash,
   });
 
-  return json;
+  return { ...json, venueId };
 };
 
-export const getVenueName = (input: string) => {
-  if (!input.startsWith("HKEN:")) return "";
-  const decodedJson = qrDecode(input);
+export const getVenueName = (
+  decodedJson?: DecodedJSON | TravelRecord | null
+) => {
   if (!decodedJson) return "";
 
   const trimmedZhName = decodedJson.nameZh ? trim(decodedJson.nameZh) : "";
-  const name = !isEmpty(trimmedZhName) ? trimmedZhName : decodedJson.nameEn;
+  const trimmedEnName = decodedJson.nameEn ? trim(decodedJson.nameEn) : "";
+
+  const name = !isEmpty(trimmedZhName)
+    ? trimmedZhName
+    : !isEmpty(trimmedEnName)
+    ? trimmedEnName
+    : decodedJson.venueId || "";
 
   return name;
 };

@@ -1,4 +1,10 @@
-import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
+import {
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@material-ui/core";
 import { isEmpty, isNil } from "ramda";
 import styled from "styled-components";
 import { Header } from "../../components/Header";
@@ -29,6 +35,7 @@ const CameraSetting = () => {
               </MenuItem>
             ))}
           </Select>
+          <FormHelperText>調較相機選項，直至有相機畫面顯示</FormHelperText>
         </StyledFormControl>
       </FormWrapper>
       <VideoContainer>
@@ -43,7 +50,6 @@ export default CameraSetting;
 const PageWrapper = styled.div`
   width: 100%;
   height: 100%;
-  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
   display: flex;
   flex-direction: column;
   background-color: #fff;

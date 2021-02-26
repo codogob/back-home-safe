@@ -1,4 +1,4 @@
-import React, {  useEffect } from "react";
+import React, { useEffect } from "react";
 import { createGlobalStyle } from "styled-components";
 
 import { Route, HashRouter, Redirect } from "react-router-dom";
@@ -24,34 +24,36 @@ function App() {
   return (
     <>
       <GlobalStyle />
-      {finishedTutorial ? (
-        <HashRouter basename="/">
-          <AnimatedSwitch>
-            <Route exact path="/">
-              <Welcome />
+      <HashRouter basename="/">
+        <AnimatedSwitch>
+          {!finishedTutorial && (
+            <Route exact path="/tutorial">
+              <Tutorial />
             </Route>
-            <Route exact path="/qrGenerator">
-              <QRGenerator />
+          )}
+          {!finishedTutorial && <Redirect to="/tutorial" />}
+          <Route exact path="/">
+            <Welcome />
+          </Route>
+          <Route exact path="/qrGenerator">
+            <QRGenerator />
+          </Route>
+          <Route exact path="/confirm">
+            <Confirm />
+          </Route>
+          {hasCameraSupport && (
+            <Route exact path="/qrReader">
+              <QRReader />
             </Route>
-            <Route exact path="/confirm">
-              <Confirm />
+          )}
+          {hasCameraSupport && (
+            <Route exact path="/cameraSetting">
+              <CameraSetting />
             </Route>
-            {hasCameraSupport && (
-              <Route exact path="/qrReader">
-                <QRReader />
-              </Route>
-            )}
-            {hasCameraSupport && (
-              <Route exact path="/cameraSetting">
-                <CameraSetting />
-              </Route>
-            )}
-            <Redirect to="/" />
-          </AnimatedSwitch>
-        </HashRouter>
-      ) : (
-        <Tutorial />
-      )}
+          )}
+          <Redirect to="/" />
+        </AnimatedSwitch>
+      </HashRouter>
     </>
   );
 }

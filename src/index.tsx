@@ -2,7 +2,7 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { yellow } from "@material-ui/core/colors";
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
+import { App } from "./App";
 import { UseCameraProvider } from "./hooks/useCamera";
 import { UseLocalStorageProvider } from "./hooks/useLocalStorage";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";

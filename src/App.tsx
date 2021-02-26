@@ -15,7 +15,7 @@ import { PageLoading } from "./components/PageLoading";
 
 const QRGenerator = React.lazy(() => import("./containers/QRGeneartor"));
 
-function App() {
+export const App = () => {
   const { hasCameraSupport } = useCamera();
   const { finishedTutorial } = useLocalStorage();
 
@@ -58,9 +58,7 @@ function App() {
       </HashRouter>
     </Suspense>
   );
-}
-
-export default App;
+};
 
 const GlobalStyle = createGlobalStyle`
 html {

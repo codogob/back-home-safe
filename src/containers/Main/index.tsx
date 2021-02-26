@@ -3,15 +3,26 @@ import React, { useMemo, useState } from "react";
 import styled from "styled-components";
 import HomeIcon from "@material-ui/icons/Home";
 import { Home } from "./Home";
+import SettingsIcon from "@material-ui/icons/Settings";
+import { Settings } from "./Settings";
 
 enum tabs {
   HOME = "HOME",
+  SETTINGS = "SETTINGS",
 }
 
 const tabsArr = [
   {
     key: tabs.HOME,
+    label: "主頁",
     component: <Home />,
+    icon: <HomeIcon />,
+  },
+  {
+    key: tabs.HOME,
+    label: "設定",
+    component: <Settings />,
+    icon: <SettingsIcon />,
   },
 ];
 
@@ -29,7 +40,9 @@ const Main = () => {
           setActivePage(newValue);
         }}
       >
-        <BottomNavigationAction label="主頁" icon={<HomeIcon />} />
+        {tabsArr.map(({ key, label, icon }) => (
+          <BottomNavigationAction key={key} label={label} icon={icon} />
+        ))}
       </BottomNavigation>
     </PageWrapper>
   );
@@ -40,7 +53,6 @@ export default Main;
 const PageWrapper = styled.div`
   width: 100%;
   height: 100%;
-  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
   display: flex;
   flex-direction: column;
 `;

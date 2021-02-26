@@ -3,7 +3,6 @@ import {
   Card,
   CardActions,
   CardContent,
-  Divider,
   Typography,
 } from "@material-ui/core";
 import React, { useMemo, useState } from "react";
@@ -50,28 +49,17 @@ export const Home = () => {
                 </Button>
               </Link>
             )}
-            <Link to="/qrReader">
-              <Button size="small" color="primary">
-                掃瞄二維碼
-              </Button>
-            </Link>
+            {hasCameraSupport && (
+              <Link to="/qrReader">
+                <Button size="small" color="primary">
+                  掃瞄二維碼
+                </Button>
+              </Link>
+            )}
           </CardActions>
         </StyledCard>
       </Welcome>
-      <ContentWrapper>
-        <ActionWrapper>
-          {hasCameraSupport && (
-            <LinkWrapper>
-              <StyledLink to="/qrReader">掃瞄二維碼</StyledLink>
-              <StyledDivider orientation="vertical" flexItem />
-              <StyledLink to="/cameraSetting">相機設定</StyledLink>
-            </LinkWrapper>
-          )}
-          <LinkWrapper>
-            <StyledLink to="/qrGenerator">生成二維碼</StyledLink>
-          </LinkWrapper>
-        </ActionWrapper>
-      </ContentWrapper>
+      <ContentWrapper />
     </>
   );
 };
@@ -79,6 +67,7 @@ export const Home = () => {
 const Welcome = styled.div`
   color: #fff;
   padding: 40px 24px 32px 24px;
+  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
 `;
 
 const StyledCard = styled(Card)`
@@ -96,35 +85,5 @@ const ContentWrapper = styled.div`
   background-color: #fff;
   height: 100%;
   overflow: auto;
-  border-radius: 40px 0 0 0;
-`;
-
-const ActionWrapper = styled.div`
-  width: 100%;
-  text-align: center;
-  color: #fff;
-  padding: 32px 0;
-  flex-shrink: 0;
-`;
-
-const LinkWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin: 8px 0;
-`;
-
-const StyledDivider = styled(Divider)`
-  margin: 0 8px;
-
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
-
-  &.MuiDivider-root {
-    background-color: #fff;
-  }
-`;
-
-const StyledLink = styled(Link)`
-  color: #ffffff;
-  padding: 0 16px;
+  border-radius: 40px 40px 0 0;
 `;

@@ -14,6 +14,7 @@ const QRReader = React.lazy(() => import("./containers/QRReader"));
 const CameraSetting = React.lazy(() => import("./containers/CameraSetting"));
 const Tutorial = React.lazy(() => import("./containers/Tutorial"));
 const Main = React.lazy(() => import("./containers/Main"));
+const Disclaimer = React.lazy(() => import("./containers/Disclaimer"));
 
 export const App = () => {
   const { hasCameraSupport } = useCamera();
@@ -43,6 +44,9 @@ export const App = () => {
           </Route>
           <Route exact path="/qrGenerator">
             <QRGenerator />
+          </Route>
+          <Route exact path="/disclaimer">
+            <Disclaimer />
           </Route>
           {hasCameraSupport && (
             <Route exact path="/qrReader">

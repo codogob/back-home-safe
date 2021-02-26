@@ -26,6 +26,12 @@ export const Settings = () => {
             </StyledLink>
           )}
           <Divider />
+          <StyledLink to="/disclaimer">
+            <ListItem button>
+              <ListItemText primary="免責聲明" />
+            </ListItem>
+          </StyledLink>
+          <Divider />
         </List>
       </ContentWrapper>
     </PageWrapper>

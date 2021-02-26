@@ -12,7 +12,7 @@ import { LeaveModal } from "./LeaveModal";
 import { TimePickModal } from "./TimePickModal";
 import { isEmpty, trim } from "ramda";
 import { CheckBox } from "../../components/CheckBox";
-import dayjs from "dayjs";
+import { dayjs } from "../../utils/dayjs";
 
 export const Confirm = () => {
   const browserHistory = useHistory();

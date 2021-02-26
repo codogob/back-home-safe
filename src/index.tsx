@@ -1,5 +1,5 @@
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
-import { yellow } from "@material-ui/core/colors";
+import { teal, yellow } from "@material-ui/core/colors";
 import React from "react";
 import ReactDOM from "react-dom";
 import { App } from "./App";
@@ -9,7 +9,8 @@ import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
 const theme = createMuiTheme({
   palette: {
-    primary: { main: yellow[600] },
+    primary: { main: teal[500] },
+    secondary: { main: yellow[600] },
   },
 });
 

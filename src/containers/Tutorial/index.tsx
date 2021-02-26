@@ -63,7 +63,7 @@ const Tutorial = () => {
         <Button disabled={activeStep === 0} onClick={handleBack}>
           上一頁
         </Button>
-        <Button variant="contained" color="primary" onClick={handleNext}>
+        <Button variant="contained" color="secondary" onClick={handleNext}>
           {nextButtonText ? nextButtonText : isLastStep ? "完成" : "下一頁"}
         </Button>
       </ButtonGroup>

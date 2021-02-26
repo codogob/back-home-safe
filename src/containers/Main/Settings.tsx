@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Header } from "../../components/Header";
 import { useCamera } from "../../hooks/useCamera";
+import { clearAllData } from "../../utils/clearAllData";
 
 export const Settings = () => {
   const { hasCameraSupport } = useCamera();
@@ -31,6 +32,10 @@ export const Settings = () => {
               <ListItemText primary="免責聲明" />
             </ListItem>
           </StyledLink>
+          <Divider />
+          <ListItem button>
+            <ListItemText primary="重設所有資料" onClick={clearAllData} />
+          </ListItem>
           <Divider />
         </List>
       </ContentWrapper>

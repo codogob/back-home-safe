@@ -127,7 +127,7 @@ export const MediaStream = ({ onFrame, suppressError = false }: Props) => {
         <DialogContent>
           <DialogContentText id="unsupported-device-description">
             此裝置不支援 getUserMedia API
-            {isIOS && <p>請確保裝置在IOS 14或以上</p>}
+            {isIOS && <>，請確保裝置在IOS 14或以上</>}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

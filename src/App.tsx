@@ -5,7 +5,6 @@ import { Route, HashRouter, Redirect } from "react-router-dom";
 import { Confirm } from "./containers/Confirm";
 import adapter from "webrtc-adapter";
 import { AnimatedSwitch } from "./components/AnimatedSwitch";
-import { useCamera } from "./hooks/useCamera";
 import { useLocalStorage } from "./hooks/useLocalStorage";
 import { PageLoading } from "./components/PageLoading";
 
@@ -17,7 +16,6 @@ const Main = React.lazy(() => import("./containers/Main"));
 const Disclaimer = React.lazy(() => import("./containers/Disclaimer"));
 
 export const App = () => {
-  const { hasCameraSupport } = useCamera();
   const { finishedTutorial } = useLocalStorage();
 
   useEffect(() => {
@@ -48,16 +46,12 @@ export const App = () => {
           <Route exact path="/disclaimer">
             <Disclaimer />
           </Route>
-          {hasCameraSupport && (
-            <Route exact path="/qrReader">
-              <QRReader />
-            </Route>
-          )}
-          {hasCameraSupport && (
-            <Route exact path="/cameraSetting">
-              <CameraSetting />
-            </Route>
-          )}
+          <Route exact path="/qrReader">
+            <QRReader />
+          </Route>
+          <Route exact path="/cameraSetting">
+            <CameraSetting />
+          </Route>
           <Redirect to="/" />
         </AnimatedSwitch>
       </HashRouter>

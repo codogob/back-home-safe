@@ -14,7 +14,6 @@ import { dayjs } from "../../utils/dayjs";
 import { isEmpty, trim } from "ramda";
 
 export const Home = () => {
-  const { hasCameraSupport } = useCamera();
   const [place, setPlace] = useState("");
 
   const today = useMemo(() => {
@@ -51,13 +50,11 @@ export const Home = () => {
                 </Button>
               </Link>
             )}
-            {hasCameraSupport && (
-              <Link to="/qrReader">
-                <Button size="small" color="primary">
-                  掃瞄二維碼
-                </Button>
-              </Link>
-            )}
+            <Link to="/qrReader">
+              <Button size="small" color="primary">
+                掃瞄二維碼
+              </Button>
+            </Link>
           </CardActions>
         </StyledCard>
       </Welcome>

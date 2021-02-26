@@ -1,5 +1,5 @@
 import { Button, Step, StepLabel, Stepper } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import styled from "styled-components";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { AddToHomeScreen } from "./AddToHomeScreen";
@@ -29,8 +29,13 @@ const Tutorial = () => {
   const { setFinishedTutorial } = useLocalStorage();
 
   const [activeStep, setActiveStep] = useState(0);
-  const isLastStep = activeStep === stepsSettings.length - 1;
-  const { component, nextButtonText } = stepsSettings[activeStep] || {};
+  const { component, nextButtonText, isLastStep } = useMemo(
+    () => ({
+      ...(stepsSettings[activeStep] || {}),
+      isLastStep: activeStep === stepsSettings.length - 1,
+    }),
+    [activeStep]
+  );
 
   const handleNext = () => {
     if (isLastStep) {

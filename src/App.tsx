@@ -11,6 +11,7 @@ import { CameraSetting } from "./containers/CameraSetting";
 import { useCamera } from "./hooks/useCamera";
 import { useLocalStorage } from "./hooks/useLocalStorage";
 import { Tutorial } from "./containers/Tutorial";
+import { PageLoading } from "./components/PageLoading";
 
 const QRGenerator = React.lazy(() => import("./containers/QRGeneartor"));
 
@@ -23,7 +24,7 @@ function App() {
   }, []);
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<PageLoading />}>
       <GlobalStyle />
       <HashRouter basename="/">
         <AnimatedSwitch>

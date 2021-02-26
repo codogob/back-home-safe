@@ -87,5 +87,4 @@ const ContentWrapper = styled.div`
   background-color: #fff;
   height: 100%;
   overflow: auto;
-  border-radius: 40px 40px 0 0;
 `;

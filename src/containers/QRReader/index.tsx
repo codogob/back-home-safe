@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { getVenueName, qrDecode } from "../../utils/qr";
@@ -11,16 +11,22 @@ import { travelRecordType, useTravelRecord } from "../../hooks/useTravelRecord";
 import { dayjs } from "../../utils/dayjs";
 
 const QRReader = () => {
+  const [qrResult, setQrResult] = useState<string | null>(null);
   const browserHistory = useHistory();
   const { createTravelRecord } = useTravelRecord();
 
   const handleScan = ({ data }: QRCode) => {
     if (!data || isEmpty(data)) return;
     const decodedJson = qrDecode(data);
+    if (!decodedJson) return;
 
-    const place = getVenueName(decodedJson);
-    if (!decodedJson || isEmpty(place)) return;
+    setQrResult(data);
+  };
 
+  useEffect(() => {
+    if (!qrResult) return;
+    const decodedJson = qrDecode(qrResult);
+    if (!decodedJson || !getVenueName(decodedJson)) return;
     createTravelRecord({
       venueId: decodedJson.venueId,
       nameZh: trim(decodedJson.nameZh),
@@ -30,7 +36,8 @@ const QRReader = () => {
     });
 
     browserHistory.push({ pathname: "/confirm" });
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [qrResult, browserHistory]);
 
   return (
     <PageWrapper>

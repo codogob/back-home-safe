@@ -24,8 +24,10 @@ export const Home = () => {
   return (
     <>
       <Welcome>
-        <div>{today}</div>
-        <h2>記錄你的到訪</h2>
+        <Title>
+          <div>{today}</div>
+          <h2>記錄你的到訪</h2>
+        </Title>
         <StyledCard>
           <CardContent>
             <Typography color="textSecondary" gutterBottom>
@@ -67,6 +69,9 @@ export const Home = () => {
 const Welcome = styled.div`
   color: #fff;
   padding: 40px 24px 32px 24px;
+`;
+
+const Title = styled.div`
   text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
 `;
 

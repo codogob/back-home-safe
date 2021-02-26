@@ -19,7 +19,7 @@ const tabsArr = [
     icon: <HomeIcon />,
   },
   {
-    key: tabs.HOME,
+    key: tabs.SETTINGS,
     label: "設定",
     component: <Settings />,
     icon: <SettingsIcon />,

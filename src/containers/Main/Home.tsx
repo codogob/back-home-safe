@@ -11,7 +11,11 @@ import { Place } from "../../components/Place";
 import { Link, useHistory } from "react-router-dom";
 import { dayjs } from "../../utils/dayjs";
 import { isEmpty, isNil, trim } from "ramda";
-import { useTravelRecord, travelRecordType } from "../../hooks/useTravelRecord";
+import {
+  useTravelRecord,
+  travelRecordType,
+  travelRecordInputType,
+} from "../../hooks/useTravelRecord";
 import { useTime } from "../../hooks/useTime";
 
 export const Home = () => {
@@ -27,7 +31,8 @@ export const Home = () => {
   const handlePlaceSubmit = () => {
     createTravelRecord({
       nameZh: place,
-      type: travelRecordType.MANUALLY,
+      type: travelRecordType.PLACE,
+      inputType: travelRecordInputType.MANUALLY,
       inTime: dayjs().toISOString(),
     });
 

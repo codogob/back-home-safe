@@ -6,19 +6,33 @@ import { useLocalStorage } from "./useLocalStorage";
 import { useTime } from "./useTime";
 import { Dayjs } from "dayjs";
 
-export enum travelRecordType {
+export enum travelRecordInputType {
   MANUALLY = "MANUALLY",
   SCAN = "SCAN",
 }
 
-export type TravelRecord = {
-  venueId?: string;
-  nameEn?: string;
-  nameZh?: string;
-  type: travelRecordType;
-  inTime: string;
-  outTime?: string;
-};
+export enum travelRecordType {
+  PLACE = "PLACE",
+  TAXI = "TAXI",
+}
+
+export type TravelRecord =
+  | {
+      venueId?: string;
+      nameEn?: string;
+      nameZh?: string;
+      type: travelRecordType.PLACE;
+      inputType: travelRecordInputType;
+      inTime: string;
+      outTime?: string;
+    }
+  | {
+      venueId?: string;
+      type: travelRecordType.TAXI;
+      inputType: travelRecordInputType;
+      inTime: string;
+      outTime?: string;
+    };
 
 const defaultTravelRecord = JSON.stringify([]);
 

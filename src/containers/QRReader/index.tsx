@@ -7,7 +7,11 @@ import { QRCodeReader } from "../../components/QRCodeReader";
 import { QRCode } from "jsqr";
 import { isEmpty, trim } from "ramda";
 import { Header } from "../../components/Header";
-import { travelRecordType, useTravelRecord } from "../../hooks/useTravelRecord";
+import {
+  travelRecordInputType,
+  travelRecordType,
+  useTravelRecord,
+} from "../../hooks/useTravelRecord";
 import { dayjs } from "../../utils/dayjs";
 
 const QRReader = () => {
@@ -31,7 +35,8 @@ const QRReader = () => {
       venueId: decodedJson.venueId,
       nameZh: trim(decodedJson.nameZh),
       nameEn: trim(decodedJson.nameEn),
-      type: travelRecordType.SCAN,
+      type: travelRecordType.PLACE,
+      inputType: travelRecordInputType.SCAN,
       inTime: dayjs().toISOString(),
     });
 

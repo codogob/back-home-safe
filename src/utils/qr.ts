@@ -1,5 +1,5 @@
 import { TravelRecord } from "./../hooks/useTravelRecord";
-import { isEmpty, trim } from "ramda";
+import { isEmpty, propOr, trim } from "ramda";
 import { sha256 } from "js-sha256";
 
 type DecodedJSON = {
@@ -54,8 +54,9 @@ export const getVenueName = (
 ) => {
   if (!decodedJson) return "";
 
-  const trimmedZhName = decodedJson.nameZh ? trim(decodedJson.nameZh) : "";
-  const trimmedEnName = decodedJson.nameEn ? trim(decodedJson.nameEn) : "";
+  const trimmedZhName = trim(propOr("", "nameZh", decodedJson));
+
+  const trimmedEnName = trim(propOr("", "nameEn", decodedJson));
 
   const name = !isEmpty(trimmedZhName)
     ? trimmedZhName

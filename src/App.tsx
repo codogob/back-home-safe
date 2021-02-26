@@ -13,7 +13,7 @@ import { useLocalStorage } from "./hooks/useLocalStorage";
 import { Tutorial } from "./containers/Tutorial";
 import { PageLoading } from "./components/PageLoading";
 
-const QRGenerator = React.lazy(() => import("./containers/QRGeneartor"));
+const QRGenerator = React.lazy(() => import("./containers/QRGenerator"));
 
 export const App = () => {
   const { hasCameraSupport } = useCamera();

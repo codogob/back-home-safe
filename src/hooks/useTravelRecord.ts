@@ -1,4 +1,4 @@
-import { head, tail } from "ramda";
+import { head, remove, tail } from "ramda";
 import { dayjs } from "../utils/dayjs";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import constate from "constate";
@@ -92,11 +92,16 @@ export const [UseTravelRecordProvider, useTravelRecord] = constate(() => {
     [getCurrentTravelRecord, currentTime]
   );
 
+  const removeTravelRecord = (index: number) => {
+    setTravelRecord((prev) => remove(index, 1, prev));
+  };
+
   return {
     travelRecord,
     setTravelRecord,
     currentTravelRecord,
     createTravelRecord,
     updateCurrentTravelRecord,
+    removeTravelRecord,
   };
 });

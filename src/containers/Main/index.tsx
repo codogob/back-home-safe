@@ -10,9 +10,12 @@ import { Fab } from "@material-ui/core";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { LeaveModal } from "../../components/LeaveModal";
 import { Dayjs } from "dayjs";
+import { TravelRecord } from "./TravelRecord";
+import PlaceIcon from "@material-ui/icons/Place";
 
 enum tabs {
   HOME = "HOME",
+  TRAVEL_RECORD = "TRAVEL_RECORD",
   SETTINGS = "SETTINGS",
 }
 
@@ -22,6 +25,12 @@ const tabsArr = [
     label: "主頁",
     component: <Home />,
     icon: <HomeIcon />,
+  },
+  {
+    key: tabs.TRAVEL_RECORD,
+    label: "出行紀錄",
+    component: <TravelRecord />,
+    icon: <PlaceIcon />,
   },
   {
     key: tabs.SETTINGS,

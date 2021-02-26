@@ -1,14 +1,30 @@
 import { CircularProgress } from "@material-ui/core";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-export const PageLoading = () => (
-  <FixWrapper>
-    <Wrapper>
-      <CircularProgress />
-    </Wrapper>
-  </FixWrapper>
-);
+// Prevent flash
+// ref: https://github.com/gregberge/loadable-components/issues/322
+export const PageLoading = () => {
+  const delay = 200; // 200ms
+  const [showLoadingIndicator, setLoadingIndicatorVisibility] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoadingIndicatorVisibility(true), delay);
+
+    // this will clear Timeout when component unmont like in willComponentUnmount
+    return () => {
+      clearTimeout(timer);
+    };
+  });
+
+  return showLoadingIndicator ? (
+    <FixWrapper>
+      <Wrapper>
+        <CircularProgress />
+      </Wrapper>
+    </FixWrapper>
+  ) : null;
+};
 
 const FixWrapper = styled.div`
   z-index: 1000;

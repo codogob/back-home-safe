@@ -7,11 +7,6 @@ export const [UseLocalStorageProvider, useLocalStorage] = constate(() => {
     "AUTO"
   );
 
-  const [acceptedDisclaimer, setAcceptedDisclaimer] = useLS(
-    "accepted_disclaimer",
-    false
-  );
-
   const [finishedTutorial, setFinishedTutorial] = useLS(
     "finished_tutorial",
     false
@@ -20,8 +15,6 @@ export const [UseLocalStorageProvider, useLocalStorage] = constate(() => {
   return {
     preferredCameraId,
     setPreferredCameraId,
-    acceptedDisclaimer,
-    setAcceptedDisclaimer,
     finishedTutorial,
     setFinishedTutorial,
   };

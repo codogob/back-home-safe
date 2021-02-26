@@ -52,7 +52,6 @@ export const [UseTravelRecordProvider, useTravelRecord] = constate(() => {
   }, [savedTravelRecord, setTravelRecord]);
 
   useEffect(() => {
-    // TODO: user password encrypt
     setSavedTravelRecord(JSON.stringify(travelRecord));
   }, [travelRecord, setSavedTravelRecord]);
 

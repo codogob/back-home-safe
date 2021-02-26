@@ -25,7 +25,7 @@ const stepsSettings = [
   },
 ];
 
-export const Tutorial = () => {
+const Tutorial = () => {
   const { setFinishedTutorial } = useLocalStorage();
 
   const [activeStep, setActiveStep] = useState(0);
@@ -65,6 +65,8 @@ export const Tutorial = () => {
     </PageWrapper>
   );
 };
+
+export default Tutorial;
 
 const PageWrapper = styled.div`
   width: 100%;

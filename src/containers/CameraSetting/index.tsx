@@ -5,7 +5,7 @@ import { Header } from "../../components/Header";
 import { MediaStream } from "../../components/MediaStream";
 import { useCamera } from "../../hooks/useCamera";
 
-export const CameraSetting = () => {
+const CameraSetting = () => {
   const { preferredCameraId, setPreferredCameraId, cameraList } = useCamera();
 
   return (
@@ -37,6 +37,8 @@ export const CameraSetting = () => {
     </PageWrapper>
   );
 };
+
+export default CameraSetting;
 
 const PageWrapper = styled.div`
   width: 100%;

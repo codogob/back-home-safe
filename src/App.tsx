@@ -4,16 +4,16 @@ import { createGlobalStyle } from "styled-components";
 import { Route, HashRouter, Redirect } from "react-router-dom";
 import { Welcome } from "./containers/Welcome";
 import { Confirm } from "./containers/Confirm";
-import { QRReader } from "./containers/QRReader";
 import adapter from "webrtc-adapter";
 import { AnimatedSwitch } from "./components/AnimatedSwitch";
-import { CameraSetting } from "./containers/CameraSetting";
 import { useCamera } from "./hooks/useCamera";
 import { useLocalStorage } from "./hooks/useLocalStorage";
-import { Tutorial } from "./containers/Tutorial";
 import { PageLoading } from "./components/PageLoading";
 
 const QRGenerator = React.lazy(() => import("./containers/QRGenerator"));
+const QRReader = React.lazy(() => import("./containers/QRReader"));
+const CameraSetting = React.lazy(() => import("./containers/CameraSetting"));
+const Tutorial = React.lazy(() => import("./containers/Tutorial"));
 
 export const App = () => {
   const { hasCameraSupport } = useCamera();
@@ -37,11 +37,12 @@ export const App = () => {
           <Route exact path="/">
             <Welcome />
           </Route>
+          <Route exact path="/confirm">
+            // Don't split, to provide smooth transition between QR and confirm
+            <Confirm />
+          </Route>
           <Route exact path="/qrGenerator">
             <QRGenerator />
-          </Route>
-          <Route exact path="/confirm">
-            <Confirm />
           </Route>
           {hasCameraSupport && (
             <Route exact path="/qrReader">

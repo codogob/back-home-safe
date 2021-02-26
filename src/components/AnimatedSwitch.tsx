@@ -27,6 +27,7 @@ export const AnimatedSwitch = (props: Props) => {
         zIndex: styles.zIndex,
         transform: `translateX(${styles.offset}%)`,
       })}
+      runOnMount
     />
   );
 };

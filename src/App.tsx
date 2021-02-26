@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 import { createGlobalStyle } from "styled-components";
 
 import { Route, HashRouter, Redirect } from "react-router-dom";
@@ -6,12 +6,13 @@ import { Welcome } from "./containers/Welcome";
 import { Confirm } from "./containers/Confirm";
 import { QRReader } from "./containers/QRReader";
 import adapter from "webrtc-adapter";
-import { QRGenerator } from "./containers/QRGeneartor";
 import { AnimatedSwitch } from "./components/AnimatedSwitch";
 import { CameraSetting } from "./containers/CameraSetting";
 import { useCamera } from "./hooks/useCamera";
 import { useLocalStorage } from "./hooks/useLocalStorage";
 import { Tutorial } from "./containers/Tutorial";
+
+const QRGenerator = React.lazy(() => import("./containers/QRGeneartor"));
 
 function App() {
   const { hasCameraSupport } = useCamera();
@@ -22,7 +23,7 @@ function App() {
   }, []);
 
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <GlobalStyle />
       <HashRouter basename="/">
         <AnimatedSwitch>
@@ -54,7 +55,7 @@ function App() {
           <Redirect to="/" />
         </AnimatedSwitch>
       </HashRouter>
-    </>
+    </Suspense>
   );
 }
 

@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle } from "react";
+import React, { forwardRef, useImperativeHandle, useState } from "react";
 
 import styled from "styled-components";
 import Picker from "pickerjs";
@@ -6,9 +6,12 @@ import "pickerjs/dist/picker.min.css";
 
 export type DatePickerHandler = {
   init: () => void;
+  getValue: () => Date;
 };
 
 export const DatePicker = forwardRef((props: any, ref: any) => {
+  const [pickerInstance, setPickerInstance] = useState<Picker | null>(null);
+
   // mount effect wont work on model, need to call this after onAfterOpen event
   useImperativeHandle(ref, () => ({
     init: () => {
@@ -16,10 +19,19 @@ export const DatePicker = forwardRef((props: any, ref: any) => {
         ".js-inline-picker"
       ) as HTMLElement | null;
       if (!ele) return;
-      new Picker(ele, {
-        inline: true,
-        rows: 2,
-      });
+      setPickerInstance(
+        new Picker(ele, {
+          inline: true,
+          rows: 2,
+          pick: (e) => {
+            console.log(e);
+          },
+        })
+      );
+    },
+    getValue: () => {
+      if (!pickerInstance) return "";
+      return pickerInstance.getDate();
     },
   }));
 

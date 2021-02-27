@@ -1,15 +1,12 @@
 import { any, hasIn } from "ramda";
-import { useLocalStorage } from "react-use";
 import constate from "constate";
 import { useCallback, useEffect, useState } from "react";
+import { useLocalStorage } from "./useLocalStorage";
 
 export const [UseCameraProvider, useCamera] = constate(() => {
   const [hasCameraSupport] = useState("mediaDevices" in navigator);
 
-  const [cameraId, setCameraId] = useLocalStorage(
-    "preferred_camera_id",
-    "AUTO"
-  );
+  const { preferredCameraId, setPreferredCameraId } = useLocalStorage();
   const [cameraList, setCameraList] = useState<InputDeviceInfo[] | null>(null);
 
   const initCameraList = useCallback(async () => {
@@ -41,19 +38,22 @@ export const [UseCameraProvider, useCamera] = constate(() => {
   useEffect(() => {
     if (
       cameraList !== null &&
-      cameraId !== "AUTO" &&
-      !any(({ deviceId }) => deviceId === cameraId, cameraList)
+      preferredCameraId !== "AUTO" &&
+      !any(({ deviceId }) => deviceId === preferredCameraId, cameraList)
     ) {
-      setCameraId("AUTO");
+      setPreferredCameraId("AUTO");
     }
-  }, [cameraList, setCameraId, cameraId]);
+  }, [cameraList, setPreferredCameraId, preferredCameraId]);
 
   return {
-    cameraId: !any(({ deviceId }) => deviceId === cameraId, cameraList || [])
+    preferredCameraId: !any(
+      ({ deviceId }) => deviceId === preferredCameraId,
+      cameraList || []
+    )
       ? "AUTO"
-      : cameraId,
+      : preferredCameraId,
     cameraList: cameraList || [],
-    setCameraId,
+    setPreferredCameraId,
     hasCameraSupport,
   };
 });

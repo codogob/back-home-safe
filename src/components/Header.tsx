@@ -5,15 +5,17 @@ import back from "../assets/back.svg";
 
 type Props = {
   name: string;
-  backPath: string;
+  backPath?: string;
 };
 
 export const Header = ({ name, backPath }: Props) => {
   return (
     <Wrapper>
-      <Link to={backPath}>
-        <BackButton src={back} />
-      </Link>
+      {backPath && (
+        <Link to={backPath}>
+          <BackButton src={back} />
+        </Link>
+      )}
       {name}
     </Wrapper>
   );

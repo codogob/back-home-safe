@@ -1,73 +1,74 @@
-import React, { useState, useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 import { createGlobalStyle } from "styled-components";
 
 import { Route, HashRouter, Redirect } from "react-router-dom";
-import { Welcome } from "./containers/Welcome";
 import { Confirm } from "./containers/Confirm";
-import { QRReader } from "./containers/QRReader";
-import { PWAPrompt } from "./components/PWAPrompt";
-import { disableBodyScroll } from "body-scroll-lock";
 import adapter from "webrtc-adapter";
-import { QRGenerator } from "./containers/QRGeneartor";
-import { checkPwaInstalled } from "./utils/appCheck";
 import { AnimatedSwitch } from "./components/AnimatedSwitch";
-import { CameraSetting } from "./containers/CameraSetting";
-import { useCamera } from "./hooks/useCamera";
+import { useLocalStorage } from "./hooks/useLocalStorage";
+import { PageLoading } from "./components/PageLoading";
 
-function App() {
-  const { hasCameraSupport } = useCamera();
-  const [showPWAPrompt, setShowPWAPrompt] = useState(!checkPwaInstalled());
+const QRGenerator = React.lazy(() => import("./containers/QRGenerator"));
+const QRReader = React.lazy(() => import("./containers/QRReader"));
+const CameraSetting = React.lazy(() => import("./containers/CameraSetting"));
+const Tutorial = React.lazy(() => import("./containers/Tutorial"));
+const Main = React.lazy(() => import("./containers/Main"));
+const Disclaimer = React.lazy(() => import("./containers/Disclaimer"));
+const Login = React.lazy(() => import("./containers/Login"));
+
+export const App = () => {
+  const { finishedTutorial, unlocked, logout } = useLocalStorage();
 
   useEffect(() => {
     console.log(adapter.browserDetails.browser, adapter.browserDetails.version);
-  }, []);
 
-  useEffect(() => {
-    const root = document.querySelector("#root");
-    if (!root) return;
-    disableBodyScroll(root);
-  }, []);
+    window.addEventListener("blur", () => {
+      logout();
+    });
+  }, [logout]);
 
   return (
-    <>
+    <Suspense fallback={<PageLoading />}>
       <GlobalStyle />
-      {showPWAPrompt ? (
-        <PWAPrompt
-          onDismiss={() => {
-            setShowPWAPrompt(false);
-          }}
-        />
-      ) : (
-        <HashRouter basename="/">
-          <AnimatedSwitch>
-            <Route exact path="/">
-              <Welcome />
+      <HashRouter basename="/">
+        <AnimatedSwitch>
+          {!unlocked && (
+            <Route exact path="/login">
+              <Login />
             </Route>
-            <Route exact path="/qrGenerator">
-              <QRGenerator />
+          )}
+          {!unlocked && <Redirect to="/login" />}
+          {!finishedTutorial && (
+            <Route exact path="/tutorial">
+              <Tutorial />
             </Route>
-            <Route exact path="/confirm">
-              <Confirm />
-            </Route>
-            {hasCameraSupport && (
-              <Route exact path="/qrReader">
-                <QRReader />
-              </Route>
-            )}
-            {hasCameraSupport && (
-              <Route exact path="/cameraSetting">
-                <CameraSetting />
-              </Route>
-            )}
-            <Redirect to="/" />
-          </AnimatedSwitch>
-        </HashRouter>
-      )}
-    </>
+          )}
+          {!finishedTutorial && <Redirect to="/tutorial" />}
+          <Route exact path="/">
+            <Main />
+          </Route>
+          <Route exact path="/confirm">
+            {/* Don't split, to provide smooth transition between QR and confirm */}
+            <Confirm />
+          </Route>
+          <Route exact path="/qrGenerator">
+            <QRGenerator />
+          </Route>
+          <Route exact path="/disclaimer">
+            <Disclaimer />
+          </Route>
+          <Route exact path="/qrReader">
+            <QRReader />
+          </Route>
+          <Route exact path="/cameraSetting">
+            <CameraSetting />
+          </Route>
+          <Redirect to="/" />
+        </AnimatedSwitch>
+      </HashRouter>
+    </Suspense>
   );
-}
-
-export default App;
+};
 
 const GlobalStyle = createGlobalStyle`
 html {

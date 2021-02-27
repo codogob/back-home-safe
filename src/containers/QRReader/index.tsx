@@ -1,22 +1,48 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { getVenueName } from "../../utils/qr";
+import { getVenueName, qrDecode } from "../../utils/qr";
 import qrOverlay from "../../assets/qrOverlay.svg";
 import { QRCodeReader } from "../../components/QRCodeReader";
 import { QRCode } from "jsqr";
-import { isEmpty } from "ramda";
+import { isEmpty, trim } from "ramda";
 import { Header } from "../../components/Header";
+import {
+  travelRecordInputType,
+  travelRecordType,
+  useTravelRecord,
+} from "../../hooks/useTravelRecord";
+import { dayjs } from "../../utils/dayjs";
 
-export const QRReader = () => {
+const QRReader = () => {
+  const [qrResult, setQrResult] = useState<string | null>(null);
   const browserHistory = useHistory();
+  const { createTravelRecord } = useTravelRecord();
 
   const handleScan = ({ data }: QRCode) => {
     if (!data || isEmpty(data)) return;
-    const place = getVenueName(data);
-    if (isEmpty(place)) return;
-    browserHistory.push({ pathname: "/confirm", search: `?place=${place}` });
+    const decodedJson = qrDecode(data);
+    if (!decodedJson) return;
+
+    setQrResult(data);
   };
+
+  useEffect(() => {
+    if (!qrResult) return;
+    const decodedJson = qrDecode(qrResult);
+    if (!decodedJson || !getVenueName(decodedJson)) return;
+    createTravelRecord({
+      venueId: decodedJson.venueId,
+      nameZh: trim(decodedJson.nameZh),
+      nameEn: trim(decodedJson.nameEn),
+      type: travelRecordType.PLACE,
+      inputType: travelRecordInputType.SCAN,
+      inTime: dayjs().toISOString(),
+    });
+
+    browserHistory.push({ pathname: "/confirm" });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [qrResult, browserHistory]);
 
   return (
     <PageWrapper>
@@ -29,6 +55,8 @@ export const QRReader = () => {
     </PageWrapper>
   );
 };
+
+export default QRReader;
 
 const PageWrapper = styled.div`
   width: 100%;

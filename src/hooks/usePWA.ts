@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { checkPwaInstalled } from "../utils/appCheck";
 
 interface IBeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
@@ -9,11 +10,9 @@ interface IBeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>;
 }
 
-export const useInstallPrompt = (): [
-  IBeforeInstallPromptEvent | null,
-  () => void
-] => {
+export const usePWA = () => {
   const [prompt, setState] = useState<IBeforeInstallPromptEvent | null>(null);
+  const [isInstalled] = useState(checkPwaInstalled());
 
   const promptToInstall = () => {
     if (prompt) {
@@ -55,5 +54,5 @@ export const useInstallPrompt = (): [
     };
   }, []);
 
-  return [prompt, promptToInstall];
+  return { prompt, promptToInstall, isInstalled };
 };

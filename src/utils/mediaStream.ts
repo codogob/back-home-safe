@@ -1,4 +1,7 @@
-import { isIOS } from "react-device-detect";
+export enum mediaStreamErrorType {
+  GET_USER_MEDIA_NOT_FOUND = "GET_USER_MEDIA_NOT_FOUND",
+  CAMERA_ACTIVATE_ERROR = "CAMERA_ACTIVATE_ERROR",
+}
 
 export const getMediaStream = async (cameraId?: string) => {
   if ("mediaDevices" in navigator) {
@@ -11,16 +14,10 @@ export const getMediaStream = async (cameraId?: string) => {
         audio: false,
       });
     } catch (e) {
-      alert("未能開啟相機鏡頭，請到相機設定進行設置");
       console.log(e);
-      return null;
+      throw new Error(mediaStreamErrorType.CAMERA_ACTIVATE_ERROR);
     }
   } else {
-    alert(
-      isIOS
-        ? "getUserMedia is not implemented in this browser, 請確保裝置在IOS 14或以上"
-        : "getUserMedia is not implemented in this browser"
-    );
-    return null;
+    throw new Error(mediaStreamErrorType.GET_USER_MEDIA_NOT_FOUND);
   }
 };

@@ -1,15 +1,23 @@
-import { Button, TextField } from "@material-ui/core";
+import { Button, Snackbar, TextField } from "@material-ui/core";
 import React, { useState } from "react";
 import styled from "styled-components";
 import LockIcon from "@material-ui/icons/Lock";
 import { isEmpty } from "ramda";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
+import MuiAlert from "@material-ui/lab/Alert";
+
 const Login = () => {
   const [password, setPassword] = useState("");
   const { login } = useLocalStorage();
+  const [showPasswordError, setShowPasswordError] = useState(false);
 
   const handleLogin = () => {
-    login(password);
+    const success = login(password);
+
+    if (!success) {
+      setShowPasswordError(true);
+      setPassword("");
+    }
   };
 
   return (
@@ -17,7 +25,12 @@ const Login = () => {
       <Wrapper>
         <Unlock />
         <div>請輸入密碼解鎖</div>
-        <InputWrapper>
+        <InputWrapper
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleLogin();
+          }}
+        >
           <TextField
             type="password"
             value={password}
@@ -30,13 +43,25 @@ const Login = () => {
               variant="contained"
               color="secondary"
               disabled={isEmpty(password)}
-              onClick={handleLogin}
+              type="submit"
             >
               解鎖
             </Button>
           </ButtonWrapper>
         </InputWrapper>
       </Wrapper>
+      <Snackbar
+        open={showPasswordError}
+        autoHideDuration={2000}
+        onClose={() => {
+          setShowPasswordError(false);
+        }}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <MuiAlert elevation={6} variant="filled" severity="error">
+          密碼錯誤
+        </MuiAlert>
+      </Snackbar>
     </PageWrapper>
   );
 };
@@ -69,7 +94,7 @@ const ButtonWrapper = styled.div`
   margin-top: 12px;
 `;
 
-const InputWrapper = styled.div`
+const InputWrapper = styled.form`
   font-size: 12px;
   margin: 24px 0;
 

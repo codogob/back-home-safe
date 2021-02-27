@@ -17,11 +17,15 @@ const Disclaimer = React.lazy(() => import("./containers/Disclaimer"));
 const Login = React.lazy(() => import("./containers/Login"));
 
 export const App = () => {
-  const { finishedTutorial, unlocked } = useLocalStorage();
+  const { finishedTutorial, unlocked, logout } = useLocalStorage();
 
   useEffect(() => {
     console.log(adapter.browserDetails.browser, adapter.browserDetails.version);
-  }, []);
+
+    window.addEventListener("blur", () => {
+      logout();
+    });
+  }, [logout]);
 
   return (
     <Suspense fallback={<PageLoading />}>

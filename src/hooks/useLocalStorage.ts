@@ -90,6 +90,10 @@ export const [UseLocalStorageProvider, useLocalStorage] = constate(() => {
     [passwordHash]
   );
 
+  const logout = useCallback(() => {
+    setPassword(null);
+  }, []);
+
   return {
     preferredCameraId,
     setPreferredCameraId,
@@ -104,5 +108,6 @@ export const [UseLocalStorageProvider, useLocalStorage] = constate(() => {
     setPasswordHash,
     hasPassword,
     login,
+    logout,
   };
 });

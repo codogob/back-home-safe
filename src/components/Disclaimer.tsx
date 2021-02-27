@@ -7,7 +7,7 @@ export const Disclaimer = () => {
       <p>
         安心回家（下簡稱「本軟件」）只用作漸進式網路應用程式 (Progressive Web
         Apps) 學術討論用途， 用於示範不同 mobile app 功能於網頁上的實現方式（如
-        QR code reader）。
+        QR code 掃瞄，前端資料加密等等）。
       </p>
       <p>
         本軟件未有以任何方式得到香港特別行政區政府（下簡稱「行政區政府」）的認可。

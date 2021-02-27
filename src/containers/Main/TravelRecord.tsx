@@ -26,8 +26,8 @@ export const TravelRecord = () => {
           {travelRecord.map((item, index) => {
             const name = getVenueName(item);
             return (
-              <>
-                <ListItem key={index}>
+              <React.Fragment key={index}>
+                <ListItem>
                   <ListItemText
                     primary={name}
                     secondary={`${dayjs(item.inTime).format(
@@ -51,7 +51,7 @@ export const TravelRecord = () => {
                   </ListItemSecondaryAction>
                 </ListItem>
                 <Divider />
-              </>
+              </React.Fragment>
             );
           })}
         </List>

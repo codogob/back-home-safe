@@ -57,17 +57,19 @@ const Main = () => {
   return (
     <PageWrapper>
       {component}
-      <BottomNavigation
-        showLabels
-        value={activePage}
-        onChange={(event, newValue) => {
-          setActivePage(newValue);
-        }}
-      >
-        {tabsArr.map(({ key, label, icon }) => (
-          <BottomNavigationAction key={key} label={label} icon={icon} />
-        ))}
-      </BottomNavigation>
+      <NavWrapper>
+        <BottomNavigation
+          showLabels
+          value={activePage}
+          onChange={(event, newValue) => {
+            setActivePage(newValue);
+          }}
+        >
+          {tabsArr.map(({ key, label, icon }) => (
+            <BottomNavigationAction key={key} label={label} icon={icon} />
+          ))}
+        </BottomNavigation>
+      </NavWrapper>
       {currentTravelRecord && (
         <>
           <FloatingButton>
@@ -117,4 +119,9 @@ const FloatingButton = styled.div`
   & button {
     pointer-events: all;
   }
+`;
+
+const NavWrapper = styled.div`
+  flex-shrink: 0;
+  box-shadow: 0 0 3.6px 0 rgb(0 0 0 / 13%), 0 0 0.9px 0 rgb(0 0 0 / 11%);
 `;

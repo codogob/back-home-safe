@@ -14,9 +14,10 @@ const CameraSetting = React.lazy(() => import("./containers/CameraSetting"));
 const Tutorial = React.lazy(() => import("./containers/Tutorial"));
 const Main = React.lazy(() => import("./containers/Main"));
 const Disclaimer = React.lazy(() => import("./containers/Disclaimer"));
+const Login = React.lazy(() => import("./containers/Login"));
 
 export const App = () => {
-  const { finishedTutorial } = useLocalStorage();
+  const { finishedTutorial, unlocked } = useLocalStorage();
 
   useEffect(() => {
     console.log(adapter.browserDetails.browser, adapter.browserDetails.version);
@@ -27,6 +28,12 @@ export const App = () => {
       <GlobalStyle />
       <HashRouter basename="/">
         <AnimatedSwitch>
+          {!unlocked && (
+            <Route exact path="/login">
+              <Login />
+            </Route>
+          )}
+          {!unlocked && <Redirect to="/login" />}
           {!finishedTutorial && (
             <Route exact path="/tutorial">
               <Tutorial />

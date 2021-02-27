@@ -1,16 +1,25 @@
 import { Button, Step, StepLabel, Stepper } from "@material-ui/core";
+import { isEmpty } from "ramda";
 import React, { useMemo, useState } from "react";
 import styled from "styled-components";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { AddToHomeScreen } from "./AddToHomeScreen";
 import { Disclaimer } from "./Disclaimer";
+import { SetupPassword } from "./SetupPassword";
 
 enum steps {
   ADD_TO_HOME_SCREEN = "ADD_TO_HOME_SCREEN",
   DISCLAIMER = "DISCLAIMER",
+  SET_UP_PASSWORD = "SET_UP_PASSWORD",
 }
 
-const stepsSettings = [
+const stepsSettings = ({
+  password,
+  setPassword,
+}: {
+  password: string;
+  setPassword: (value: string) => void;
+}) => [
   {
     key: steps.ADD_TO_HOME_SCREEN,
     name: "新增至主畫面",
@@ -23,22 +32,37 @@ const stepsSettings = [
     nextButtonText: "我同意",
     component: <Disclaimer />,
   },
+  {
+    key: steps.SET_UP_PASSWORD,
+    name: "設定密碼",
+    nextButtonText: !isEmpty(password) ? "設定" : "跳過",
+    component: <SetupPassword value={password} onChange={setPassword} />,
+  },
 ];
 
 const Tutorial = () => {
-  const { setFinishedTutorial } = useLocalStorage();
+  const { setFinishedTutorial, initPassword } = useLocalStorage();
 
   const [activeStep, setActiveStep] = useState(0);
-  const { component, nextButtonText, isLastStep } = useMemo(
-    () => ({
-      ...(stepsSettings[activeStep] || {}),
-      isLastStep: activeStep === stepsSettings.length - 1,
-    }),
-    [activeStep]
-  );
+  const [password, setPassword] = useState("");
+
+  const {
+    activeStepComponent: { component, nextButtonText },
+    isLastStep,
+    allStep,
+  } = useMemo(() => {
+    const allStep = stepsSettings({ password, setPassword });
+
+    return {
+      allStep,
+      activeStepComponent: allStep[activeStep] || {},
+      isLastStep: activeStep === allStep.length - 1,
+    };
+  }, [activeStep, password, setPassword]);
 
   const handleNext = () => {
     if (isLastStep) {
+      !isEmpty(password) && initPassword(password);
       setFinishedTutorial(true);
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -52,7 +76,7 @@ const Tutorial = () => {
   return (
     <PageWrapper>
       <Stepper activeStep={activeStep} alternativeLabel>
-        {stepsSettings.map(({ key, name }) => (
+        {allStep.map(({ key, name }) => (
           <Step key={key}>
             <StepLabel>{name}</StepLabel>
           </Step>

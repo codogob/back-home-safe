@@ -5,6 +5,7 @@ import constate from "constate";
 import { useLocalStorage } from "./useLocalStorage";
 import { useTime } from "./useTime";
 import { Dayjs } from "dayjs";
+import { useShallowCompareEffect } from "react-use";
 
 export enum travelRecordInputType {
   MANUALLY = "MANUALLY",
@@ -41,6 +42,7 @@ export const [UseTravelRecordProvider, useTravelRecord] = constate(() => {
   const {
     travelRecord: savedTravelRecord,
     setTravelRecord: setSavedTravelRecord,
+    unlocked,
   } = useLocalStorage();
 
   const [travelRecord, setTravelRecord] = useState<TravelRecord[]>(
@@ -48,12 +50,15 @@ export const [UseTravelRecordProvider, useTravelRecord] = constate(() => {
   );
 
   useEffect(() => {
+    if (!unlocked) return;
     setTravelRecord(JSON.parse(savedTravelRecord || defaultTravelRecord));
-  }, [savedTravelRecord, setTravelRecord]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [unlocked]);
 
-  useEffect(() => {
+  useShallowCompareEffect(() => {
+    if (!unlocked) return;
     setSavedTravelRecord(JSON.stringify(travelRecord));
-  }, [travelRecord, setSavedTravelRecord]);
+  }, [travelRecord, setSavedTravelRecord, unlocked]);
 
   const getCurrentTravelRecord = useCallback(
     (records: TravelRecord[], currentTime: Dayjs) => {

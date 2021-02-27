@@ -10,7 +10,7 @@ type Props = {
 export const SetupPassword = ({ value, onChange }: Props) => {
   return (
     <Wrapper>
-      <h2>設定密碼</h2>
+      <h2>設定密碼(選用)</h2>
       <p>密碼用於加密出行紀錄</p>
       <TextField
         type="password"

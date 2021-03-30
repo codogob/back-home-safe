@@ -5,6 +5,7 @@ import LockIcon from "@material-ui/icons/Lock";
 import { isEmpty } from "ramda";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import MuiAlert from "@material-ui/lab/Alert";
+import { clearAllData } from "../../utils/clearAllData";
 
 const Login = () => {
   const [password, setPassword] = useState("");
@@ -49,6 +50,7 @@ const Login = () => {
             </Button>
           </ButtonWrapper>
         </InputWrapper>
+        <Button onClick={clearAllData}>重設所有資料</Button>
       </Wrapper>
       <Snackbar
         open={showPasswordError}

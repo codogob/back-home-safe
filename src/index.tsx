@@ -8,6 +8,7 @@ import { UseLocalStorageProvider } from "./hooks/useLocalStorage";
 import { UseTimeProvider } from "./hooks/useTime";
 import { UseTravelRecordProvider } from "./hooks/useTravelRecord";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+import { HashRouter } from "react-router-dom";
 
 const theme = createMuiTheme({
   palette: {
@@ -18,17 +19,19 @@ const theme = createMuiTheme({
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <UseTimeProvider>
-        <UseLocalStorageProvider>
-          <UseTravelRecordProvider>
-            <UseCameraProvider>
-              <App />
-            </UseCameraProvider>
-          </UseTravelRecordProvider>
-        </UseLocalStorageProvider>
-      </UseTimeProvider>
-    </ThemeProvider>
+    <HashRouter basename="/">
+      <ThemeProvider theme={theme}>
+        <UseTimeProvider>
+          <UseLocalStorageProvider>
+            <UseTravelRecordProvider>
+              <UseCameraProvider>
+                <App />
+              </UseCameraProvider>
+            </UseTravelRecordProvider>
+          </UseLocalStorageProvider>
+        </UseTimeProvider>
+      </ThemeProvider>
+    </HashRouter>
   </React.StrictMode>,
   document.getElementById("root")
 );

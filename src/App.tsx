@@ -1,7 +1,7 @@
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense, useCallback, useEffect } from "react";
 import { createGlobalStyle } from "styled-components";
 
-import { Route, HashRouter, Redirect } from "react-router-dom";
+import { Route, HashRouter, Redirect, useLocation } from "react-router-dom";
 import { Confirm } from "./containers/Confirm";
 import adapter from "webrtc-adapter";
 import { AnimatedSwitch } from "./components/AnimatedSwitch";
@@ -18,54 +18,59 @@ const Login = React.lazy(() => import("./containers/Login"));
 
 export const App = () => {
   const { finishedTutorial, unlocked, logout } = useLocalStorage();
+  const { pathname } = useLocation();
+
+  const handleBlur = useCallback(() => {
+    console.log(pathname);
+    if (pathname !== "/qrReader" && pathname !== "/cameraSetting") logout();
+  }, [logout, pathname]);
 
   useEffect(() => {
     console.log(adapter.browserDetails.browser, adapter.browserDetails.version);
 
-    window.addEventListener("blur", () => {
-      logout();
-    });
-  }, [logout]);
+    window.addEventListener("blur", handleBlur);
+    return () => {
+      window.removeEventListener("blur", handleBlur);
+    };
+  }, [handleBlur]);
 
   return (
     <Suspense fallback={<PageLoading />}>
       <GlobalStyle />
-      <HashRouter basename="/">
-        <AnimatedSwitch>
-          {!unlocked && (
-            <Route exact path="/login">
-              <Login />
-            </Route>
-          )}
-          {!unlocked && <Redirect to="/login" />}
-          {!finishedTutorial && (
-            <Route exact path="/tutorial">
-              <Tutorial />
-            </Route>
-          )}
-          {!finishedTutorial && <Redirect to="/tutorial" />}
-          <Route exact path="/">
-            <Main />
+      <AnimatedSwitch>
+        {!unlocked && (
+          <Route exact path="/login">
+            <Login />
           </Route>
-          <Route exact path="/confirm">
-            {/* Don't split, to provide smooth transition between QR and confirm */}
-            <Confirm />
+        )}
+        {!unlocked && <Redirect to="/login" />}
+        {!finishedTutorial && (
+          <Route exact path="/tutorial">
+            <Tutorial />
           </Route>
-          <Route exact path="/qrGenerator">
-            <QRGenerator />
-          </Route>
-          <Route exact path="/disclaimer">
-            <Disclaimer />
-          </Route>
-          <Route exact path="/qrReader">
-            <QRReader />
-          </Route>
-          <Route exact path="/cameraSetting">
-            <CameraSetting />
-          </Route>
-          <Redirect to="/" />
-        </AnimatedSwitch>
-      </HashRouter>
+        )}
+        {!finishedTutorial && <Redirect to="/tutorial" />}
+        <Route exact path="/">
+          <Main />
+        </Route>
+        <Route exact path="/confirm">
+          {/* Don't split, to provide smooth transition between QR and confirm */}
+          <Confirm />
+        </Route>
+        <Route exact path="/qrGenerator">
+          <QRGenerator />
+        </Route>
+        <Route exact path="/disclaimer">
+          <Disclaimer />
+        </Route>
+        <Route exact path="/qrReader">
+          <QRReader />
+        </Route>
+        <Route exact path="/cameraSetting">
+          <CameraSetting />
+        </Route>
+        <Redirect to="/" />
+      </AnimatedSwitch>
     </Suspense>
   );
 };

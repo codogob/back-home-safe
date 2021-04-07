@@ -1,7 +1,7 @@
 import React, { Suspense, useCallback, useEffect } from "react";
 import { createGlobalStyle } from "styled-components";
 
-import { Route, HashRouter, Redirect, useLocation } from "react-router-dom";
+import { Route, Redirect, useLocation } from "react-router-dom";
 import { Confirm } from "./containers/Confirm";
 import adapter from "webrtc-adapter";
 import { AnimatedSwitch } from "./components/AnimatedSwitch";

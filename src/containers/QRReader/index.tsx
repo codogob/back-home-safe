@@ -5,7 +5,7 @@ import { getVenueName, qrDecode } from "../../utils/qr";
 import qrOverlay from "../../assets/qrOverlay.svg";
 import { QRCodeReader } from "../../components/QRCodeReader";
 import { QRCode } from "jsqr";
-import { isEmpty, trim } from "ramda";
+import { isEmpty, propOr, trim } from "ramda";
 import { Header } from "../../components/Header";
 import {
   travelRecordInputType,
@@ -31,10 +31,13 @@ const QRReader = () => {
     if (!qrResult) return;
     const decodedJson = qrDecode(qrResult);
     if (!decodedJson || !getVenueName(decodedJson)) return;
+    const trimmedZhName = trim(propOr("", "nameZh", decodedJson));
+    const trimmedEnName = trim(propOr("", "nameEn", decodedJson));
+
     createTravelRecord({
       venueId: decodedJson.venueId,
-      nameZh: trim(decodedJson.nameZh),
-      nameEn: trim(decodedJson.nameEn),
+      nameZh: trimmedZhName,
+      nameEn: trimmedEnName,
       type: travelRecordType.PLACE,
       inputType: travelRecordInputType.SCAN,
       inTime: dayjs().toISOString(),

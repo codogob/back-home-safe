@@ -4,7 +4,7 @@ import styled from "styled-components";
 import LockIcon from "@material-ui/icons/Lock";
 import { isEmpty } from "ramda";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
-import MuiAlert from "@material-ui/lab/Alert";
+import { Alert } from "@material-ui/lab";
 import { clearAllData } from "../../utils/clearAllData";
 
 const Login = () => {
@@ -60,9 +60,9 @@ const Login = () => {
         }}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
-        <MuiAlert elevation={6} variant="filled" severity="error">
+        <Alert elevation={6} variant="filled" severity="error">
           密碼錯誤
-        </MuiAlert>
+        </Alert>
       </Snackbar>
     </PageWrapper>
   );

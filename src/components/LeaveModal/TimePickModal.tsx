@@ -8,7 +8,7 @@ import { DatePicker, DatePickerHandler } from "../../components/DatePicker";
 import { dayjs } from "../../utils/dayjs";
 import { Dayjs } from "dayjs";
 import { Snackbar } from "@material-ui/core";
-import MuiAlert from "@material-ui/lab/Alert";
+import { Alert } from "@material-ui/lab";
 import { useTime } from "../../hooks/useTime";
 
 type Props = {
@@ -90,9 +90,9 @@ export const TimePickModal = ({
         }}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
-        <MuiAlert elevation={6} variant="filled" severity="error">
+        <Alert elevation={6} variant="filled" severity="error">
           離開日期不能早於進入日期
-        </MuiAlert>
+        </Alert>
       </Snackbar>
       <Snackbar
         open={showFutureDateError}
@@ -102,9 +102,9 @@ export const TimePickModal = ({
         }}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
-        <MuiAlert elevation={6} variant="filled" severity="error">
+        <Alert elevation={6} variant="filled" severity="error">
           離開日期不能是未來
-        </MuiAlert>
+        </Alert>
       </Snackbar>
     </Modal>
   );

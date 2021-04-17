@@ -81,15 +81,17 @@ export const Home = () => {
               >
                 話去就去!
               </Button>
-              <Link to="/qrReader">
-                <Button
-                  size="small"
-                  color="primary"
-                  disabled={!isNil(currentTravelRecord)}
-                >
+              {isNil(currentTravelRecord) ? (
+                <Link to="/qrReader">
+                  <Button size="small" color="primary">
+                    掃瞄二維碼
+                  </Button>
+                </Link>
+              ) : (
+                <Button size="small" color="primary" disabled>
                   掃瞄二維碼
                 </Button>
-              </Link>
+              )}
             </CardActions>
           </StyledCard>
           <StyledCard>

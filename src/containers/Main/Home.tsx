@@ -20,6 +20,8 @@ import { useTime } from "../../hooks/useTime";
 
 export const Home = () => {
   const [place, setPlace] = useState("");
+  const [license, setLicense] = useState("");
+
   const browserHistory = useHistory();
   const { createTravelRecord, currentTravelRecord } = useTravelRecord();
   const { currentTime } = useTime();
@@ -39,6 +41,17 @@ export const Home = () => {
     browserHistory.push({ pathname: "/confirm" });
   };
 
+  const handleTaxiSubmit = () => {
+    createTravelRecord({
+      venueId: license,
+      type: travelRecordType.TAXI,
+      inputType: travelRecordInputType.MANUALLY,
+      inTime: dayjs().toISOString(),
+    });
+
+    browserHistory.push({ pathname: "/confirm" });
+  };
+
   return (
     <>
       <Welcome>
@@ -46,38 +59,63 @@ export const Home = () => {
           <div>{today}</div>
           <h2>記錄你的到訪</h2>
         </Title>
-        <StyledCard>
-          <CardContent>
-            <Typography color="textSecondary" gutterBottom>
-              我想去
-            </Typography>
-            <StyledPlace
-              value={place}
-              onChange={setPlace}
-              placeholder="輸入地址"
-              readOnly={!isNil(currentTravelRecord)}
-            />
-          </CardContent>
-          <CardActions>
-            <Button
-              size="small"
-              color="primary"
-              disabled={isEmpty(trim(place)) || !isNil(currentTravelRecord)}
-              onClick={handlePlaceSubmit}
-            >
-              話去就去!
-            </Button>
-            <Link to="/qrReader">
+        <Slider>
+          <StyledCard>
+            <CardContent>
+              <Typography color="textSecondary" gutterBottom>
+                我想去
+              </Typography>
+              <StyledPlace
+                value={place}
+                onChange={setPlace}
+                placeholder="輸入地址"
+                readOnly={!isNil(currentTravelRecord)}
+              />
+            </CardContent>
+            <CardActions>
               <Button
                 size="small"
                 color="primary"
-                disabled={!isNil(currentTravelRecord)}
+                disabled={isEmpty(trim(place)) || !isNil(currentTravelRecord)}
+                onClick={handlePlaceSubmit}
               >
-                掃瞄二維碼
+                話去就去!
               </Button>
-            </Link>
-          </CardActions>
-        </StyledCard>
+              <Link to="/qrReader">
+                <Button
+                  size="small"
+                  color="primary"
+                  disabled={!isNil(currentTravelRecord)}
+                >
+                  掃瞄二維碼
+                </Button>
+              </Link>
+            </CardActions>
+          </StyledCard>
+          <StyledCard>
+            <CardContent>
+              <Typography color="textSecondary" gutterBottom>
+                我搭緊
+              </Typography>
+              <StyledPlace
+                value={license}
+                onChange={setLicense}
+                placeholder="輸入車牌"
+                readOnly={!isNil(currentTravelRecord)}
+              />
+            </CardContent>
+            <CardActions>
+              <Button
+                size="small"
+                color="primary"
+                disabled={isEmpty(trim(license)) || !isNil(currentTravelRecord)}
+                onClick={handleTaxiSubmit}
+              >
+                話搭就搭!
+              </Button>
+            </CardActions>
+          </StyledCard>
+        </Slider>
       </Welcome>
       <ContentWrapper />
     </>
@@ -94,10 +132,31 @@ const Title = styled.div`
 `;
 
 const StyledCard = styled(Card)`
-  position: absolute;
-  left: 24px;
-  right: 24px;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
+  min-width: 80vw;
+`;
+
+const Slider = styled.div`
+  position: absolute;
+  display: flex;
+  overflow: auto;
+  width: 100%;
+  left: 0;
+  padding: 16px 0;
+
+  &::before {
+    content: "";
+    flex: 0 0 24px;
+  }
+
+  &::after {
+    content: "";
+    flex: 0 0 24px;
+  }
+
+  & ${StyledCard}:not(:last-child) {
+    margin-right: 16px;
+  }
 `;
 
 const StyledPlace = styled(Place)`

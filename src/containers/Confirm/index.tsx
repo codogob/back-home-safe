@@ -10,10 +10,11 @@ import { Place } from "../../components/Place";
 import { AutoLeaveModal } from "./AutoLeaveModal";
 import { CheckBox } from "../../components/CheckBox";
 import { dayjs } from "../../utils/dayjs";
-import { useTravelRecord } from "../../hooks/useTravelRecord";
+import { travelRecordType, useTravelRecord } from "../../hooks/useTravelRecord";
 import { getVenueName } from "../../utils/qr";
 import { Dayjs } from "dayjs";
 import { LeaveModal } from "../../components/LeaveModal";
+import { propOr } from "ramda";
 
 export const Confirm = () => {
   const browserHistory = useHistory();
@@ -58,6 +59,8 @@ export const Confirm = () => {
     });
   }, [autoLeave, date, autoLeaveHour, updateCurrentTravelRecord]);
 
+  const venueType = propOr(travelRecordType.PLACE, "type", currentTravelRecord);
+
   return (
     <>
       <PageWrapper>
@@ -67,7 +70,15 @@ export const Confirm = () => {
           </Link>
         </Header>
         <MessageWrapper>
-          <Msg>你已進入場所</Msg>
+          {venueType === travelRecordType.TAXI ? (
+            <>
+              <Msg>你已進入的士</Msg>
+              <License>車牌號碼:</License>
+            </>
+          ) : (
+            <Msg>你已進入場所</Msg>
+          )}
+
           <PlaceWrapper>
             <Place value={place || ""} readOnly />
           </PlaceWrapper>
@@ -180,6 +191,10 @@ const Msg = styled.div`
   color: #ffffff;
   text-align: center;
   font-size: 15px;
+`;
+
+const License = styled(Msg)`
+  margin-top: 8px;
 `;
 
 const Time = styled.div`

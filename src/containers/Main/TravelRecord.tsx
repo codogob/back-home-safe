@@ -5,12 +5,14 @@ import {
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
+  ListItemIcon,
 } from "@material-ui/core";
-
+import StoreIcon from "@material-ui/icons/Store";
+import LocalTaxiIcon from "@material-ui/icons/LocalTaxi";
 import React from "react";
 import styled from "styled-components";
 import { Header } from "../../components/Header";
-import { useTravelRecord } from "../../hooks/useTravelRecord";
+import { travelRecordType, useTravelRecord } from "../../hooks/useTravelRecord";
 import { getVenueName } from "../../utils/qr";
 import dayjs from "dayjs";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -28,6 +30,13 @@ export const TravelRecord = () => {
             return (
               <React.Fragment key={index}>
                 <ListItem>
+                  <ListItemIcon>
+                    {item.type === travelRecordType.TAXI ? (
+                      <LocalTaxiIcon />
+                    ) : (
+                      <StoreIcon />
+                    )}
+                  </ListItemIcon>
                   <ListItemText
                     primary={name}
                     secondary={`${dayjs(item.inTime).format(

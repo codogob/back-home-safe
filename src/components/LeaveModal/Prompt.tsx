@@ -5,6 +5,7 @@ import crossBlack from "../../assets/crossBlack.svg";
 import styled from "styled-components";
 import { ModalConfirmButton } from "../Button";
 import dayjs, { Dayjs } from "dayjs";
+import { travelRecordType } from "../../hooks/useTravelRecord";
 
 type Props = {
   isModalOpen: boolean;
@@ -14,6 +15,7 @@ type Props = {
   place: string;
   date: Dayjs;
   outTime?: string;
+  venueType: travelRecordType;
 };
 
 export const Prompt = ({
@@ -24,8 +26,11 @@ export const Prompt = ({
   place,
   date,
   outTime,
+  venueType,
 }: Props) => {
   const toDate = useMemo(() => dayjs(outTime), [outTime]);
+
+  const heightBase = outTime ? 430 : 390;
 
   return (
     <Modal
@@ -45,7 +50,10 @@ export const Prompt = ({
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          height: outTime ? "430px" : "390px",
+          height:
+            venueType === travelRecordType.TAXI
+              ? `${heightBase + 24}px`
+              : `${heightBase}px`,
           overflow: "hidden",
         },
       }}
@@ -54,7 +62,14 @@ export const Prompt = ({
       <CrossWrapper>
         <Cross src={crossBlack} onClick={onCancel} />
       </CrossWrapper>
-      <Msg>你已進入場所</Msg>
+      {venueType === travelRecordType.TAXI ? (
+        <>
+          <Msg>你已進入的士</Msg>
+          <License>車牌號碼:</License>
+        </>
+      ) : (
+        <Msg>你已進入場所</Msg>
+      )}
       <Place>{place}</Place>
       <Time>{date.format("YYYY-MM-DD HH:mm")}</Time>
       <Title>你現在要離開嗎？</Title>
@@ -96,6 +111,10 @@ const GreenButton = styled(ModalConfirmButton)`
 const Msg = styled.div`
   text-align: center;
   font-size: 16px;
+`;
+
+const License = styled(Msg)`
+  margin-top: 8px;
 `;
 
 const Time = styled.div`

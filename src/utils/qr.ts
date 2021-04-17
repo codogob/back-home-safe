@@ -62,7 +62,8 @@ export const getVenueName = (
     ? trimmedZhName
     : !isEmpty(trimmedEnName)
     ? trimmedEnName
-    : decodedJson.venueId || "";
+    : // used for taxi license
+      decodedJson.venueId || "";
 
   return name;
 };

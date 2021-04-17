@@ -1,7 +1,8 @@
 import { Dayjs } from "dayjs";
+import { propOr } from "ramda";
 import React, { useMemo, useState } from "react";
 import { useTime } from "../../hooks/useTime";
-import { useTravelRecord } from "../../hooks/useTravelRecord";
+import { travelRecordType, useTravelRecord } from "../../hooks/useTravelRecord";
 import { dayjs } from "../../utils/dayjs";
 import { getVenueName } from "../../utils/qr";
 import { Prompt } from "./Prompt";
@@ -30,6 +31,12 @@ export const LeaveModal = ({ visible, onDiscard, onFinish }: Props) => {
     onFinish(time);
   };
 
+  const venueType = propOr<
+    travelRecordType,
+    typeof currentTravelRecord,
+    travelRecordType
+  >(travelRecordType.PLACE, "type", currentTravelRecord);
+
   return !currentTravelRecord ? (
     <></>
   ) : (
@@ -47,6 +54,7 @@ export const LeaveModal = ({ visible, onDiscard, onFinish }: Props) => {
         place={place || ""}
         date={dayjs(currentTravelRecord.inTime)}
         outTime={currentTravelRecord.outTime}
+        venueType={venueType}
       />
       <TimePickModal
         isModalOpen={visible && isTimePickModalOpen}

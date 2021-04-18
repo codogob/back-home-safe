@@ -10,9 +10,7 @@ type Props = {
 export const QRCodeReader = ({ onDecode }: Props) => {
   const handleFrame = useCallback(
     (imageData: ImageData) => {
-      const code = jsQR(imageData.data, imageData.width, imageData.height, {
-        inversionAttempts: "dontInvert",
-      });
+      const code = jsQR(imageData.data, imageData.width, imageData.height);
       code && onDecode(code);
     },
     [onDecode]

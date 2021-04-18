@@ -15,3 +15,24 @@ pages:
       - public
   only:
     - master
+
+"Release":
+  image: node:latest
+  allow_failure: false
+  before_script:
+    - git config --global user.email "bot@_.com"
+    - git config --global user.name "Auto Bot"
+    - git clone http://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/codogo-b/back-home-safe.git &> /dev/null
+    - git checkout -qf master
+    - cd back-home-safe
+    - npm ci
+  only:
+    variables:
+      - $GIT_LAB_USERNAME != null
+      - $PERSONAL_ACCESS_TOKEN != null
+      - $CI_COMMIT_BRANCH == 'master'
+  environment:
+    name: production
+  script:
+    - npm run release
+    - git push http://${GIT_LAB_USERNAME}:${PERSONAL_ACCESS_TOKEN}@gitlab.com/codogo-b/back-home-safe.git --verbose --no-verify --follow-tags HEAD:master

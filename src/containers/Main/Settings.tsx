@@ -81,6 +81,7 @@ const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   background-color: #fff;
+  overflow: auto;
 `;
 
 const ContentWrapper = styled.div`

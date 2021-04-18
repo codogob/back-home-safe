@@ -19,7 +19,7 @@ export const Settings = () => {
     <PageWrapper>
       <Header name="設定" />
       <ContentWrapper>
-        <List component="nav" subheader={<ListSubheader>常用</ListSubheader>}>
+        <StyledList subheader={<ListSubheader>常用</ListSubheader>}>
           {hasCameraSupport ? (
             <StyledLink to="/cameraSetting">
               <ListItem button>
@@ -36,9 +36,9 @@ export const Settings = () => {
               <ListItemText primary="免責聲明" />
             </ListItem>
           </StyledLink>
-        </List>
+        </StyledList>
         <Divider />
-        <List component="nav" subheader={<ListSubheader>實驗室</ListSubheader>}>
+        <StyledList subheader={<ListSubheader>實驗室</ListSubheader>}>
           <StyledLink to="/qrGenerator">
             <ListItem button>
               <ListItemText primary="生成二維碼" />
@@ -47,10 +47,9 @@ export const Settings = () => {
           <ListItem button>
             <ListItemText primary="重設所有資料" onClick={clearAllData} />
           </ListItem>
-        </List>
+        </StyledList>
         <Divider />
-        <List
-          component="nav"
+        <StyledList
           subheader={<ListSubheader>版本: {packageJson.version}</ListSubheader>}
         >
           <StyledExternalLink
@@ -69,7 +68,7 @@ export const Settings = () => {
               <ListItemText primary="回報問題" />
             </ListItem>
           </StyledExternalLink>
-        </List>
+        </StyledList>
       </ContentWrapper>
     </PageWrapper>
   );
@@ -96,4 +95,8 @@ const StyledLink = styled(Link)`
 
 const StyledExternalLink = styled.a`
   color: unset;
+`;
+
+const StyledList = styled(List)`
+  background-color: #fff;
 `;

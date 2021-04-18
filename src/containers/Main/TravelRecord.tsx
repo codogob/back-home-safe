@@ -3,19 +3,21 @@ import {
   IconButton,
   List,
   ListItem,
+  ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
-  ListItemIcon,
 } from "@material-ui/core";
-import StoreIcon from "@material-ui/icons/Store";
+import DeleteIcon from "@material-ui/icons/Delete";
 import LocalTaxiIcon from "@material-ui/icons/LocalTaxi";
+import StoreIcon from "@material-ui/icons/Store";
+import dayjs from "dayjs";
+import { isEmpty } from "ramda";
 import React from "react";
 import styled from "styled-components";
+
 import { Header } from "../../components/Header";
 import { travelRecordType, useTravelRecord } from "../../hooks/useTravelRecord";
 import { getVenueName } from "../../utils/qr";
-import dayjs from "dayjs";
-import DeleteIcon from "@material-ui/icons/Delete";
 
 export const TravelRecord = () => {
   const { travelRecord, removeTravelRecord } = useTravelRecord();
@@ -25,6 +27,7 @@ export const TravelRecord = () => {
       <Header name="出行紀錄" />
       <ContentWrapper>
         <List component="nav">
+          {isEmpty(travelRecord) && <Msg>沒有出行紀錄</Msg>}
           {travelRecord.map((item, index) => {
             const name = getVenueName(item);
             return (
@@ -82,4 +85,11 @@ const ContentWrapper = styled.div`
   width: 100%;
   height: 100%;
   overflow: auto;
+`;
+
+const Msg = styled.div`
+  text-align: center;
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 0.875rem;
+  line-height: 48px;
 `;

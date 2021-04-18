@@ -8,10 +8,11 @@ import {
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+
+import packageJson from "../../../package.json";
 import { Header } from "../../components/Header";
 import { useCamera } from "../../hooks/useCamera";
 import { clearAllData } from "../../utils/clearAllData";
-import packageJson from "../../../package.json";
 
 export const Settings = () => {
   const { hasCameraSupport } = useCamera();
@@ -52,6 +53,14 @@ export const Settings = () => {
         <StyledList
           subheader={<ListSubheader>版本: {packageJson.version}</ListSubheader>}
         >
+          <StyledExternalLink
+            href="https://gitlab.com/codogo-b/back-home-safe"
+            target="_blank"
+          >
+            <ListItem button>
+              <ListItemText primary="關於安心回家" />
+            </ListItem>
+          </StyledExternalLink>
           <StyledExternalLink
             href="https://gitlab.com/codogo-b/back-home-safe/-/blob/master/CHANGELOG.md"
             target="_blank"

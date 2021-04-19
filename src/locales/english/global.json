@@ -1,8 +1,8 @@
 {
   "disclaimer": {
-    "1": "安心回家（下簡稱「本軟件」）只用作漸進式網路應用程式 (Progressive WebApps) 學術討論用途， 用於示範不同 mobile app 功能於網頁上的實現方式（如QR code 掃瞄，前端資料加密等等）。",
-    "2": "本軟件未有以任何方式得到香港特別行政區政府（下簡稱「特區政府」）的認可。與特區政府推出的「安心出行」應用程式沒有任何關係，亦不是特區政府官方的追踪程式。因此本軟件不應取代特區政府「安心出行」應用程式。",
-    "3": "任何人士在使用本軟件作任何用途前，應先尋求獨立的法律意見或其他專業意見。用戶若因使用／未能使用本軟件，或以本軟件作任何誤用行為引致的損失、損害、法律責任或其他後果，作者概不會承擔任何法律責任，並保留追究權利。"
+    "1": "back-home-safe (hereinafter called ‘this software’) is only used for academic use around PWA (Progressive WebApps). To demonstrate the implementation of native app features on the web (like QR Code Scanner, front-end encryption, etc.).",
+    "2": "This software is not in any way endorsed by nor affiliated with the Government of the HKSAR. It is not the official contact tracing app. DO NOT use this software as a substitute for the official LeaveHomeSafe application.",
+    "3": "The author takes no responsibility and legal liability for any misuse of this software, and reserves the right to seek all remedies available by law for any violation of these Terms of Use."
   },
   "button": {
     "last_page": "Last Page",

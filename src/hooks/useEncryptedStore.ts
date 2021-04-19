@@ -11,12 +11,13 @@ const decryptValue = (input: string, password: string) =>
 
 export const useEncryptedStore = <T extends T[] | Object>({
   key,
-  defaultValue,
+  defaultValue: fallbackValue,
 }: {
   key: string;
   defaultValue: T;
 }) => {
   const [incognito, setIncognito] = useLocalStorage("incognito", false);
+  const [defaultValue] = useState<T>(fallbackValue);
 
   const [password, setPassword] = useState<string | null>(null);
 

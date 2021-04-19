@@ -30,7 +30,6 @@ export const Language = () => {
           value={languageType.EN}
           control={<Radio />}
           label="English"
-          disabled
         />
       </StyledRadioGroup>
     </Wrapper>

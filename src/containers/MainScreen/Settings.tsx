@@ -102,7 +102,6 @@ export const Settings = () => {
                   value={languageType.EN}
                   control={<Radio />}
                   label="English"
-                  disabled
                 />
               </RadioGroup>
             </ListItem>

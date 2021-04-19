@@ -2,6 +2,7 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
 import { languageType } from "./../constants/languageType";
+import english from "./english";
 import traditionalChinese from "./traditionalChinese";
 
 i18n
@@ -9,6 +10,7 @@ i18n
   .init({
     resources: {
       [languageType["ZH-HK"]]: traditionalChinese,
+      [languageType["EN"]]: english,
     },
     lng: languageType["ZH-HK"],
     fallbackLng: languageType["ZH-HK"],

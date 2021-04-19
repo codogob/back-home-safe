@@ -1,0 +1,18 @@
+{
+  "name": "Scan the QR Code",
+  "message": {
+    "scan_qr_code": "Scan the QR Code",
+    "doesnt_support_get_user_media": "THis device doesn't support getUserMedia API",
+    "sure_above_ios_14": "Make sure the device is running IOS 14 or above"
+  },
+  "button": {
+    "back_home": "Back To Home Screen",
+    "camera_setting": "Camera Setting"
+  },
+  "dialog": {
+    "cannot_open_camera": {
+      "title": "Cannot activate camera",
+      "content": "Cannot activate camera, please go to camera settings page change camera source."
+    }
+  }
+}

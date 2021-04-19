@@ -1,0 +1,23 @@
+{
+  "add_to_home_screen": {
+    "name": "新增至主畫面",
+    "message": {
+      "add_to_home_screen_first": "新增至主畫面先啦",
+      "to_act_as_an_app": "唔係點似個App"
+    },
+    "step": {
+      "ios": "用Safari開=>分享=>新增至主畫面",
+      "android": "用Chrome開=>右上選項=>新增至主畫面/安裝應用程式"
+    }
+  },
+  "disclaimer": { "name": "免責聲明", "accept": "我同意" },
+  "setup_password": {
+    "name": "設定密碼",
+    "message": {
+      "password_usage": "密碼用於加密出行紀錄"
+    }
+  },
+  "language": {
+    "name": "語言"
+  }
+}

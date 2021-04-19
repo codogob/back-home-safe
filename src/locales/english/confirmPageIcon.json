@@ -1,0 +1,8 @@
+{
+  "name": "Confirm Page Icon",
+  "message": { "test_place": "Test Venue" },
+  "form": {
+    "custom_icon": "Custom Icon"
+  },
+  "button": { "remove_icon": "Remove Icon" }
+}

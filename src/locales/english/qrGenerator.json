@@ -1,0 +1,15 @@
+{
+  "name": "QR Generator",
+  "form": {
+    "typeZh": "Venue Type(Chinese) (typeZh)",
+    "typeEn": "Venue Type(English) (typeEn)",
+    "nameZh": "Venue Name(Chinese) (nameZh)",
+    "nameEn": "Venue Name(English) (nameEn)",
+    "addressZh": "Venue Address(Chinese) (Only for preview)",
+    "addressEn": "Venue Address(English) (Only for preview)",
+    "type": "Type",
+    "venue_code": "Venue Code (Don't touch)",
+    "venue_id": "Venue ID (Don't touch)",
+    "custom_icon": "Custom Icon"
+  }
+}

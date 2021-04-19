@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0](https://gitlab.com/codogo-b/back-home-safe/compare/v0.1.6...v1.0.0) (2021-04-19)
+
+
+### Features
+
+* venue name getter react to language ([e0c50f1](https://gitlab.com/codogo-b/back-home-safe/commit/e0c50f150dfd1fc6985e58508ad4621f8976895b))
+
 ### [0.1.6](https://gitlab.com/codogo-b/back-home-safe/compare/v0.1.5...v0.1.6) (2021-04-19)
 
 ### [0.1.5](https://gitlab.com/codogo-b/back-home-safe/compare/v0.1.4...v0.1.5) (2021-04-19)

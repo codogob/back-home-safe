@@ -1,7 +1,7 @@
 import { AES, enc } from "crypto-js";
 import { isNil } from "ramda";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useDeepCompareEffect, useLocalStorage } from "react-use";
+import { useLocalStorage, useMount, useUpdateEffect } from "react-use";
 
 const encryptValue = (input: string, password: string) =>
   AES.encrypt(input, password).toString();
@@ -16,6 +16,8 @@ export const useEncryptedStore = <T extends T[] | Object>({
   key: string;
   defaultValue: T;
 }) => {
+  const [incognito, setIncognito] = useLocalStorage("incognito", false);
+
   const [password, setPassword] = useState<string | null>(null);
 
   const [savedValue, setSavedValue] = useLocalStorage<string>(
@@ -52,14 +54,20 @@ export const useEncryptedStore = <T extends T[] | Object>({
     isEncrypted,
   ]);
 
-  useDeepCompareEffect(() => {
-    if (!unlocked) return;
+  useMount(() => {
+    if (!isEncrypted) {
+      setDecryptedValue(savedValue ? JSON.parse(savedValue) : defaultValue);
+    }
+  });
+
+  useUpdateEffect(() => {
+    if (!unlocked || incognito) return;
     setSavedValue(
       password
         ? encryptValue(JSON.stringify(decryptedValue || defaultValue), password)
         : JSON.stringify(decryptedValue)
     );
-  }, [decryptedValue, password, defaultValue, setSavedValue, unlocked]);
+  }, [decryptedValue]);
 
   const initPassword = useCallback(
     (newPassword: string) => {
@@ -105,5 +113,7 @@ export const useEncryptedStore = <T extends T[] | Object>({
     setValue: setDecryptedValue,
     initPassword,
     unlocked,
+    incognito,
+    setIncognito,
   };
 };

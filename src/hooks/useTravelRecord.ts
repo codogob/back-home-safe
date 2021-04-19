@@ -44,6 +44,8 @@ export const [UseTravelRecordProvider, useTravelRecord] = constate(() => {
     setValue: setTravelRecord,
     initPassword: encryptTravelRecord,
     unlocked,
+    incognito,
+    setIncognito,
   } = useEncryptedStore<TravelRecord[]>({
     key: "travel_record",
     defaultValue: [],
@@ -114,5 +116,7 @@ export const [UseTravelRecordProvider, useTravelRecord] = constate(() => {
     unlockTravelRecord,
     encryptTravelRecord,
     unlocked,
+    incognito,
+    setIncognito,
   };
 });

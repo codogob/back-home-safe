@@ -2,8 +2,10 @@ import {
   Divider,
   List,
   ListItem,
+  ListItemSecondaryAction,
   ListItemText,
   ListSubheader,
+  Switch,
 } from "@material-ui/core";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -12,10 +14,13 @@ import styled from "styled-components";
 import packageJson from "../../../package.json";
 import { Header } from "../../components/Header";
 import { useCamera } from "../../hooks/useCamera";
+import { useTravelRecord } from "../../hooks/useTravelRecord";
 import { clearAllData } from "../../utils/clearAllData";
 
 export const Settings = () => {
   const { hasCameraSupport } = useCamera();
+  const { incognito, setIncognito } = useTravelRecord();
+
   return (
     <PageWrapper>
       <Header name="設定" />
@@ -37,6 +42,18 @@ export const Settings = () => {
               <ListItemText primary="免責聲明" />
             </ListItem>
           </StyledLink>
+          <ListItem>
+            <ListItemText primary="隱私模式" secondary="不儲存出行紀錄" />
+            <ListItemSecondaryAction>
+              <Switch
+                checked={incognito}
+                onChange={(e) => {
+                  setIncognito(e.target.checked);
+                }}
+                color="primary"
+              />
+            </ListItemSecondaryAction>
+          </ListItem>
         </StyledList>
         <Divider />
         <StyledList subheader={<ListSubheader>實驗室</ListSubheader>}>

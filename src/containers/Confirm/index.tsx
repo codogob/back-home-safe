@@ -1,20 +1,19 @@
-import React, { useEffect, useMemo, useState } from "react";
-import styled from "styled-components";
-import cross from "../../assets/cross.svg";
-
-import tick from "../../assets/tick.svg";
-
-import { Link, useHistory } from "react-router-dom";
-import { ConfirmButton } from "../../components/Button";
-import { Place } from "../../components/Place";
-import { AutoLeaveModal } from "./AutoLeaveModal";
-import { CheckBox } from "../../components/CheckBox";
-import { dayjs } from "../../utils/dayjs";
-import { travelRecordType, useTravelRecord } from "../../hooks/useTravelRecord";
-import { getVenueName } from "../../utils/qr";
 import { Dayjs } from "dayjs";
-import { LeaveModal } from "../../components/LeaveModal";
 import { propOr } from "ramda";
+import React, { useEffect, useMemo, useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import styled from "styled-components";
+
+import cross from "../../assets/cross.svg";
+import tick from "../../assets/tick.svg";
+import { ConfirmButton } from "../../components/Button";
+import { CheckBox } from "../../components/CheckBox";
+import { LeaveModal } from "../../components/LeaveModal";
+import { Place } from "../../components/Place";
+import { travelRecordType, useTravelRecord } from "../../hooks/useTravelRecord";
+import { dayjs } from "../../utils/dayjs";
+import { getVenueName } from "../../utils/qr";
+import { AutoLeaveModal } from "./AutoLeaveModal";
 
 export const Confirm = () => {
   const browserHistory = useHistory();
@@ -109,7 +108,7 @@ export const Confirm = () => {
               setIsLeaveModalOpen(true);
             }}
           >
-            離開
+            離開場所
           </ConfirmButton>
           <LeaveMessage>當你離開時請緊記按"離開"</LeaveMessage>
         </ActionGroup>

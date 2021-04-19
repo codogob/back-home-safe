@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3](https://gitlab.com/codogo-b/back-home-safe/compare/v0.1.2...v0.1.3) (2021-04-19)
+
+
+### Features
+
+* eng disclaimer ([35c228d](https://gitlab.com/codogo-b/back-home-safe/commit/35c228d7d1627155708519f811bc66352ccfac86))
+* english local ([b0d8e23](https://gitlab.com/codogo-b/back-home-safe/commit/b0d8e23fe8537055bd7792b5bb10033f71cb4819))
+* language switcher ([e78dc69](https://gitlab.com/codogo-b/back-home-safe/commit/e78dc69cad2da450ba02d04375592650686fda7c))
+
+
+### Bug Fixes
+
+* taxi leave button text ([74e6de2](https://gitlab.com/codogo-b/back-home-safe/commit/74e6de291ea6bbef7722489c6d45d2ea7325d628))
+
 ### [0.1.2](https://gitlab.com/codogo-b/back-home-safe/compare/v0.1.1...v0.1.2) (2021-04-19)
 
 

@@ -31,9 +31,13 @@ pages:
     paths:
       - public
   only:
-    - master
+    refs:
+      - master
+    variables:
+      - $GIT_LAB_USERNAME == null
+      - $PERSONAL_ACCESS_TOKEN == null
 
-"Release":
+"Build and Release":
   stage: release
   allow_failure: false
   before_script:
@@ -51,6 +55,13 @@ pages:
       - $PERSONAL_ACCESS_TOKEN != null
   environment:
     name: production
+  artifacts:
+    paths:
+      - public
   script:
     - npm run release
     - git push http://${GIT_LAB_USERNAME}:${PERSONAL_ACCESS_TOKEN}@gitlab.com/codogo-b/back-home-safe.git --verbose --no-verify --follow-tags HEAD:master
+    - npm run build
+    - rm -rf ../public
+    - mv ./build ../public
+    - cd ../

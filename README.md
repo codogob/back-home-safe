@@ -32,7 +32,7 @@ This software is not in any way endorsed by nor affiliated with the Government o
 - [x] 加密出行紀錄
 - [x] 隱私模式(不儲存出行紀錄)
 - [x] 生成二維碼
-- [ ] i18n
+- [x] i18n
 - [ ] 查看確診個案
 
 ## 開發者專區

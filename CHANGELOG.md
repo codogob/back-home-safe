@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.2](https://gitlab.com/codogo-b/back-home-safe/compare/v0.1.1...v0.1.2) (2021-04-19)
+
+
+### Features
+
+* add project link to setting ([06da3fc](https://gitlab.com/codogo-b/back-home-safe/commit/06da3fc8186d15e00d8032ddcd6cc8c0a0f073da))
+* confirm page icon ([86b0e16](https://gitlab.com/codogo-b/back-home-safe/commit/86b0e16cfbe584c0654a3a56f8e429443a23b856))
+* empty travel record message ([b35d9d9](https://gitlab.com/codogo-b/back-home-safe/commit/b35d9d91b9f10f36fe58efea55533a2cc6ade5fe))
+* incognito mode ([c51b166](https://gitlab.com/codogo-b/back-home-safe/commit/c51b1664de0d53e98c94461129b8ba620ba2c806))
+* incognito notification on record list ([e43f4f7](https://gitlab.com/codogo-b/back-home-safe/commit/e43f4f76a9205305f0faeea2443c94e7e6776172))
+* update confirm page button text ([f20ed38](https://gitlab.com/codogo-b/back-home-safe/commit/f20ed38cff3badb96f77ed68263dac886bac87ff))
+* version number display and links ([d6c65b9](https://gitlab.com/codogo-b/back-home-safe/commit/d6c65b93701ff5acad9662e4868fd8530ceaa4a5))
+
+
+### Bug Fixes
+
+* confirm page header name ([759d6fe](https://gitlab.com/codogo-b/back-home-safe/commit/759d6fe35633727cb7fe0278821ee4cd4e479db9))
+* default value ref change on update ([dd72ccf](https://gitlab.com/codogo-b/back-home-safe/commit/dd72ccfc3e98b121d3e21a3341ffceece3ea301c))
+* page wrapper overflow ([18d5d8b](https://gitlab.com/codogo-b/back-home-safe/commit/18d5d8bee6673ef74f9ae9a678a3ac28119bbbbb))
+* setting sticky header style ([94509a1](https://gitlab.com/codogo-b/back-home-safe/commit/94509a1a64690d90b206238882dd6f646f427fcf))
+
 ### [0.1.1](https://gitlab.com/codogo-b/back-home-safe/compare/v0.1.0...v0.1.1) (2021-04-18)
 
 ## 0.1.0 (2021-04-18)

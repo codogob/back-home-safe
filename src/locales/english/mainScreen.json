@@ -22,7 +22,7 @@
     "name": "Visit Records",
     "message": {
       "incognito_activated": "Incognito Mode Activated",
-      "empty": "No Travel Record"
+      "empty": "No Visit Record"
     }
   },
   "setting": {
@@ -37,7 +37,7 @@
       "confirm_page_icon_setting": "Confirm Page Icon Settings",
       "incognito_mode": {
         "name": "Incognito Mode",
-        "explanation": "Stop saving travel record"
+        "explanation": "Stop saving visit record"
       },
       "qr_generator": "QR Code Generator",
       "reset": "Reset All Data",

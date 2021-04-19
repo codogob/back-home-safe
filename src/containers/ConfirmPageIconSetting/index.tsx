@@ -34,7 +34,7 @@ const ConfirmPageIconSetting = ({
 
   return (
     <PageWrapper>
-      <Header backPath="/" name="生成二維碼" />
+      <Header backPath="/" name="確認頁標誌" />
       <ContentWrapper>
         <StyledInputWrapper>
           <div>自定Icon</div>

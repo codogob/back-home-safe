@@ -1,8 +1,3 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import styled from "styled-components";
-import { useRafLoop } from "react-use";
-import { getMediaStream, mediaStreamErrorType } from "../utils/mediaStream";
-import { useCamera } from "../hooks/useCamera";
 import {
   Button,
   Dialog,
@@ -11,8 +6,15 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@material-ui/core";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { isIOS } from "react-device-detect";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { useRafLoop } from "react-use";
+import styled from "styled-components";
+
+import { useCamera } from "../hooks/useCamera";
+import { getMediaStream, mediaStreamErrorType } from "../utils/mediaStream";
 
 type Props = {
   onFrame?: (imageData: ImageData) => void;
@@ -20,6 +22,7 @@ type Props = {
 };
 
 export const MediaStream = ({ onFrame, suppressError = false }: Props) => {
+  const { t } = useTranslation("qr_reader");
   const { preferredCameraId } = useCamera();
   const [showUnSupportErrorModal, setShowUnSupportErrorModal] = useState(false);
   const [
@@ -126,13 +129,13 @@ export const MediaStream = ({ onFrame, suppressError = false }: Props) => {
         <DialogTitle id="unsupported-device-title">不支援的裝置</DialogTitle>
         <DialogContent>
           <DialogContentText id="unsupported-device-description">
-            此裝置不支援 getUserMedia API
-            {isIOS && <>，請確保裝置在IOS 14或以上</>}
+            {t("message.doesnt_support_get_user_media")}
+            {isIOS && <>{t("message.sure_above_ios_14")}</>}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Link to="/">
-            <Button color="primary">回到主頁</Button>
+            <Button color="primary">{t("button.back_home")}</Button>
           </Link>
         </DialogActions>
       </Dialog>
@@ -142,18 +145,20 @@ export const MediaStream = ({ onFrame, suppressError = false }: Props) => {
         aria-labelledby="camera-activation-title"
         aria-describedby="camera-activation-description"
       >
-        <DialogTitle id="camera-activation-title">未能開啟相機鏡頭</DialogTitle>
+        <DialogTitle id="camera-activation-title">
+          {t("dialog.cannot_open_camera.title")}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="camera-activation-description">
-            未能開啟相機鏡頭，請到相機設定進行設置
+            {t("dialog.cannot_open_camera.content")}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Link to="/">
-            <Button color="primary">回到主頁</Button>
+            <Button color="primary">{t("button.back_home")}</Button>
           </Link>
           <Link to="/cameraSetting">
-            <Button color="primary">相機設定</Button>
+            <Button color="primary">{t("button.camera_setting")}</Button>
           </Link>
         </DialogActions>
       </Dialog>

@@ -1,6 +1,7 @@
 import { Dayjs } from "dayjs";
 import { propOr } from "ramda";
 import React, { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 
@@ -30,6 +31,7 @@ export const Confirm = ({
   readOnly = false,
   confirmPageIcon,
 }: Props) => {
+  const { t } = useTranslation("confirm");
   const browserHistory = useHistory();
   const { updateCurrentTravelRecord } = useTravelRecord();
   const [autoLeave, setAutoLeave] = useState(true);
@@ -90,11 +92,11 @@ export const Confirm = ({
         <MessageWrapper>
           {venueType === travelRecordType.TAXI ? (
             <>
-              <Msg>你已進入的士</Msg>
-              <License>車牌號碼:</License>
+              <Msg>{t("message.you_have_entered_taxi")}</Msg>
+              <License>{t("message.res_mark")}:</License>
             </>
           ) : (
-            <Msg>你已進入場所</Msg>
+            <Msg>{t("message.you_have_entered_venue")}</Msg>
           )}
           <PlaceWrapper>
             <Place value={place || ""} readOnly />
@@ -114,7 +116,7 @@ export const Confirm = ({
                 onChange={setAutoLeave}
                 readOnly={readOnly}
               />
-              {autoLeaveHour}小時後自動離開
+              {t("form.auto_leave_after_x_hour", { hour: autoLeaveHour })}
             </CheckBoxWrapper>
             <Change
               onClick={() => {
@@ -122,7 +124,7 @@ export const Confirm = ({
                 setIsAutoLeaveModalOpen(true);
               }}
             >
-              變更
+              {t("global:button.change")}
             </Change>
           </AutoLeave>
           <ConfirmButton
@@ -132,9 +134,11 @@ export const Confirm = ({
               setIsLeaveModalOpen(true);
             }}
           >
-            離開場所
+            {venueType === travelRecordType.TAXI
+              ? t("button.get_off")
+              : t("button.leave")}
           </ConfirmButton>
-          <LeaveMessage>當你離開時請緊記按"離開"</LeaveMessage>
+          <LeaveMessage>{t("message.remember_to_leave")}</LeaveMessage>
         </ActionGroup>
       </PageWrapper>
       <AutoLeaveModal

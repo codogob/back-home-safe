@@ -1,0 +1,24 @@
+{
+  "disclaimer": {
+    "1": "back-home-safe (hereinafter called ‘this software’) is only used for academic use around PWA (Progressive WebApps). To demonstrate the implementation of native app features on the web (like QR Code Scanner, front-end encryption, etc.).",
+    "2": "This software is not in any way endorsed by nor affiliated with the Government of the HKSAR. It is not the official contact tracing app. DO NOT use this software as a substitute for the official LeaveHomeSafe application.",
+    "3": "The author takes no responsibility and legal liability for any misuse of this software, and reserves the right to seek all remedies available by law for any violation of these Terms of Use."
+  },
+  "button": {
+    "last_page": "Last Page",
+    "next_page": "Next Page",
+    "complete": "Complete",
+    "install": "Install",
+    "set": "Set",
+    "skip": "Skip",
+    "leave": "Leave",
+    "save": "Save",
+    "preview": "Preview",
+    "unlock": "Unlock",
+    "change": "Change",
+    "confirm": "Confirm"
+  },
+  "form": {
+    "optional": "Optional"
+  }
+}

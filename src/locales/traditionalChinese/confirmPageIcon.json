@@ -1,0 +1,8 @@
+{
+  "name": "確認頁標誌",
+  "message": { "test_place": "測試地點" },
+  "form": {
+    "custom_icon": "自定Icon"
+  },
+  "button": { "remove_icon": "移除Icon" }
+}

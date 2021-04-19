@@ -1,0 +1,26 @@
+{
+  "message": {
+    "you_have_entered_taxi": "你已進入的士",
+    "res_mark": "車牌號碼",
+    "you_have_entered_venue": "你已進入場所",
+    "remember_to_leave": "當你離開時請緊記按\"離開\"",
+    "set_auto_leave_time": "設罝自動離開時間",
+    "enter_at": "於{{time}} 進入場所",
+    "auto_leave_at": "於{{time}} 自動離開",
+    "you_sure_want_to_leave": "你現在要離開嗎？",
+    "when_you_left": "你是什麼時候離開？",
+    "future_leave_time": "離開日期不能是未來",
+    "leave_time_earlier_than_enter": "離開日期不能早於進入日期"
+  },
+  "form": {
+    "auto_leave_after_x_hour": "{{hour}}小時後自動離開",
+    "auto_leave_at": "於{{time}} 自動離開",
+    "hour": "小時"
+  },
+  "button": {
+    "leave": "離開場所",
+    "get_off": "下車",
+    "leave_now": "是的，我現在要離開",
+    "already_left": "我已經離開了"
+  }
+}

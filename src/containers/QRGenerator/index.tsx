@@ -5,18 +5,21 @@ import {
   FormGroup,
   TextField,
 } from "@material-ui/core";
+import SaveIcon from "@material-ui/icons/Save";
+import QrCodeWithLogo from "qrcode-with-logos";
+import { head } from "ramda";
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSetState } from "react-use";
 import styled from "styled-components";
+
+import baseIcon from "../../assets/baseIcon.png";
 import { Header } from "../../components/Header";
 import { EnhancedEncodeParam, qrEncode } from "../../utils/qr";
-import QrCodeWithLogo from "qrcode-with-logos";
-import baseIcon from "../../assets/baseIcon.png";
-import { head } from "ramda";
-import SaveIcon from "@material-ui/icons/Save";
 import { QRPreview } from "./QRPreview";
 
 const QRGenerator = () => {
+  const { t } = useTranslation("qr_generator");
   const imgRef = useRef<HTMLImageElement>(null);
   const fileFieldRef = React.useRef<HTMLInputElement>(null);
 
@@ -78,60 +81,60 @@ const QRGenerator = () => {
 
   return (
     <PageWrapper>
-      <Header backPath="/" name="生成二維碼" />
+      <Header backPath="/" name={t("name")} />
       <ContentWrapper id="scroll">
         <StyledForm>
           <StyledTextField
-            label="場所種類(中文) (typeZh)"
+            label={t("form.typeZh")}
             value={state.typeZh}
             onChange={(e) => {
               setState({ typeZh: e.target.value });
             }}
           />
           <StyledTextField
-            label="場所種類(英文) (typeEn)"
+            label={t("form.typeEn")}
             value={state.typeEn}
             onChange={(e) => {
               setState({ typeEn: e.target.value });
             }}
           />
           <StyledTextField
-            label="場所名字(中文) (nameZh)"
+            label={t("form.nameZh")}
             value={state.nameZh}
             onChange={(e) => {
               setState({ nameZh: e.target.value });
             }}
           />
           <StyledTextField
-            label="場所名字(英文) (nameEn)"
+            label={t("form.nameEn")}
             value={state.nameEn}
             onChange={(e) => {
               setState({ nameEn: e.target.value });
             }}
           />
           <StyledTextField
-            label="場所地址(中文) (預覽用)"
+            label={t("form.addressZh")}
             value={state.addressZh}
             onChange={(e) => {
               setState({ addressZh: e.target.value });
             }}
           />
           <StyledTextField
-            label="場所地址(英文) (預覽用)"
+            label={t("form.addressEn")}
             value={state.addressEn}
             onChange={(e) => {
               setState({ addressEn: e.target.value });
             }}
           />
           <StyledTextField
-            label="類型"
+            label={t("form.type")}
             value={state.type}
             onChange={(e) => {
               setState({ type: e.target.value });
             }}
           />
           <StyledTextField
-            label="場地編碼 (唔知唔好搞)"
+            label={t("form.venue_code")}
             value={state.venueCode}
             onChange={(e) => {
               setState({ venueCode: e.target.value });
@@ -142,7 +145,7 @@ const QRGenerator = () => {
             }}
           />
           <StyledTextField
-            label="場地ID (唔知唔好搞)"
+            label={t("form.venue_id")}
             value={state.venueID}
             onChange={(e) => {
               setState({ venueID: e.target.value });
@@ -153,7 +156,7 @@ const QRGenerator = () => {
             }}
           />
           <StyledInputWrapper>
-            <div>自定Icon</div>
+            <div>{t("form.custom_icon")}</div>
             <StyledFileInput
               type="file"
               name="avatar"
@@ -173,7 +176,7 @@ const QRGenerator = () => {
               onClick={handleDownload}
               disabled={!isValidData}
             >
-              儲存
+              {t("global:button.save")}
             </Button>
             <Button
               variant="contained"
@@ -184,7 +187,7 @@ const QRGenerator = () => {
               }}
               disabled={!isValidData}
             >
-              預覽
+              {t("global:button.preview")}
             </Button>
           </ButtonGroup>
         </Actions>

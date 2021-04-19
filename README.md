@@ -17,6 +17,12 @@
 任何人士在使用本軟件作任何用途前，應先尋求獨立的法律意見或其他專業意見。\
 用戶若因使用／未能使用本軟件，或以本軟件作任何誤用行為引致的損失、損害、法律責任或其他後果，作者概不會承擔任何法律責任，並保留追究權利。
 
+## Disclaimer
+
+back-home-safe (hereinafter called ‘this software’) is only used for academic use around PWA (Progressive WebApps).\
+To demonstrate the implementation of native app features on the web(like QR Code Scanner, front-end encryption, etc.).\
+This software is not in any way endorsed by nor affiliated with the Government of the HKSAR. It is not the official contact tracing app. DO NOT use this software as a substitute for the official LeaveHomeSafe application. The author takes no responsibility and legal liability for any misuse of this software and reserves the right to seek all remedies available by law for any violation of these Terms of Use.
+
 ## 功能
 
 - [x] 紀錄出行場所

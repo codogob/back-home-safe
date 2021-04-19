@@ -1,0 +1,51 @@
+{
+  "home": {
+    "name": "Home",
+    "record_your_visit": "Record your visit",
+    "form": {
+      "venue_name": {
+        "label": "I want to go",
+        "placeholder": "Venue Name"
+      },
+      "taxi": {
+        "label": "I'm taking",
+        "placeholder": "Taxi Registration mark"
+      }
+    },
+    "button": {
+      "go": "Let's Go!",
+      "scan_qr_code": "Scan QR Code",
+      "ride": "Let's Ride!"
+    }
+  },
+  "travel_record": {
+    "name": "Visit Records",
+    "message": {
+      "incognito_activated": "Incognito Mode Activated",
+      "empty": "No Travel Record"
+    }
+  },
+  "setting": {
+    "name": "Settings",
+    "section": {
+      "common": "Common",
+      "lab": "Lab",
+      "version": "Version"
+    },
+    "item": {
+      "camera_setting": "Camera Settings",
+      "confirm_page_icon_setting": "Confirm Page Icon Settings",
+      "incognito_mode": {
+        "name": "Incognito Mode",
+        "explanation": "Stop saving travel record"
+      },
+      "qr_generator": "QR Code Generator",
+      "reset": "Reset All Data",
+      "about_us": "About BackHomeSafe",
+      "disclaimer": "Disclaimer",
+      "change_log": "Change Log",
+      "report_issue": "Bug Report",
+      "language": "Language"
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "Camera Settings",
+  "form": {
+    "camera_choice": {
+      "label": "Camera Source",
+      "explain": "Change camera source until there is a preview"
+    }
+  }
+}

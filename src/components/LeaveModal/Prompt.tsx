@@ -1,11 +1,12 @@
-import React, { useMemo } from "react";
-import Modal from "react-modal";
-import crossBlack from "../../assets/crossBlack.svg";
-
-import styled from "styled-components";
-import { ModalConfirmButton } from "../Button";
 import dayjs, { Dayjs } from "dayjs";
+import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import Modal from "react-modal";
+import styled from "styled-components";
+
+import crossBlack from "../../assets/crossBlack.svg";
 import { travelRecordType } from "../../hooks/useTravelRecord";
+import { ModalConfirmButton } from "../Button";
 
 type Props = {
   isModalOpen: boolean;
@@ -28,6 +29,7 @@ export const Prompt = ({
   outTime,
   venueType,
 }: Props) => {
+  const { t } = useTranslation("confirm");
   const toDate = useMemo(() => dayjs(outTime), [outTime]);
 
   const heightBase = outTime ? 430 : 390;
@@ -64,22 +66,24 @@ export const Prompt = ({
       </CrossWrapper>
       {venueType === travelRecordType.TAXI ? (
         <>
-          <Msg>你已進入的士</Msg>
-          <License>車牌號碼:</License>
+          <Msg>{t("message.you_have_entered_taxi")}</Msg>
+          <License>{t("message.res_mark")}:</License>
         </>
       ) : (
-        <Msg>你已進入場所</Msg>
+        <Msg>{t("message.you_have_entered_venue")}</Msg>
       )}
       <Place>{place}</Place>
       <Time>{date.format("YYYY-MM-DD HH:mm")}</Time>
-      <Title>你現在要離開嗎？</Title>
+      <Title>{t("message.you_sure_want_to_leave")}</Title>
       {outTime && (
-        <AutoLeave>於{toDate.format("MM-DD HH:mm")} 自動離開</AutoLeave>
+        <AutoLeave>
+          {t("form.auto_leave_at", { time: toDate.format("MM-DD HH:mm") })}
+        </AutoLeave>
       )}
       <ModalConfirmButton onClick={onLeaveNow}>
-        是的，我現在要離開
+        {t("button.leave_now")}
       </ModalConfirmButton>
-      <GreenButton onClick={onLeaved}>我已經離開了</GreenButton>
+      <GreenButton onClick={onLeaved}> {t("button.already_left")}</GreenButton>
     </Modal>
   );
 };

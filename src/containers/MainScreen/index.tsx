@@ -1,17 +1,20 @@
 import { BottomNavigation, BottomNavigationAction } from "@material-ui/core";
-import React, { useMemo, useState } from "react";
-import styled from "styled-components";
-import HomeIcon from "@material-ui/icons/Home";
-import { Home } from "./Home";
-import SettingsIcon from "@material-ui/icons/Settings";
-import { Settings } from "./Settings";
-import { useTravelRecord } from "../../hooks/useTravelRecord";
 import { Fab } from "@material-ui/core";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import { LeaveModal } from "../../components/LeaveModal";
-import { Dayjs } from "dayjs";
-import { TravelRecord } from "./TravelRecord";
+import HomeIcon from "@material-ui/icons/Home";
 import PlaceIcon from "@material-ui/icons/Place";
+import SettingsIcon from "@material-ui/icons/Settings";
+import { Dayjs } from "dayjs";
+import { TFunction } from "i18next";
+import React, { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+
+import { LeaveModal } from "../../components/LeaveModal";
+import { useTravelRecord } from "../../hooks/useTravelRecord";
+import { Home } from "./Home";
+import { Settings } from "./Settings";
+import { TravelRecord } from "./TravelRecord";
 
 enum tabs {
   HOME = "HOME",
@@ -19,33 +22,39 @@ enum tabs {
   SETTINGS = "SETTINGS",
 }
 
-const tabsArr = [
+const tabsArr = ({ t }: { t: TFunction }) => [
   {
     key: tabs.HOME,
-    label: "主頁",
+    label: t("home.name"),
     component: <Home />,
     icon: <HomeIcon />,
   },
   {
     key: tabs.TRAVEL_RECORD,
-    label: "出行紀錄",
+    label: t("travel_record.name"),
     component: <TravelRecord />,
     icon: <PlaceIcon />,
   },
   {
     key: tabs.SETTINGS,
-    label: "設定",
+    label: t("setting.name"),
     component: <Settings />,
     icon: <SettingsIcon />,
   },
 ];
 
-const Main = () => {
+const MainScreen = () => {
+  const { t } = useTranslation("main_screen");
   const [activePage, setActivePage] = useState(0);
   const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
 
   const { currentTravelRecord, updateCurrentTravelRecord } = useTravelRecord();
-  const { component } = useMemo(() => tabsArr[activePage] || {}, [activePage]);
+  const tabs = useMemo(() => tabsArr({ t }), [t]);
+
+  const { component } = useMemo(() => tabs[activePage] || {}, [
+    activePage,
+    tabs,
+  ]);
 
   const handleLeave = (date: Dayjs) => {
     updateCurrentTravelRecord({
@@ -65,7 +74,7 @@ const Main = () => {
             setActivePage(newValue);
           }}
         >
-          {tabsArr.map(({ key, label, icon }) => (
+          {tabs.map(({ key, label, icon }) => (
             <BottomNavigationAction key={key} label={label} icon={icon} />
           ))}
         </BottomNavigation>
@@ -81,7 +90,7 @@ const Main = () => {
               }}
             >
               <ExitToAppIcon />
-              離開
+              {t("global:button.leave")}
             </Fab>
           </FloatingButton>
           <LeaveModal
@@ -97,7 +106,7 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default MainScreen;
 
 const PageWrapper = styled.div`
   width: 100%;

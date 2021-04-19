@@ -5,20 +5,23 @@ import {
   CardContent,
   Typography,
 } from "@material-ui/core";
-import React, { useMemo, useState } from "react";
-import styled from "styled-components";
-import { Place } from "../../components/Place";
-import { Link, useHistory } from "react-router-dom";
-import { dayjs } from "../../utils/dayjs";
 import { isEmpty, isNil, trim } from "ramda";
-import {
-  useTravelRecord,
-  travelRecordType,
-  travelRecordInputType,
-} from "../../hooks/useTravelRecord";
+import React, { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Link, useHistory } from "react-router-dom";
+import styled from "styled-components";
+
+import { Place } from "../../components/Place";
 import { useTime } from "../../hooks/useTime";
+import {
+  travelRecordInputType,
+  travelRecordType,
+  useTravelRecord,
+} from "../../hooks/useTravelRecord";
+import { dayjs } from "../../utils/dayjs";
 
 export const Home = () => {
+  const { t } = useTranslation("main_screen");
   const [place, setPlace] = useState("");
   const [license, setLicense] = useState("");
 
@@ -57,18 +60,18 @@ export const Home = () => {
       <Welcome>
         <Title>
           <div>{today}</div>
-          <h2>記錄你的到訪</h2>
+          <h2>{t("home.record_your_visit")}</h2>
         </Title>
         <Slider>
           <StyledCard>
             <CardContent>
               <Typography color="textSecondary" gutterBottom>
-                我想去
+                {t("home.form.venue_name.label")}
               </Typography>
               <StyledPlace
                 value={place}
                 onChange={setPlace}
-                placeholder="輸入地址"
+                placeholder={t("home.form.venue_name.placeholder")}
                 readOnly={!isNil(currentTravelRecord)}
               />
             </CardContent>
@@ -79,17 +82,17 @@ export const Home = () => {
                 disabled={isEmpty(trim(place)) || !isNil(currentTravelRecord)}
                 onClick={handlePlaceSubmit}
               >
-                話去就去!
+                {t("home.button.go")}
               </Button>
               {isNil(currentTravelRecord) ? (
                 <Link to="/qrReader">
                   <Button size="small" color="primary">
-                    掃瞄二維碼
+                    {t("home.button.scan_qr_code")}
                   </Button>
                 </Link>
               ) : (
                 <Button size="small" color="primary" disabled>
-                  掃瞄二維碼
+                  {t("home.button.scan_qr_code")}
                 </Button>
               )}
             </CardActions>
@@ -97,12 +100,12 @@ export const Home = () => {
           <StyledCard>
             <CardContent>
               <Typography color="textSecondary" gutterBottom>
-                我搭緊
+                {t("home.form.taxi.label")}
               </Typography>
               <StyledPlace
                 value={license}
                 onChange={setLicense}
-                placeholder="輸入車牌"
+                placeholder={t("home.form.taxi.placeholder")}
                 readOnly={!isNil(currentTravelRecord)}
               />
             </CardContent>
@@ -113,7 +116,7 @@ export const Home = () => {
                 disabled={isEmpty(trim(license)) || !isNil(currentTravelRecord)}
                 onClick={handleTaxiSubmit}
               >
-                話搭就搭!
+                {t("home.button.ride")}
               </Button>
             </CardActions>
           </StyledCard>

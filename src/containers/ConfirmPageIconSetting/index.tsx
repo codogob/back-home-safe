@@ -1,6 +1,7 @@
 import { Button } from "@material-ui/core";
 import { head } from "ramda";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 import { Header } from "../../components/Header";
@@ -20,6 +21,7 @@ const ConfirmPageIconSetting = ({
   confirmPageIcon,
   setConfirmPageIcon,
 }: Props) => {
+  const { t } = useTranslation("confirm_page_icon");
   const handleFileSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     const img = head(files);
@@ -34,10 +36,10 @@ const ConfirmPageIconSetting = ({
 
   return (
     <PageWrapper>
-      <Header backPath="/" name="確認頁標誌" />
+      <Header backPath="/" name={t("name")} />
       <ContentWrapper>
         <StyledInputWrapper>
-          <div>自定Icon</div>
+          <div>{t("form.custom_icon")}</div>
           <StyledFileInput
             type="file"
             name="avatar"
@@ -55,7 +57,7 @@ const ConfirmPageIconSetting = ({
               }}
               disabled={!confirmPageIcon}
             >
-              移除Icon
+              {t("button.remove_icon")}
             </Button>
           </Actions>
         )}
@@ -63,7 +65,7 @@ const ConfirmPageIconSetting = ({
           <Confirm
             confirmPageIcon={confirmPageIcon}
             currentTravelRecord={{
-              nameEn: "測試地點",
+              nameEn: t("message.test_place"),
               type: travelRecordType.PLACE,
               inputType: travelRecordInputType.MANUALLY,
               inTime: dayjs().toISOString(),

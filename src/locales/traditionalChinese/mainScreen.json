@@ -1,0 +1,51 @@
+{
+  "home": {
+    "name": "主頁",
+    "record_your_visit": "記錄你的到訪",
+    "form": {
+      "venue_name": {
+        "label": "我想去",
+        "placeholder": "輸入地址"
+      },
+      "taxi": {
+        "label": "我搭緊",
+        "placeholder": "輸入車牌"
+      }
+    },
+    "button": {
+      "go": "話去就去!",
+      "scan_qr_code": "掃瞄二維碼",
+      "ride": "話搭就搭!"
+    }
+  },
+  "travel_record": {
+    "name": "出行紀錄",
+    "message": {
+      "incognito_activated": "隱私模式已開啟",
+      "empty": "沒有出行紀錄"
+    }
+  },
+  "setting": {
+    "name": "設定",
+    "section": {
+      "common": "常用",
+      "lab": "實驗室",
+      "version": "版本"
+    },
+    "item": {
+      "camera_setting": "相機設定",
+      "confirm_page_icon_setting": "確認頁標誌設定",
+      "incognito_mode": {
+        "name": "隱私模式",
+        "explanation": "不儲存出行紀錄"
+      },
+      "qr_generator": "生成二維碼",
+      "reset": "重設所有資料",
+      "about_us": "關於安心回家",
+      "disclaimer": "免責聲明",
+      "change_log": "更新紀錄",
+      "report_issue": "回報問題",
+      "language": "語言"
+    }
+  }
+}

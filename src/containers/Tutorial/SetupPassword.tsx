@@ -1,6 +1,7 @@
-import React from "react";
-import styled from "styled-components";
 import { TextField } from "@material-ui/core";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import styled from "styled-components";
 
 type Props = {
   value: string;
@@ -8,10 +9,14 @@ type Props = {
 };
 
 export const SetupPassword = ({ value, onChange }: Props) => {
+  const { t } = useTranslation("tutorial");
+
   return (
     <Wrapper>
-      <h2>設定密碼(選用)</h2>
-      <p>密碼用於加密出行紀錄</p>
+      <h2>
+        {t("setup_password.name")}({t("global:form.optional")})
+      </h2>
+      <p>{t("setup_password.message.password_usage")}</p>
       <TextField
         type="password"
         value={value}

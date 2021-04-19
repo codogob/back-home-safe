@@ -1,3 +1,5 @@
+import "./locales";
+
 import { ThemeProvider, createMuiTheme } from "@material-ui/core";
 import { teal, yellow } from "@material-ui/core/colors";
 import React from "react";

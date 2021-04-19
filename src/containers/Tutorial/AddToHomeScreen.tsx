@@ -1,10 +1,13 @@
-import React, { useCallback } from "react";
-import styled from "styled-components";
-import plus from "../../assets/plus.svg";
 import { Button } from "@material-ui/core";
+import React, { useCallback } from "react";
+import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+
+import plus from "../../assets/plus.svg";
 import { usePWA } from "../../hooks/usePWA";
 
 export const AddToHomeScreen = () => {
+  const { t } = useTranslation("tutorial");
   const { prompt, promptToInstall } = usePWA();
 
   const onInstall = useCallback(() => {
@@ -15,17 +18,17 @@ export const AddToHomeScreen = () => {
   return (
     <Wrapper>
       <AddIcon src={plus} />
-      <div>新增至主畫面先啦</div>
-      <div>唔係點似個App</div>
+      <div>{t("add_to_home_screen.message.add_to_home_screen_first")}</div>
+      <div>{t("add_to_home_screen.message.to_act_as_an_app")}</div>
       <InstructionWrapper>
         <div>IOS</div>
-        <div>{"用Safari開=>分享=>新增至主畫面"}</div>
+        <div>{t("add_to_home_screen.step.ios")}</div>
         <div>Android</div>
-        <div>{"用Chrome開=>右上選項=>新增至主畫面/安裝應用程式"}</div>
+        <div>{t("add_to_home_screen.step.android")}</div>
         {prompt && (
           <InstallButtonWrapper>
             <Button variant="contained" onClick={onInstall}>
-              安裝
+              {t("global:button.install")}
             </Button>
           </InstallButtonWrapper>
         )}

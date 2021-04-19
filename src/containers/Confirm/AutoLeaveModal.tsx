@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useMemo } from "react";
+import { Dayjs } from "dayjs";
+import React, { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Modal from "react-modal";
+import styled from "styled-components";
+
 import crossBlack from "../../assets/crossBlack.svg";
 import greenTick from "../../assets/greenTick.svg";
-
-import styled from "styled-components";
 import { ModalConfirmButton } from "../../components/Button";
-import { Dayjs } from "dayjs";
 
 type Props = {
   isModalOpen: boolean;
@@ -22,6 +23,7 @@ export const AutoLeaveModal = ({
   selectedAutoLeaveHour,
   date,
 }: Props) => {
+  const { t } = useTranslation("confirm");
   const [autoLeaveHourTmp, setAutoLeaveHourTmp] = useState(
     selectedAutoLeaveHour
   );
@@ -66,7 +68,7 @@ export const AutoLeaveModal = ({
       <CrossWrapper>
         <Cross src={crossBlack} onClick={onCancel} />
       </CrossWrapper>
-      <Title>設罝自動離開時間</Title>
+      <Title>{t("message.set_auto_leave_time")}</Title>
       <HourListWrapper id="scroll">
         <HourList>
           {[
@@ -101,17 +103,22 @@ export const AutoLeaveModal = ({
               }}
               key={hour}
             >
-              + {hour}小時
+              + {hour}
+              {t("form.hour")}
               {autoLeaveHourTmp === hour && <SelectedTick src={greenTick} />}
             </HourListItem>
           ))}
         </HourList>
       </HourListWrapper>
       <TimeWrapper>
-        <div>於{date.format("MM-DD HH:mm")} 進入場所</div>
-        <div>於{toDate.format("MM-DD HH:mm")} 自動離開</div>
+        <div>{t("message.enter_at", { time: date.format("MM-DD HH:mm") })}</div>
+        <div>
+          {t("message.auto_leave_at", { time: toDate.format("MM-DD HH:mm") })}
+        </div>
       </TimeWrapper>
-      <ModalConfirmButton onClick={handleConfirm}>確認</ModalConfirmButton>
+      <ModalConfirmButton onClick={handleConfirm}>
+        {t("global:button.confirm")}
+      </ModalConfirmButton>
     </Modal>
   );
 };

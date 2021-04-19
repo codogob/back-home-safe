@@ -13,7 +13,7 @@ const QRGenerator = React.lazy(() => import("./containers/QRGenerator"));
 const QRReader = React.lazy(() => import("./containers/QRReader"));
 const CameraSetting = React.lazy(() => import("./containers/CameraSetting"));
 const Tutorial = React.lazy(() => import("./containers/Tutorial"));
-const Main = React.lazy(() => import("./containers/Main"));
+const MainScreen = React.lazy(() => import("./containers/MainScreen"));
 const Disclaimer = React.lazy(() => import("./containers/Disclaimer"));
 const Login = React.lazy(() => import("./containers/Login"));
 const ConfirmPageIconSetting = React.lazy(
@@ -64,7 +64,7 @@ export const App = () => {
         )}
         {!finishedTutorial && <Redirect to="/tutorial" />}
         <Route exact path="/">
-          <Main />
+          <MainScreen />
         </Route>
         <Route exact path="/confirm">
           {/* Don't split, to provide smooth transition between QR and confirm */}

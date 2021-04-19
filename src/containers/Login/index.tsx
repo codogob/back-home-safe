@@ -3,12 +3,14 @@ import LockIcon from "@material-ui/icons/Lock";
 import { Alert } from "@material-ui/lab";
 import { isEmpty } from "ramda";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 import { useTravelRecord } from "../../hooks/useTravelRecord";
 import { clearAllData } from "../../utils/clearAllData";
 
 const Login = () => {
+  const { t } = useTranslation("login");
   const [password, setPassword] = useState("");
   const { unlockTravelRecord } = useTravelRecord();
   const [showPasswordError, setShowPasswordError] = useState(false);
@@ -26,7 +28,7 @@ const Login = () => {
     <PageWrapper>
       <Wrapper>
         <Unlock />
-        <div>請輸入密碼解鎖</div>
+        <div>{t("message.please_input_password")}</div>
         <InputWrapper
           onSubmit={(e) => {
             e.preventDefault();
@@ -47,11 +49,11 @@ const Login = () => {
               disabled={isEmpty(password)}
               type="submit"
             >
-              解鎖
+              {t("global:button.unlock")}
             </Button>
           </ButtonWrapper>
         </InputWrapper>
-        <Button onClick={clearAllData}>重設所有資料</Button>
+        <Button onClick={clearAllData}>{t("button.reset")}</Button>
       </Wrapper>
       <Snackbar
         open={showPasswordError}
@@ -62,7 +64,7 @@ const Login = () => {
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert elevation={6} variant="filled" severity="error">
-          密碼錯誤
+          {t("message.wrong_password")}
         </Alert>
       </Snackbar>
     </PageWrapper>

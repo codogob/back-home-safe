@@ -1,15 +1,16 @@
-import React, { useRef, useState } from "react";
-import Modal from "react-modal";
-import crossBlack from "../../assets/crossBlack.svg";
-
-import styled from "styled-components";
-import { ModalConfirmButton } from "../../components/Button";
-import { DatePicker, DatePickerHandler } from "../../components/DatePicker";
-import { dayjs } from "../../utils/dayjs";
-import { Dayjs } from "dayjs";
 import { Snackbar } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
+import { Dayjs } from "dayjs";
+import React, { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import Modal from "react-modal";
+import styled from "styled-components";
+
+import crossBlack from "../../assets/crossBlack.svg";
+import { ModalConfirmButton } from "../../components/Button";
+import { DatePicker, DatePickerHandler } from "../../components/DatePicker";
 import { useTime } from "../../hooks/useTime";
+import { dayjs } from "../../utils/dayjs";
 
 type Props = {
   isModalOpen: boolean;
@@ -24,6 +25,7 @@ export const TimePickModal = ({
   onConfirm,
   date,
 }: Props) => {
+  const { t } = useTranslation("confirm");
   const { currentTime } = useTime();
   const datePickerRef = useRef<DatePickerHandler>(null);
   const [showPastDateError, setShowPastDateError] = useState(false);
@@ -77,11 +79,13 @@ export const TimePickModal = ({
       <CrossWrapper>
         <Cross src={crossBlack} onClick={onCancel} />
       </CrossWrapper>
-      <Title>你是什麼時候離開？</Title>
+      <Title>{t("message.when_you_left")}</Title>
       <TimePickerWrapper>
         <DatePicker ref={datePickerRef} />
       </TimePickerWrapper>
-      <ModalConfirmButton onClick={handleConfirm}>確認</ModalConfirmButton>
+      <ModalConfirmButton onClick={handleConfirm}>
+        {t("global:button.confirm")}
+      </ModalConfirmButton>
       <Snackbar
         open={showPastDateError}
         autoHideDuration={2000}
@@ -91,7 +95,7 @@ export const TimePickModal = ({
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert elevation={6} variant="filled" severity="error">
-          離開日期不能早於進入日期
+          {t("message.leave_time_earlier_than_enter")}
         </Alert>
       </Snackbar>
       <Snackbar
@@ -103,7 +107,7 @@ export const TimePickModal = ({
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert elevation={6} variant="filled" severity="error">
-          離開日期不能是未來
+          {t("message.future_leave_time")}
         </Alert>
       </Snackbar>
     </Modal>

@@ -13,6 +13,7 @@ import StoreIcon from "@material-ui/icons/Store";
 import dayjs from "dayjs";
 import { isEmpty } from "ramda";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
 import incognitoIcon from "../../assets/incognito.svg";
@@ -21,20 +22,23 @@ import { travelRecordType, useTravelRecord } from "../../hooks/useTravelRecord";
 import { getVenueName } from "../../utils/qr";
 
 export const TravelRecord = () => {
+  const { t } = useTranslation("main_screen");
   const { travelRecord, removeTravelRecord, incognito } = useTravelRecord();
 
   return (
     <PageWrapper>
-      <Header name="出行紀錄" />
+      <Header name={t("travel_record.name")} />
       <ContentWrapper>
         <List component="nav">
           {incognito && (
             <Msg>
               <IncognitoIcon src={incognitoIcon} />
-              隱私模式已開啟
+              {t("travel_record.message.incognito_activated")}
             </Msg>
           )}
-          {isEmpty(travelRecord) && <Msg>沒有出行紀錄</Msg>}
+          {isEmpty(travelRecord) && (
+            <Msg>{t("travel_record.message.empty")}</Msg>
+          )}
           {travelRecord.map((item, index) => {
             const name = getVenueName(item);
             return (

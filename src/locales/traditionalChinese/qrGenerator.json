@@ -1,0 +1,15 @@
+{
+  "name": "生成二維碼",
+  "form": {
+    "typeZh": "場所種類(中文) (typeZh)",
+    "typeEn": "場所種類(英文) (typeEn)",
+    "nameZh": "場所名字(中文) (nameZh)",
+    "nameEn": "場所名字(英文) (nameEn)",
+    "addressZh": "場所地址(中文) (預覽用)",
+    "addressEn": "場所地址(英文) (預覽用)",
+    "type": "類型",
+    "venue_code": "場地編碼 (唔知唔好搞)",
+    "venue_id": "場地ID (唔知唔好搞)",
+    "custom_icon": "自定Icon"
+  }
+}

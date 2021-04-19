@@ -1,4 +1,5 @@
-import _, { ConfigType } from "dayjs";
-import "dayjs/locale/zh-tw";
+import "dayjs/locale/zh-hk";
 
-export const dayjs = (date?: ConfigType) => _(date).locale("zh-tw");
+import _, { ConfigType } from "dayjs";
+
+export const dayjs = (date?: ConfigType) => _(date).locale("zh-hk");

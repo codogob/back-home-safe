@@ -6,20 +6,23 @@ import {
   Select,
 } from "@material-ui/core";
 import { isEmpty, isNil } from "ramda";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+
 import { Header } from "../../components/Header";
 import { MediaStream } from "../../components/MediaStream";
 import { useCamera } from "../../hooks/useCamera";
 
 const CameraSetting = () => {
+  const { t } = useTranslation("camera_setting");
   const { preferredCameraId, setPreferredCameraId, cameraList } = useCamera();
 
   return (
     <PageWrapper>
-      <Header backPath="/" name="相機設定" />
+      <Header backPath="/" name={t("name")} />
       <FormWrapper>
         <StyledFormControl>
-          <InputLabel id="cameraId">相機選擇</InputLabel>
+          <InputLabel id="cameraId">{t("form.camera_choice.label")}</InputLabel>
           <Select
             labelId="cameraId"
             id="demo-simple-select"
@@ -35,7 +38,7 @@ const CameraSetting = () => {
               </MenuItem>
             ))}
           </Select>
-          <FormHelperText>調較相機選項，直至有相機畫面顯示</FormHelperText>
+          <FormHelperText>{t("form.camera_choice.explain")}</FormHelperText>
         </StyledFormControl>
       </FormWrapper>
       <VideoContainer>

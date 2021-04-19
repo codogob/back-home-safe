@@ -1,13 +1,16 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+
 import { Disclaimer as DisclaimerContent } from "../../components/Disclaimer";
 import { Header } from "../../components/Header";
 
 const Disclaimer = () => {
+  const { t } = useTranslation("disclaimer");
   return (
     <Wrapper>
-      <Header backPath="/" name="免責聲明" />
-      <h3>使用此軟件代表你已同意</h3>
+      <Header backPath="/" name={t("name")} />
+      <h3>{t("message.you_accepted")}</h3>
       <DisclaimerContent />
     </Wrapper>
   );

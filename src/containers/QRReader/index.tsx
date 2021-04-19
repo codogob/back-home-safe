@@ -1,20 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
-import styled from "styled-components";
-import { getVenueName, qrDecode } from "../../utils/qr";
-import qrOverlay from "../../assets/qrOverlay.svg";
-import { QRCodeReader } from "../../components/QRCodeReader";
 import { QRCode } from "jsqr";
 import { isEmpty, propOr, trim } from "ramda";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
+import styled from "styled-components";
+
+import qrOverlay from "../../assets/qrOverlay.svg";
 import { Header } from "../../components/Header";
+import { QRCodeReader } from "../../components/QRCodeReader";
 import {
   travelRecordInputType,
   travelRecordType,
   useTravelRecord,
 } from "../../hooks/useTravelRecord";
 import { dayjs } from "../../utils/dayjs";
+import { getVenueName, qrDecode } from "../../utils/qr";
 
 const QRReader = () => {
+  const { t } = useTranslation("qr_reader");
   const [qrResult, setQrResult] = useState<string | null>(null);
   const browserHistory = useHistory();
   const { createTravelRecord } = useTravelRecord();
@@ -49,8 +52,8 @@ const QRReader = () => {
 
   return (
     <PageWrapper>
-      <Header backPath="/" name="掃瞄二維碼" />
-      <Message>掃瞄二維碼</Message>
+      <Header backPath="/" name={t("name")} />
+      <Message>{t("message.scan_qr_code")}</Message>
       <VideoContainer>
         <Overlay />
         <QRCodeReader onDecode={handleScan} />

@@ -8,6 +8,7 @@ import {
   Switch,
 } from "@material-ui/core";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
@@ -18,32 +19,42 @@ import { useTravelRecord } from "../../hooks/useTravelRecord";
 import { clearAllData } from "../../utils/clearAllData";
 
 export const Settings = () => {
+  const { t } = useTranslation("main_screen");
   const { hasCameraSupport } = useCamera();
   const { incognito, setIncognito } = useTravelRecord();
 
   return (
     <PageWrapper>
-      <Header name="設定" />
+      <Header name={t("setting.name")} />
       <ContentWrapper>
-        <StyledList subheader={<ListSubheader>常用</ListSubheader>}>
+        <StyledList
+          subheader={
+            <ListSubheader>{t("setting.section.common")}</ListSubheader>
+          }
+        >
           {hasCameraSupport ? (
             <StyledLink to="/cameraSetting">
               <ListItem button>
-                <ListItemText primary="相機設定" />
+                <ListItemText primary={t("setting.item.camera_setting")} />
               </ListItem>
             </StyledLink>
           ) : (
             <ListItem button disabled>
-              <ListItemText primary="相機設定" />
+              <ListItemText primary={t("setting.item.camera_setting")} />
             </ListItem>
           )}
           <StyledLink to="/confirmPageIcon">
             <ListItem button>
-              <ListItemText primary="確認頁標誌設定" />
+              <ListItemText
+                primary={t("setting.item.confirm_page_icon_setting")}
+              />
             </ListItem>
           </StyledLink>
           <ListItem>
-            <ListItemText primary="隱私模式" secondary="不儲存出行紀錄" />
+            <ListItemText
+              primary={t("setting.item.incognito_mode.name")}
+              secondary={t("setting.item.incognito_mode.explanation")}
+            />
             <ListItemSecondaryAction>
               <Switch
                 checked={incognito}
@@ -56,31 +67,40 @@ export const Settings = () => {
           </ListItem>
         </StyledList>
         <Divider />
-        <StyledList subheader={<ListSubheader>實驗室</ListSubheader>}>
+        <StyledList
+          subheader={<ListSubheader>{t("setting.section.lab")}</ListSubheader>}
+        >
           <StyledLink to="/qrGenerator">
             <ListItem button>
-              <ListItemText primary="生成二維碼" />
+              <ListItemText primary={t("setting.item.qr_generator")} />
             </ListItem>
           </StyledLink>
           <ListItem button>
-            <ListItemText primary="重設所有資料" onClick={clearAllData} />
+            <ListItemText
+              primary={t("setting.item.reset")}
+              onClick={clearAllData}
+            />
           </ListItem>
         </StyledList>
         <Divider />
         <StyledList
-          subheader={<ListSubheader>版本: {packageJson.version}</ListSubheader>}
+          subheader={
+            <ListSubheader>
+              {t("setting.section.version")}: {packageJson.version}
+            </ListSubheader>
+          }
         >
           <StyledExternalLink
             href="https://gitlab.com/codogo-b/back-home-safe"
             target="_blank"
           >
             <ListItem button>
-              <ListItemText primary="關於安心回家" />
+              <ListItemText primary={t("setting.item.about_us")} />
             </ListItem>
           </StyledExternalLink>
           <StyledLink to="/disclaimer">
             <ListItem button>
-              <ListItemText primary="免責聲明" />
+              <ListItemText primary={t("setting.item.disclaimer")} />
             </ListItem>
           </StyledLink>
           <StyledExternalLink
@@ -88,7 +108,7 @@ export const Settings = () => {
             target="_blank"
           >
             <ListItem button>
-              <ListItemText primary="更新紀錄" />
+              <ListItemText primary={t("setting.item.change_log")} />
             </ListItem>
           </StyledExternalLink>
           <StyledExternalLink
@@ -96,7 +116,7 @@ export const Settings = () => {
             target="_blank"
           >
             <ListItem button>
-              <ListItemText primary="回報問題" />
+              <ListItemText primary={t("setting.item.report_issue")} />
             </ListItem>
           </StyledExternalLink>
         </StyledList>

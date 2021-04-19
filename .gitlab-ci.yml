@@ -3,7 +3,6 @@ image: node:latest
 stages:
   - test
   - deploy
-  - release
 
 "Test":
   stage: test
@@ -18,7 +17,7 @@ stages:
     - npm run tsc
 
 pages:
-  stage: release
+  stage: deploy
   allow_failure: false
   before_script:
     - |-

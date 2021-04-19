@@ -8,6 +8,7 @@ import styled from "styled-components";
 import qrOverlay from "../../assets/qrOverlay.svg";
 import { Header } from "../../components/Header";
 import { QRCodeReader } from "../../components/QRCodeReader";
+import { useI18n } from "../../hooks/useI18n";
 import {
   travelRecordInputType,
   travelRecordType,
@@ -21,6 +22,7 @@ const QRReader = () => {
   const [qrResult, setQrResult] = useState<string | null>(null);
   const browserHistory = useHistory();
   const { createTravelRecord } = useTravelRecord();
+  const { language } = useI18n();
 
   const handleScan = ({ data }: QRCode) => {
     if (!data || isEmpty(data)) return;
@@ -33,7 +35,7 @@ const QRReader = () => {
   useEffect(() => {
     if (!qrResult) return;
     const decodedJson = qrDecode(qrResult);
-    if (!decodedJson || !getVenueName(decodedJson)) return;
+    if (!decodedJson || !getVenueName(decodedJson, language)) return;
     const trimmedZhName = trim(propOr("", "nameZh", decodedJson));
     const trimmedEnName = trim(propOr("", "nameEn", decodedJson));
 

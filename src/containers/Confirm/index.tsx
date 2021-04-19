@@ -11,6 +11,7 @@ import { ConfirmButton } from "../../components/Button";
 import { CheckBox } from "../../components/CheckBox";
 import { LeaveModal } from "../../components/LeaveModal";
 import { Place } from "../../components/Place";
+import { useI18n } from "../../hooks/useI18n";
 import {
   TravelRecord,
   travelRecordType,
@@ -38,6 +39,7 @@ export const Confirm = ({
   const [autoLeaveHour, setAutoLeaveHour] = useState(4);
   const [isAutoLeaveModalOpen, setIsAutoLeaveModalOpen] = useState(false);
   const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
+  const { language } = useI18n();
 
   useEffect(() => {
     if (!currentTravelRecord) browserHistory.push("/");
@@ -45,8 +47,9 @@ export const Confirm = ({
 
   const date = useMemo(() => dayjs(), []);
 
-  const place = useMemo(() => getVenueName(currentTravelRecord), [
+  const place = useMemo(() => getVenueName(currentTravelRecord, language), [
     currentTravelRecord,
+    language,
   ]);
 
   const handleSetAutoLeaveHour = (value: number) => {

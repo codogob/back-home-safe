@@ -17,7 +17,7 @@ export const [UseI18nProvider, useI18n] = constate(() => {
   }, [i18n, language]);
 
   return {
-    language,
+    language: language || languageType["ZH-HK"],
     setLanguage,
   };
 });

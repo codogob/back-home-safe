@@ -18,12 +18,14 @@ import styled from "styled-components";
 
 import incognitoIcon from "../../assets/incognito.svg";
 import { Header } from "../../components/Header";
+import { useI18n } from "../../hooks/useI18n";
 import { travelRecordType, useTravelRecord } from "../../hooks/useTravelRecord";
 import { getVenueName } from "../../utils/qr";
 
 export const TravelRecord = () => {
   const { t } = useTranslation("main_screen");
   const { travelRecord, removeTravelRecord, incognito } = useTravelRecord();
+  const { language } = useI18n();
 
   return (
     <PageWrapper>
@@ -40,7 +42,7 @@ export const TravelRecord = () => {
             <Msg>{t("travel_record.message.empty")}</Msg>
           )}
           {travelRecord.map((item, index) => {
-            const name = getVenueName(item);
+            const name = getVenueName(item, language);
             return (
               <React.Fragment key={index}>
                 <ListItem>

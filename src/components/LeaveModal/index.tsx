@@ -1,6 +1,8 @@
 import { Dayjs } from "dayjs";
 import { propOr } from "ramda";
 import React, { useMemo, useState } from "react";
+
+import { useI18n } from "../../hooks/useI18n";
 import { useTime } from "../../hooks/useTime";
 import { travelRecordType, useTravelRecord } from "../../hooks/useTravelRecord";
 import { dayjs } from "../../utils/dayjs";
@@ -18,9 +20,11 @@ export const LeaveModal = ({ visible, onDiscard, onFinish }: Props) => {
   const { currentTime } = useTime();
   const { currentTravelRecord } = useTravelRecord();
   const [isTimePickModalOpen, setIsTimePickModalOpen] = useState(false);
+  const { language } = useI18n();
 
-  const place = useMemo(() => getVenueName(currentTravelRecord), [
+  const place = useMemo(() => getVenueName(currentTravelRecord, language), [
     currentTravelRecord,
+    language,
   ]);
 
   const handleLeaveNow = () => {

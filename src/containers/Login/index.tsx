@@ -1,19 +1,20 @@
 import { Button, Snackbar, TextField } from "@material-ui/core";
+import LockIcon from "@material-ui/icons/Lock";
+import { Alert } from "@material-ui/lab";
+import { isEmpty } from "ramda";
 import React, { useState } from "react";
 import styled from "styled-components";
-import LockIcon from "@material-ui/icons/Lock";
-import { isEmpty } from "ramda";
-import { useLocalStorage } from "../../hooks/useLocalStorage";
-import { Alert } from "@material-ui/lab";
+
+import { useTravelRecord } from "../../hooks/useTravelRecord";
 import { clearAllData } from "../../utils/clearAllData";
 
 const Login = () => {
   const [password, setPassword] = useState("");
-  const { login } = useLocalStorage();
+  const { unlockTravelRecord } = useTravelRecord();
   const [showPasswordError, setShowPasswordError] = useState(false);
 
   const handleLogin = () => {
-    const success = login(password);
+    const success = unlockTravelRecord(password);
 
     if (!success) {
       setShowPasswordError(true);

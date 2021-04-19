@@ -1,12 +1,13 @@
 import React, { Suspense, useCallback, useEffect } from "react";
+import { Redirect, Route, useLocation } from "react-router-dom";
+import { useLocalStorage } from "react-use";
 import { createGlobalStyle } from "styled-components";
-
-import { Route, Redirect, useLocation } from "react-router-dom";
-import { Confirm } from "./containers/Confirm";
 import adapter from "webrtc-adapter";
+
 import { AnimatedSwitch } from "./components/AnimatedSwitch";
-import { useLocalStorage } from "./hooks/useLocalStorage";
 import { PageLoading } from "./components/PageLoading";
+import { Confirm } from "./containers/Confirm";
+import { useTravelRecord } from "./hooks/useTravelRecord";
 
 const QRGenerator = React.lazy(() => import("./containers/QRGenerator"));
 const QRReader = React.lazy(() => import("./containers/QRReader"));
@@ -15,15 +16,27 @@ const Tutorial = React.lazy(() => import("./containers/Tutorial"));
 const Main = React.lazy(() => import("./containers/Main"));
 const Disclaimer = React.lazy(() => import("./containers/Disclaimer"));
 const Login = React.lazy(() => import("./containers/Login"));
+const ConfirmPageIconSetting = React.lazy(
+  () => import("./containers/ConfirmPageIconSetting")
+);
 
 export const App = () => {
-  const { finishedTutorial, unlocked, logout } = useLocalStorage();
+  const [finishedTutorial, setFinishedTutorial] = useLocalStorage(
+    "finished_tutorial",
+    false
+  );
+  const [confirmPageIcon, setConfirmPageIcon] = useLocalStorage<string | null>(
+    "confirmPageIcon",
+    null
+  );
+  const { lockTravelRecord, unlocked, currentTravelRecord } = useTravelRecord();
   const { pathname } = useLocation();
 
   const handleBlur = useCallback(() => {
     console.log(pathname);
-    if (pathname !== "/qrReader" && pathname !== "/cameraSetting") logout();
-  }, [logout, pathname]);
+    if (pathname !== "/qrReader" && pathname !== "/cameraSetting")
+      lockTravelRecord();
+  }, [lockTravelRecord, pathname]);
 
   useEffect(() => {
     console.log(adapter.browserDetails.browser, adapter.browserDetails.version);
@@ -46,7 +59,7 @@ export const App = () => {
         {!unlocked && <Redirect to="/login" />}
         {!finishedTutorial && (
           <Route exact path="/tutorial">
-            <Tutorial />
+            <Tutorial setFinishedTutorial={setFinishedTutorial} />
           </Route>
         )}
         {!finishedTutorial && <Redirect to="/tutorial" />}
@@ -55,7 +68,10 @@ export const App = () => {
         </Route>
         <Route exact path="/confirm">
           {/* Don't split, to provide smooth transition between QR and confirm */}
-          <Confirm />
+          <Confirm
+            confirmPageIcon={confirmPageIcon}
+            currentTravelRecord={currentTravelRecord}
+          />
         </Route>
         <Route exact path="/qrGenerator">
           <QRGenerator />
@@ -68,6 +84,12 @@ export const App = () => {
         </Route>
         <Route exact path="/cameraSetting">
           <CameraSetting />
+        </Route>
+        <Route exact path="/confirmPageIcon">
+          <ConfirmPageIconSetting
+            confirmPageIcon={confirmPageIcon}
+            setConfirmPageIcon={setConfirmPageIcon}
+          />
         </Route>
         <Redirect to="/" />
       </AnimatedSwitch>

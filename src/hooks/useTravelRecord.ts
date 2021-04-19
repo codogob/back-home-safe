@@ -1,11 +1,11 @@
-import { head, remove, tail } from "ramda";
-import { dayjs } from "../utils/dayjs";
-import { useCallback, useEffect, useMemo, useState } from "react";
 import constate from "constate";
-import { useLocalStorage } from "./useLocalStorage";
-import { useTime } from "./useTime";
 import { Dayjs } from "dayjs";
-import { useShallowCompareEffect } from "react-use";
+import { head, remove, tail } from "ramda";
+import { useCallback, useMemo } from "react";
+
+import { dayjs } from "../utils/dayjs";
+import { useEncryptedStore } from "./useEncryptedStore";
+import { useTime } from "./useTime";
 
 export enum travelRecordInputType {
   MANUALLY = "MANUALLY",
@@ -35,30 +35,21 @@ export type TravelRecord =
       outTime?: string;
     };
 
-const defaultTravelRecord = JSON.stringify([]);
-
 export const [UseTravelRecordProvider, useTravelRecord] = constate(() => {
   const { currentTime } = useTime();
   const {
-    travelRecord: savedTravelRecord,
-    setTravelRecord: setSavedTravelRecord,
+    unlockStore: unlockTravelRecord,
+    lockStore: lockTravelRecord,
+    value: travelRecord,
+    setValue: setTravelRecord,
+    initPassword: encryptTravelRecord,
     unlocked,
-  } = useLocalStorage();
-
-  const [travelRecord, setTravelRecord] = useState<TravelRecord[]>(
-    JSON.parse(savedTravelRecord || defaultTravelRecord)
-  );
-
-  useEffect(() => {
-    if (!unlocked) return;
-    setTravelRecord(JSON.parse(savedTravelRecord || defaultTravelRecord));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [unlocked]);
-
-  useShallowCompareEffect(() => {
-    if (!unlocked) return;
-    setSavedTravelRecord(JSON.stringify(travelRecord));
-  }, [travelRecord, setSavedTravelRecord, unlocked]);
+    incognito,
+    setIncognito,
+  } = useEncryptedStore<TravelRecord[]>({
+    key: "travel_record",
+    defaultValue: [],
+  });
 
   const getCurrentTravelRecord = useCallback(
     (records: TravelRecord[], currentTime: Dayjs) => {
@@ -94,7 +85,7 @@ export const [UseTravelRecordProvider, useTravelRecord] = constate(() => {
         }
       });
     },
-    [getCurrentTravelRecord, currentTime]
+    [getCurrentTravelRecord, currentTime, setTravelRecord]
   );
 
   const updateCurrentTravelRecord = useCallback(
@@ -107,7 +98,7 @@ export const [UseTravelRecordProvider, useTravelRecord] = constate(() => {
         return prev;
       });
     },
-    [getCurrentTravelRecord, currentTime]
+    [getCurrentTravelRecord, currentTime, setTravelRecord]
   );
 
   const removeTravelRecord = (index: number) => {
@@ -121,5 +112,11 @@ export const [UseTravelRecordProvider, useTravelRecord] = constate(() => {
     createTravelRecord,
     updateCurrentTravelRecord,
     removeTravelRecord,
+    lockTravelRecord,
+    unlockTravelRecord,
+    encryptTravelRecord,
+    unlocked,
+    incognito,
+    setIncognito,
   };
 });

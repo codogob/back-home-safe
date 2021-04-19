@@ -3,28 +3,38 @@ import {
   IconButton,
   List,
   ListItem,
+  ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
-  ListItemIcon,
 } from "@material-ui/core";
-import StoreIcon from "@material-ui/icons/Store";
+import DeleteIcon from "@material-ui/icons/Delete";
 import LocalTaxiIcon from "@material-ui/icons/LocalTaxi";
+import StoreIcon from "@material-ui/icons/Store";
+import dayjs from "dayjs";
+import { isEmpty } from "ramda";
 import React from "react";
 import styled from "styled-components";
+
+import incognitoIcon from "../../assets/incognito.svg";
 import { Header } from "../../components/Header";
 import { travelRecordType, useTravelRecord } from "../../hooks/useTravelRecord";
 import { getVenueName } from "../../utils/qr";
-import dayjs from "dayjs";
-import DeleteIcon from "@material-ui/icons/Delete";
 
 export const TravelRecord = () => {
-  const { travelRecord, removeTravelRecord } = useTravelRecord();
+  const { travelRecord, removeTravelRecord, incognito } = useTravelRecord();
 
   return (
     <PageWrapper>
       <Header name="出行紀錄" />
       <ContentWrapper>
         <List component="nav">
+          {incognito && (
+            <Msg>
+              <IncognitoIcon src={incognitoIcon} />
+              隱私模式已開啟
+            </Msg>
+          )}
+          {isEmpty(travelRecord) && <Msg>沒有出行紀錄</Msg>}
           {travelRecord.map((item, index) => {
             const name = getVenueName(item);
             return (
@@ -54,6 +64,7 @@ export const TravelRecord = () => {
                       onClick={() => {
                         removeTravelRecord(index);
                       }}
+                      disabled={incognito}
                     >
                       <DeleteIcon />
                     </IconButton>
@@ -75,10 +86,24 @@ const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   background-color: #fff;
+  overflow: auto;
 `;
 
 const ContentWrapper = styled.div`
   width: 100%;
   height: 100%;
   overflow: auto;
+`;
+
+const Msg = styled.div`
+  text-align: center;
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 0.875rem;
+  line-height: 48px;
+`;
+
+const IncognitoIcon = styled.img`
+  display: block;
+  width: 24px;
+  margin: 8px auto 0 auto;
 `;

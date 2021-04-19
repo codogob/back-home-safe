@@ -1,12 +1,15 @@
-import { any, hasIn } from "ramda";
 import constate from "constate";
+import { any, hasIn } from "ramda";
 import { useCallback, useEffect, useState } from "react";
-import { useLocalStorage } from "./useLocalStorage";
+import { useLocalStorage } from "react-use";
 
 export const [UseCameraProvider, useCamera] = constate(() => {
   const [hasCameraSupport] = useState("mediaDevices" in navigator);
 
-  const { preferredCameraId, setPreferredCameraId } = useLocalStorage();
+  const [preferredCameraId, setPreferredCameraId] = useLocalStorage(
+    "preferred_camera_id",
+    "AUTO"
+  );
   const [cameraList, setCameraList] = useState<InputDeviceInfo[] | null>(null);
 
   const initCameraList = useCallback(async () => {

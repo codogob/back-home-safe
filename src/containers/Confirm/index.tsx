@@ -1,24 +1,37 @@
-import React, { useEffect, useMemo, useState } from "react";
-import styled from "styled-components";
-import cross from "../../assets/cross.svg";
-
-import tick from "../../assets/tick.svg";
-
-import { Link, useHistory } from "react-router-dom";
-import { ConfirmButton } from "../../components/Button";
-import { Place } from "../../components/Place";
-import { AutoLeaveModal } from "./AutoLeaveModal";
-import { CheckBox } from "../../components/CheckBox";
-import { dayjs } from "../../utils/dayjs";
-import { travelRecordType, useTravelRecord } from "../../hooks/useTravelRecord";
-import { getVenueName } from "../../utils/qr";
 import { Dayjs } from "dayjs";
-import { LeaveModal } from "../../components/LeaveModal";
 import { propOr } from "ramda";
+import React, { useEffect, useMemo, useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import styled from "styled-components";
 
-export const Confirm = () => {
+import cross from "../../assets/cross.svg";
+import tick from "../../assets/tick.svg";
+import { ConfirmButton } from "../../components/Button";
+import { CheckBox } from "../../components/CheckBox";
+import { LeaveModal } from "../../components/LeaveModal";
+import { Place } from "../../components/Place";
+import {
+  TravelRecord,
+  travelRecordType,
+  useTravelRecord,
+} from "../../hooks/useTravelRecord";
+import { dayjs } from "../../utils/dayjs";
+import { getVenueName } from "../../utils/qr";
+import { AutoLeaveModal } from "./AutoLeaveModal";
+
+type Props = {
+  currentTravelRecord: TravelRecord | null;
+  readOnly?: boolean;
+  confirmPageIcon?: string | null;
+};
+
+export const Confirm = ({
+  currentTravelRecord,
+  readOnly = false,
+  confirmPageIcon,
+}: Props) => {
   const browserHistory = useHistory();
-  const { currentTravelRecord, updateCurrentTravelRecord } = useTravelRecord();
+  const { updateCurrentTravelRecord } = useTravelRecord();
   const [autoLeave, setAutoLeave] = useState(true);
   const [autoLeaveHour, setAutoLeaveHour] = useState(4);
   const [isAutoLeaveModalOpen, setIsAutoLeaveModalOpen] = useState(false);
@@ -65,9 +78,14 @@ export const Confirm = () => {
     <>
       <PageWrapper>
         <Header>
-          <Link to="/">
+          {confirmPageIcon && <Logo src={confirmPageIcon} />}
+          {readOnly ? (
             <Cross src={cross} />
-          </Link>
+          ) : (
+            <Link to="/">
+              <Cross src={cross} />
+            </Link>
+          )}
         </Header>
         <MessageWrapper>
           {venueType === travelRecordType.TAXI ? (
@@ -78,7 +96,6 @@ export const Confirm = () => {
           ) : (
             <Msg>你已進入場所</Msg>
           )}
-
           <PlaceWrapper>
             <Place value={place || ""} readOnly />
           </PlaceWrapper>
@@ -92,11 +109,16 @@ export const Confirm = () => {
         <ActionGroup>
           <AutoLeave>
             <CheckBoxWrapper>
-              <CheckBox checked={autoLeave} onChange={setAutoLeave} />
+              <CheckBox
+                checked={autoLeave}
+                onChange={setAutoLeave}
+                readOnly={readOnly}
+              />
               {autoLeaveHour}小時後自動離開
             </CheckBoxWrapper>
             <Change
               onClick={() => {
+                if (readOnly) return;
                 setIsAutoLeaveModalOpen(true);
               }}
             >
@@ -106,10 +128,11 @@ export const Confirm = () => {
           <ConfirmButton
             shadowed
             onClick={() => {
+              if (readOnly) return;
               setIsLeaveModalOpen(true);
             }}
           >
-            離開
+            離開場所
           </ConfirmButton>
           <LeaveMessage>當你離開時請緊記按"離開"</LeaveMessage>
         </ActionGroup>
@@ -143,16 +166,23 @@ const PageWrapper = styled.div`
   color: #fff;
 `;
 
+const Logo = styled.img`
+  height: 72px;
+`;
+
 const Header = styled.div`
   width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   flex-shrink: 0;
+  margin: 24px 0 16px 0;
 `;
 
 const Cross = styled.img`
   height: 20px;
-  margin: 24px;
+  margin: 8px 24px;
+  position: absolute;
+  right: 0;
 `;
 
 const PlaceWrapper = styled.div`

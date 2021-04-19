@@ -1,10 +1,27 @@
 image: node:latest
 
+stages:
+  - test
+  - deploy
+  - release
+
+"Test":
+  stage: test
+  allow_failure: false
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - .npm/
+  before_script:
+    - npm ci
+  script:
+    - npm run tsc
+
 pages:
+  stage: deploy
   cache:
     paths:
       - node_modules/
-
   script:
     - npm ci
     - npm run build
@@ -17,7 +34,7 @@ pages:
     - master
 
 "Release":
-  image: node:latest
+  stage: release
   allow_failure: false
   before_script:
     - git config --global user.email "bot@_.com"
@@ -27,10 +44,11 @@ pages:
     - cd back-home-safe
     - npm ci
   only:
+    refs:
+      - master
     variables:
       - $GIT_LAB_USERNAME != null
       - $PERSONAL_ACCESS_TOKEN != null
-      - $CI_COMMIT_BRANCH == 'master'
   environment:
     name: production
   script:

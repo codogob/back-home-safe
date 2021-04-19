@@ -2,7 +2,10 @@
 
 [![pipeline status](https://gitlab.com/codogo-b/back-home-safe/badges/master/pipeline.svg)](https://gitlab.com/codogo-b/back-home-safe/-/commits/master)
 
-以 PWA 形式模擬及實現安心出行功能
+![logo](https://gitlab.com/codogo-b/back-home-safe/-/raw/master/public/icon-192x192.png)
+
+以 PWA(progressive web app) 形式模擬及實現安心出行功能\
+立即試試: <https://codogo-b.gitlab.io/back-home-safe/>
 
 ## 免責聲明
 
@@ -16,16 +19,26 @@
 
 ## 功能
 
-WIP
+- [x] 紀錄出行場所
+- [x] 紀錄的士號碼
+- [x] 自動離開
+- [x] 查看/刪除訪問出行記錄
+- [x] 加密出行紀錄
+- [x] 隱私模式(不儲存出行紀錄)
+- [x] 生成二維碼
+- [ ] i18n
+- [ ] 查看確診個案
 
-## Local test
+## 開發者專區
+
+### Local testing
 
 ```bash
 npm install
 npm start
 ```
 
-## 自己 Host
+### 自己 Host
 
 ```bash
 npm install

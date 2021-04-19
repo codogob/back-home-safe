@@ -58,22 +58,22 @@ export const getVenueName = (
   if (!decodedJson) return "";
 
   const trimmedZhName = trim(propOr("", "nameZh", decodedJson));
-
   const trimmedEnName = trim(propOr("", "nameEn", decodedJson));
+  const venueId = trim(propOr("", "venueId", decodedJson));
 
   const chineseName = !isEmpty(trimmedZhName)
     ? trimmedZhName
     : !isEmpty(trimmedEnName)
     ? trimmedEnName
     : // used for taxi license
-      decodedJson.venueId || "";
+      venueId;
 
   const englishName = !isEmpty(trimmedEnName)
     ? trimmedEnName
     : !isEmpty(trimmedZhName)
     ? trimmedZhName
     : // used for taxi license
-      decodedJson.venueId || "";
+      venueId;
 
   return language === languageType.EN ? englishName : chineseName;
 };

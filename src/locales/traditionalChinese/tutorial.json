@@ -16,5 +16,8 @@
     "message": {
       "password_usage": "密碼用於加密出行紀錄"
     }
+  },
+  "language": {
+    "name": "語言"
   }
 }

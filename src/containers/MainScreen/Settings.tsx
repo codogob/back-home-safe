@@ -1,20 +1,28 @@
 import {
+  Collapse,
   Divider,
+  FormControlLabel,
   List,
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
   ListSubheader,
+  Radio,
+  RadioGroup,
   Switch,
 } from "@material-ui/core";
-import React from "react";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import packageJson from "../../../package.json";
 import { Header } from "../../components/Header";
+import { languageType } from "../../constants/languageType";
 import { useCamera } from "../../hooks/useCamera";
+import { useI18n } from "../../hooks/useI18n";
 import { useTravelRecord } from "../../hooks/useTravelRecord";
 import { clearAllData } from "../../utils/clearAllData";
 
@@ -22,6 +30,12 @@ export const Settings = () => {
   const { t } = useTranslation("main_screen");
   const { hasCameraSupport } = useCamera();
   const { incognito, setIncognito } = useTravelRecord();
+  const [languageOpen, setLanguageOpen] = useState(false);
+  const { language, setLanguage } = useI18n();
+
+  const handleLanguageClick = () => {
+    setLanguageOpen(!languageOpen);
+  };
 
   return (
     <PageWrapper>
@@ -65,6 +79,34 @@ export const Settings = () => {
               />
             </ListItemSecondaryAction>
           </ListItem>
+          <ListItem button onClick={handleLanguageClick}>
+            <ListItemText primary={t("setting.item.language")} />
+            {languageOpen ? <ExpandLess /> : <ExpandMore />}
+          </ListItem>
+          <Collapse in={languageOpen} timeout="auto" unmountOnExit>
+            <ListItem>
+              <RadioGroup
+                aria-label="language"
+                name="language"
+                value={language}
+                onChange={(event) => {
+                  setLanguage(event.target.value as languageType);
+                }}
+              >
+                <FormControlLabel
+                  value={languageType["ZH-HK"]}
+                  control={<Radio />}
+                  label="繁體中文"
+                />
+                <FormControlLabel
+                  value={languageType.EN}
+                  control={<Radio />}
+                  label="English"
+                  disabled
+                />
+              </RadioGroup>
+            </ListItem>
+          </Collapse>
         </StyledList>
         <Divider />
         <StyledList

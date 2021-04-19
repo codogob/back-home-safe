@@ -8,9 +8,11 @@ import styled from "styled-components";
 import { useTravelRecord } from "../../hooks/useTravelRecord";
 import { AddToHomeScreen } from "./AddToHomeScreen";
 import { Disclaimer } from "./Disclaimer";
+import { Language } from "./Language";
 import { SetupPassword } from "./SetupPassword";
 
 enum steps {
+  LANGUAGE = "LANGUAGE",
   ADD_TO_HOME_SCREEN = "ADD_TO_HOME_SCREEN",
   DISCLAIMER = "DISCLAIMER",
   SET_UP_PASSWORD = "SET_UP_PASSWORD",
@@ -25,6 +27,12 @@ const stepsSettings = ({
   password: string;
   setPassword: (value: string) => void;
 }) => [
+  {
+    key: steps.LANGUAGE,
+    name: t("language.name"),
+    nextButtonText: t("global:button.next_page"),
+    component: <Language />,
+  },
   {
     key: steps.ADD_TO_HOME_SCREEN,
     name: t("add_to_home_screen.name"),

@@ -8,6 +8,7 @@ import { HashRouter } from "react-router-dom";
 
 import { App } from "./App";
 import { UseCameraProvider } from "./hooks/useCamera";
+import { UseI18nProvider } from "./hooks/useI18n";
 import { UseTimeProvider } from "./hooks/useTime";
 import { UseTravelRecordProvider } from "./hooks/useTravelRecord";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
@@ -21,17 +22,19 @@ const theme = createMuiTheme({
 
 ReactDOM.render(
   <React.StrictMode>
-    <HashRouter basename="/">
-      <ThemeProvider theme={theme}>
-        <UseTimeProvider>
-          <UseTravelRecordProvider>
-            <UseCameraProvider>
-              <App />
-            </UseCameraProvider>
-          </UseTravelRecordProvider>
-        </UseTimeProvider>
-      </ThemeProvider>
-    </HashRouter>
+    <UseI18nProvider>
+      <HashRouter basename="/">
+        <ThemeProvider theme={theme}>
+          <UseTimeProvider>
+            <UseTravelRecordProvider>
+              <UseCameraProvider>
+                <App />
+              </UseCameraProvider>
+            </UseTravelRecordProvider>
+          </UseTimeProvider>
+        </ThemeProvider>
+      </HashRouter>
+    </UseI18nProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

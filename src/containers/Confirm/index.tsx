@@ -134,7 +134,9 @@ export const Confirm = ({
               setIsLeaveModalOpen(true);
             }}
           >
-            {t("button.leave")}
+            {venueType === travelRecordType.TAXI
+              ? t("button.get_off")
+              : t("button.leave")}
           </ConfirmButton>
           <LeaveMessage>{t("message.remember_to_leave")}</LeaveMessage>
         </ActionGroup>

@@ -19,6 +19,7 @@
   },
   "button": {
     "leave": "離開場所",
+    "get_off": "下車",
     "leave_now": "是的，我現在要離開",
     "already_left": "我已經離開了"
   }

@@ -19,6 +19,7 @@
   },
   "button": {
     "leave": "Leave Venue",
+    "get_off": "Get Off",
     "leave_now": "Yes, I'm leaving now",
     "already_left": "I've already left"
   }

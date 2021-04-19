@@ -1,26 +1,33 @@
+import { Checkbox } from "@material-ui/core";
 import React from "react";
+import { isAndroid } from "react-device-detect";
 import styled from "styled-components";
+
 import checkbox from "../assets/checkbox.svg";
 import checkboxChecked from "../assets/checkboxChecked.svg";
-import { isAndroid } from "react-device-detect";
-import { Checkbox } from "@material-ui/core";
 
 type Props = {
   checked: boolean;
   onChange: (value: boolean) => void;
+  readOnly?: boolean;
 };
 
-export const CheckBox = ({ onChange, checked }: Props) => {
+export const CheckBox = ({ onChange, checked, readOnly = false }: Props) => {
   const handleClick = () => {
     onChange(!checked);
   };
 
   return isAndroid ? (
-    <StyledCheckbox checked={checked} onClick={handleClick} color="primary" />
+    <StyledCheckbox
+      checked={checked}
+      onClick={handleClick}
+      color="primary"
+      readOnly={readOnly}
+    />
   ) : (
     <IOSCheckBox
       src={checked ? checkboxChecked : checkbox}
-      onClick={handleClick}
+      onClick={readOnly ? undefined : handleClick}
     />
   );
 };

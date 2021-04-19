@@ -16,13 +16,20 @@ const Tutorial = React.lazy(() => import("./containers/Tutorial"));
 const Main = React.lazy(() => import("./containers/Main"));
 const Disclaimer = React.lazy(() => import("./containers/Disclaimer"));
 const Login = React.lazy(() => import("./containers/Login"));
+const ConfirmPageIconSetting = React.lazy(
+  () => import("./containers/ConfirmPageIconSetting")
+);
 
 export const App = () => {
   const [finishedTutorial, setFinishedTutorial] = useLocalStorage(
     "finished_tutorial",
     false
   );
-  const { lockTravelRecord, unlocked } = useTravelRecord();
+  const [confirmPageIcon, setConfirmPageIcon] = useLocalStorage<string | null>(
+    "confirmPageIcon",
+    null
+  );
+  const { lockTravelRecord, unlocked, currentTravelRecord } = useTravelRecord();
   const { pathname } = useLocation();
 
   const handleBlur = useCallback(() => {
@@ -61,7 +68,10 @@ export const App = () => {
         </Route>
         <Route exact path="/confirm">
           {/* Don't split, to provide smooth transition between QR and confirm */}
-          <Confirm />
+          <Confirm
+            confirmPageIcon={confirmPageIcon}
+            currentTravelRecord={currentTravelRecord}
+          />
         </Route>
         <Route exact path="/qrGenerator">
           <QRGenerator />
@@ -74,6 +84,12 @@ export const App = () => {
         </Route>
         <Route exact path="/cameraSetting">
           <CameraSetting />
+        </Route>
+        <Route exact path="/confirmPageIcon">
+          <ConfirmPageIconSetting
+            confirmPageIcon={confirmPageIcon}
+            setConfirmPageIcon={setConfirmPageIcon}
+          />
         </Route>
         <Redirect to="/" />
       </AnimatedSwitch>

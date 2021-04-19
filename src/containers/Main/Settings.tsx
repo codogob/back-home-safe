@@ -37,9 +37,9 @@ export const Settings = () => {
               <ListItemText primary="相機設定" />
             </ListItem>
           )}
-          <StyledLink to="/disclaimer">
+          <StyledLink to="/confirmPageIcon">
             <ListItem button>
-              <ListItemText primary="免責聲明" />
+              <ListItemText primary="確認頁標誌設定" />
             </ListItem>
           </StyledLink>
           <ListItem>
@@ -78,6 +78,11 @@ export const Settings = () => {
               <ListItemText primary="關於安心回家" />
             </ListItem>
           </StyledExternalLink>
+          <StyledLink to="/disclaimer">
+            <ListItem button>
+              <ListItemText primary="免責聲明" />
+            </ListItem>
+          </StyledLink>
           <StyledExternalLink
             href="https://gitlab.com/codogo-b/back-home-safe/-/blob/master/CHANGELOG.md"
             target="_blank"

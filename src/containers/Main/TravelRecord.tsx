@@ -15,18 +15,25 @@ import { isEmpty } from "ramda";
 import React from "react";
 import styled from "styled-components";
 
+import incognitoIcon from "../../assets/incognito.svg";
 import { Header } from "../../components/Header";
 import { travelRecordType, useTravelRecord } from "../../hooks/useTravelRecord";
 import { getVenueName } from "../../utils/qr";
 
 export const TravelRecord = () => {
-  const { travelRecord, removeTravelRecord } = useTravelRecord();
+  const { travelRecord, removeTravelRecord, incognito } = useTravelRecord();
 
   return (
     <PageWrapper>
       <Header name="出行紀錄" />
       <ContentWrapper>
         <List component="nav">
+          {incognito && (
+            <Msg>
+              <IncognitoIcon src={incognitoIcon} />
+              隱私模式已開啟
+            </Msg>
+          )}
           {isEmpty(travelRecord) && <Msg>沒有出行紀錄</Msg>}
           {travelRecord.map((item, index) => {
             const name = getVenueName(item);
@@ -57,6 +64,7 @@ export const TravelRecord = () => {
                       onClick={() => {
                         removeTravelRecord(index);
                       }}
+                      disabled={incognito}
                     >
                       <DeleteIcon />
                     </IconButton>
@@ -92,4 +100,10 @@ const Msg = styled.div`
   color: rgba(0, 0, 0, 0.54);
   font-size: 0.875rem;
   line-height: 48px;
+`;
+
+const IncognitoIcon = styled.img`
+  display: block;
+  width: 24px;
+  margin: 8px auto 0 auto;
 `;

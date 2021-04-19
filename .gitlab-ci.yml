@@ -58,8 +58,8 @@ release:
     refs:
       - master
     variables:
-      - $GIT_LAB_USERNAME == null
-      - $PERSONAL_ACCESS_TOKEN == null
+      - $GIT_LAB_USERNAME != null
+      - $PERSONAL_ACCESS_TOKEN != null
 
   before_script:
     - git config --global user.email "bot@_.com"

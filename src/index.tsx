@@ -1,14 +1,14 @@
-import { createMuiTheme, ThemeProvider } from "@material-ui/core";
+import { ThemeProvider, createMuiTheme } from "@material-ui/core";
 import { teal, yellow } from "@material-ui/core/colors";
 import React from "react";
 import ReactDOM from "react-dom";
+import { HashRouter } from "react-router-dom";
+
 import { App } from "./App";
 import { UseCameraProvider } from "./hooks/useCamera";
-import { UseLocalStorageProvider } from "./hooks/useLocalStorage";
 import { UseTimeProvider } from "./hooks/useTime";
 import { UseTravelRecordProvider } from "./hooks/useTravelRecord";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
-import { HashRouter } from "react-router-dom";
 
 const theme = createMuiTheme({
   palette: {
@@ -22,13 +22,11 @@ ReactDOM.render(
     <HashRouter basename="/">
       <ThemeProvider theme={theme}>
         <UseTimeProvider>
-          <UseLocalStorageProvider>
-            <UseTravelRecordProvider>
-              <UseCameraProvider>
-                <App />
-              </UseCameraProvider>
-            </UseTravelRecordProvider>
-          </UseLocalStorageProvider>
+          <UseTravelRecordProvider>
+            <UseCameraProvider>
+              <App />
+            </UseCameraProvider>
+          </UseTravelRecordProvider>
         </UseTimeProvider>
       </ThemeProvider>
     </HashRouter>

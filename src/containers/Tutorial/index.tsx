@@ -2,7 +2,8 @@ import { Button, Step, StepLabel, Stepper } from "@material-ui/core";
 import { isEmpty } from "ramda";
 import React, { useMemo, useState } from "react";
 import styled from "styled-components";
-import { useLocalStorage } from "../../hooks/useLocalStorage";
+
+import { useTravelRecord } from "../../hooks/useTravelRecord";
 import { AddToHomeScreen } from "./AddToHomeScreen";
 import { Disclaimer } from "./Disclaimer";
 import { SetupPassword } from "./SetupPassword";
@@ -40,8 +41,12 @@ const stepsSettings = ({
   },
 ];
 
-const Tutorial = () => {
-  const { setFinishedTutorial, initPassword } = useLocalStorage();
+const Tutorial = ({
+  setFinishedTutorial,
+}: {
+  setFinishedTutorial: (value: boolean) => void;
+}) => {
+  const { encryptTravelRecord } = useTravelRecord();
 
   const [activeStep, setActiveStep] = useState(0);
   const [password, setPassword] = useState("");
@@ -62,7 +67,7 @@ const Tutorial = () => {
 
   const handleNext = () => {
     if (isLastStep) {
-      !isEmpty(password) && initPassword(password);
+      !isEmpty(password) && encryptTravelRecord(password);
       setFinishedTutorial(true);
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);

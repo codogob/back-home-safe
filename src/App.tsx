@@ -1,12 +1,13 @@
 import React, { Suspense, useCallback, useEffect } from "react";
+import { Redirect, Route, useLocation } from "react-router-dom";
+import { useLocalStorage } from "react-use";
 import { createGlobalStyle } from "styled-components";
-
-import { Route, Redirect, useLocation } from "react-router-dom";
-import { Confirm } from "./containers/Confirm";
 import adapter from "webrtc-adapter";
+
 import { AnimatedSwitch } from "./components/AnimatedSwitch";
-import { useLocalStorage } from "./hooks/useLocalStorage";
 import { PageLoading } from "./components/PageLoading";
+import { Confirm } from "./containers/Confirm";
+import { useTravelRecord } from "./hooks/useTravelRecord";
 
 const QRGenerator = React.lazy(() => import("./containers/QRGenerator"));
 const QRReader = React.lazy(() => import("./containers/QRReader"));
@@ -17,13 +18,18 @@ const Disclaimer = React.lazy(() => import("./containers/Disclaimer"));
 const Login = React.lazy(() => import("./containers/Login"));
 
 export const App = () => {
-  const { finishedTutorial, unlocked, logout } = useLocalStorage();
+  const [finishedTutorial, setFinishedTutorial] = useLocalStorage(
+    "finished_tutorial",
+    false
+  );
+  const { lockTravelRecord, unlocked } = useTravelRecord();
   const { pathname } = useLocation();
 
   const handleBlur = useCallback(() => {
     console.log(pathname);
-    if (pathname !== "/qrReader" && pathname !== "/cameraSetting") logout();
-  }, [logout, pathname]);
+    if (pathname !== "/qrReader" && pathname !== "/cameraSetting")
+      lockTravelRecord();
+  }, [lockTravelRecord, pathname]);
 
   useEffect(() => {
     console.log(adapter.browserDetails.browser, adapter.browserDetails.version);
@@ -46,7 +52,7 @@ export const App = () => {
         {!unlocked && <Redirect to="/login" />}
         {!finishedTutorial && (
           <Route exact path="/tutorial">
-            <Tutorial />
+            <Tutorial setFinishedTutorial={setFinishedTutorial} />
           </Route>
         )}
         {!finishedTutorial && <Redirect to="/tutorial" />}

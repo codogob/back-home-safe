@@ -18,50 +18,36 @@ stages:
     - npm run tsc
 
 pages:
-  stage: deploy
-  cache:
-    paths:
-      - node_modules/
-  script:
-    - npm ci
-    - npm run build
-    - rm -rf ./public
-    - mv ./build ./public
-  artifacts:
-    paths:
-      - public
-  only:
-    refs:
-      - master
-    variables:
-      - $GIT_LAB_USERNAME == null
-      - $PERSONAL_ACCESS_TOKEN == null
-
-"Build and Release":
   stage: release
   allow_failure: false
   before_script:
-    - git config --global user.email "bot@_.com"
-    - git config --global user.name "Auto Bot"
-    - git clone http://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/codogo-b/back-home-safe.git &> /dev/null
-    - git checkout -qf master
-    - cd back-home-safe
+    - |-
+      if [[ $GIT_LAB_USERNAME != null ]]; then
+          git config --global user.email "bot@_.com"
+          git config --global user.name "Auto Bot"
+          git clone http://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/codogo-b/back-home-safe.git &> /dev/null
+          git checkout -qf master
+          cd back-home-safe
+      fi
     - npm ci
   only:
-    refs:
-      - master
-    variables:
-      - $GIT_LAB_USERNAME != null
-      - $PERSONAL_ACCESS_TOKEN != null
+    - master
   environment:
     name: production
   artifacts:
     paths:
       - public
   script:
-    - npm run release
-    - git push http://${GIT_LAB_USERNAME}:${PERSONAL_ACCESS_TOKEN}@gitlab.com/codogo-b/back-home-safe.git --verbose --no-verify --follow-tags HEAD:master
-    - npm run build
-    - rm -rf ../public
-    - mv ./build ../public
-    - cd ../
+    - |-
+      if [[ $GIT_LAB_USERNAME != null ]]; then
+          npm run release
+          git push http://${GIT_LAB_USERNAME}:${PERSONAL_ACCESS_TOKEN}@gitlab.com/codogo-b/back-home-safe.git --verbose --no-verify --follow-tags HEAD:master
+          npm run build
+          rm -rf ../public
+          mv ./build ../public
+          cd ../
+      else
+        npm run build
+        rm -rf ./public
+        mv ./build ./public
+      fi

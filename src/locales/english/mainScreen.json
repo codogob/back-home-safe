@@ -15,7 +15,7 @@
     "button": {
       "go": "Let's Go!",
       "scan_qr_code": "Scan QR Code",
-      "ride": "Let's Ride!"
+      "ride": "Let's Go!"
     }
   },
   "travel_record": {

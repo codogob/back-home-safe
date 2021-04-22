@@ -5,7 +5,11 @@
 ![logo](https://gitlab.com/codogo-b/back-home-safe/-/raw/master/public/icon-192x192.png)
 
 以 PWA(progressive web app) 形式模擬及實現安心出行功能\
-立即試試: <https://codogo-b.gitlab.io/back-home-safe/>
+
+## 連結
+
+主要: <https://codogo-b.gitlab.io/back-home-safe/>
+分流: <https://codogob.github.io/back-home-safe/>
 
 ## 免責聲明
 
@@ -37,6 +41,19 @@ This software is not in any way endorsed by nor affiliated with the Government o
 
 ## 開發者專區
 
+### 注意
+
+GitHub Repository是Mirror GitLab
+所有Development需在GitLab進行，在GitHub的PR將不會理會
+
+此外本人未有Idea如何甄選Repo的Developer role
+所以建議在自行Fork的Repo進行Development再Merge back
+
+### Repository Links
+
+GitHub: <https://github.com/codogob/back-home-safe>
+GitLab: <https://gitlab.com/codogo-b/back-home-safe>
+
 ### Local testing
 
 ```bash
@@ -44,7 +61,7 @@ npm install
 npm start
 ```
 
-### 自己 Host
+### Self Host
 
 ```bash
 npm install

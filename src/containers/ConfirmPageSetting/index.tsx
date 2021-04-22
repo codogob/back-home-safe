@@ -17,10 +17,7 @@ type Props = {
   setConfirmPageIcon: (base64: string | null) => void;
 };
 
-const ConfirmPageIconSetting = ({
-  confirmPageIcon,
-  setConfirmPageIcon,
-}: Props) => {
+const ConfirmPageSetting = ({ confirmPageIcon, setConfirmPageIcon }: Props) => {
   const { t } = useTranslation("confirm_page_setting");
   const handleFileSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -78,7 +75,7 @@ const ConfirmPageIconSetting = ({
   );
 };
 
-export default ConfirmPageIconSetting;
+export default ConfirmPageSetting;
 
 const PageWrapper = styled.div`
   width: 100%;

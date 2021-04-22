@@ -16,8 +16,8 @@ const Tutorial = React.lazy(() => import("./containers/Tutorial"));
 const MainScreen = React.lazy(() => import("./containers/MainScreen"));
 const Disclaimer = React.lazy(() => import("./containers/Disclaimer"));
 const Login = React.lazy(() => import("./containers/Login"));
-const ConfirmPageIconSetting = React.lazy(
-  () => import("./containers/ConfirmPageIconSetting")
+const ConfirmPageSetting = React.lazy(
+  () => import("./containers/ConfirmPageSetting")
 );
 
 export const App = () => {
@@ -85,8 +85,8 @@ export const App = () => {
         <Route exact path="/cameraSetting">
           <CameraSetting />
         </Route>
-        <Route exact path="/confirmPageIcon">
-          <ConfirmPageIconSetting
+        <Route exact path="/confirmPageSetting">
+          <ConfirmPageSetting
             confirmPageIcon={confirmPageIcon}
             setConfirmPageIcon={setConfirmPageIcon}
           />

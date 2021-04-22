@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.3](https://gitlab.com/codogo-b/back-home-safe/compare/v1.0.2...v1.0.3) (2021-04-20)
+
+### [1.0.2](https://gitlab.com/codogo-b/back-home-safe/compare/v1.0.1...v1.0.2) (2021-04-19)
+
+
+### Bug Fixes
+
+* align travel record i18n translation to visit record ([004744e](https://gitlab.com/codogo-b/back-home-safe/commit/004744ef0aef8443cf756ebda6a07313c3d9e0fe))
+
+### [1.0.1](https://gitlab.com/codogo-b/back-home-safe/compare/v1.0.0...v1.0.1) (2021-04-19)
+
+
+### Bug Fixes
+
+* venueId not trimmed ([7cfb11c](https://gitlab.com/codogo-b/back-home-safe/commit/7cfb11cddfca78bf757593251915cba9f16583d9))
+
 ## [1.0.0](https://gitlab.com/codogo-b/back-home-safe/compare/v0.1.6...v1.0.0) (2021-04-19)
 
 

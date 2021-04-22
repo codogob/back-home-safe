@@ -15,14 +15,14 @@
     "button": {
       "go": "Let's Go!",
       "scan_qr_code": "Scan QR Code",
-      "ride": "Let's Ride!"
+      "ride": "Let's Go!"
     }
   },
   "travel_record": {
     "name": "Visit Records",
     "message": {
       "incognito_activated": "Incognito Mode Activated",
-      "empty": "No Travel Record"
+      "empty": "No Visit Record"
     }
   },
   "setting": {
@@ -37,7 +37,7 @@
       "confirm_page_setting": "Confirm Page Settings",
       "incognito_mode": {
         "name": "Incognito Mode",
-        "explanation": "Stop saving travel record"
+        "explanation": "Stop saving visit record"
       },
       "qr_generator": "QR Code Generator",
       "reset": "Reset All Data",

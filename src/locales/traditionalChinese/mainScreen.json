@@ -34,7 +34,7 @@
     },
     "item": {
       "camera_setting": "相機設定",
-      "confirm_page_icon_setting": "確認頁標誌設定",
+      "confirm_page_setting": "確認頁設定",
       "incognito_mode": {
         "name": "隱私模式",
         "explanation": "不儲存出行紀錄"

@@ -34,7 +34,7 @@
     },
     "item": {
       "camera_setting": "Camera Settings",
-      "confirm_page_icon_setting": "Confirm Page Icon Settings",
+      "confirm_page_setting": "Confirm Page Settings",
       "incognito_mode": {
         "name": "Incognito Mode",
         "explanation": "Stop saving travel record"

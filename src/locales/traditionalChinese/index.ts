@@ -1,6 +1,6 @@
 import cameraSetting from "./cameraSetting.json";
 import confirm from "./confirm.json";
-import confirmPageIcon from "./confirmPageIcon.json";
+import confirmPageSetting from "./confirmPageSetting.json";
 import disclaimer from "./disclaimer.json";
 import global from "./global.json";
 import login from "./login.json";
@@ -17,8 +17,8 @@ const locals = {
   qr_generator: qrGenerator,
   login,
   disclaimer,
-  confirm_page_icon: confirmPageIcon,
   confirm,
+  confirm_page_setting: confirmPageSetting,
   camera_setting: cameraSetting,
 };
 

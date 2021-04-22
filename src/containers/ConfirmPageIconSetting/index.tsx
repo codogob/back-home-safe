@@ -21,7 +21,7 @@ const ConfirmPageIconSetting = ({
   confirmPageIcon,
   setConfirmPageIcon,
 }: Props) => {
-  const { t } = useTranslation("confirm_page_icon");
+  const { t } = useTranslation("confirm_page_setting");
   const handleFileSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     const img = head(files);

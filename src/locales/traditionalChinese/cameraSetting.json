@@ -2,6 +2,7 @@
   "name": "相機設定",
   "form": {
     "camera_choice": {
+      "auto": "自動",
       "label": "相機選擇",
       "explain": "調較相機選項，直至有相機畫面顯示"
     }

@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://gitlab.com/codogo-b/back-home-safe/compare/v1.0.3...v1.1.0) (2021-05-02)
+
+
+### Features
+
+* Automatically Comprehensible Password Forms ([1c880db](https://gitlab.com/codogo-b/back-home-safe/commit/1c880db18dd0433f45ded059b1fabf0c408be11b))
+* update confirm page setting name ([8250f34](https://gitlab.com/codogo-b/back-home-safe/commit/8250f340525b25d2d2a0a9a48ae879a47ab6c047))
+
+
+### Bug Fixes
+
+* nav shadow covered by main content ([c16c89d](https://gitlab.com/codogo-b/back-home-safe/commit/c16c89da87af6c0dc4a742e915144d3525c4e8b1))
+
 ### [1.0.3](https://gitlab.com/codogo-b/back-home-safe/compare/v1.0.2...v1.0.3) (2021-04-20)
 
 ### [1.0.2](https://gitlab.com/codogo-b/back-home-safe/compare/v1.0.1...v1.0.2) (2021-04-19)

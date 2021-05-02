@@ -37,6 +37,7 @@ const Login = () => {
         >
           <TextField
             type="password"
+            autoComplete="current-password"
             value={password}
             onChange={(e) => {
               setPassword(e.target.value);

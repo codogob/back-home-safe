@@ -57,11 +57,9 @@ export const Settings = () => {
               <ListItemText primary={t("setting.item.camera_setting")} />
             </ListItem>
           )}
-          <StyledLink to="/confirmPageIcon">
+          <StyledLink to="/confirmPageSetting">
             <ListItem button>
-              <ListItemText
-                primary={t("setting.item.confirm_page_icon_setting")}
-              />
+              <ListItemText primary={t("setting.item.confirm_page_setting")} />
             </ListItem>
           </StyledLink>
           <ListItem>

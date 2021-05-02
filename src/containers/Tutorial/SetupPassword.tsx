@@ -19,6 +19,7 @@ export const SetupPassword = ({ value, onChange }: Props) => {
       <p>{t("setup_password.message.password_usage")}</p>
       <TextField
         type="password"
+        autoComplete="new-password"
         value={value}
         onChange={(e) => {
           onChange(e.target.value);

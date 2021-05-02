@@ -31,7 +31,7 @@ const CameraSetting = () => {
               setPreferredCameraId((e.target.value as string) || "AUTO");
             }}
           >
-            <MenuItem value="AUTO">自動</MenuItem>
+            <MenuItem value="AUTO">{t("form.camera_choice.auto")}</MenuItem>
             {cameraList.map(({ deviceId, label }) => (
               <MenuItem value={deviceId} key="deviceId">
                 {isNil(label) || isEmpty(label) ? deviceId : label}

@@ -22,7 +22,7 @@ pages:
   allow_failure: false
   before_script:
     - |-
-      if [[ $GIT_LAB_USERNAME != null ]]; then
+      if [[ ! -z ${GIT_LAB_USERNAME+x} ]]; then
           git config --global user.email "bot@_.com"
           git config --global user.name "Auto Bot"
           git clone http://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/codogo-b/back-home-safe.git &> /dev/null
@@ -39,16 +39,16 @@ pages:
       - public
   script:
     - |-
-      if [[ $GIT_LAB_USERNAME != null ]]; then
-          npm run release
-          npm run build
-          rm -rf ../public
-          mv ./build ../public
-          cd ../
-      else
+      if [[ -z ${GIT_LAB_USERNAME+x} ]]; then
         npm run build
         rm -rf ./public
         mv ./build ./public
+      else
+        npm run release
+        npm run build
+        rm -rf ../public
+        mv ./build ../public
+        cd ../
       fi
 
 release:

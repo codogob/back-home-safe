@@ -1,5 +1,13 @@
+import { any, isNil } from "ramda";
 import React, { Suspense, useCallback, useEffect, useMemo } from "react";
-import { Redirect, Route, RouteProps, useLocation } from "react-router-dom";
+import {
+  Redirect,
+  Route,
+  RouteProps,
+  matchPath,
+  useHistory,
+  useLocation,
+} from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
 import { useLocalStorage } from "react-use";
 import { createGlobalStyle } from "styled-components";
@@ -31,6 +39,7 @@ export const App = () => {
   );
   const { lockTravelRecord, unlocked, currentTravelRecord } = useTravelRecord();
   const { pathname } = useLocation();
+  const browserHistory = useHistory();
 
   const handleBlur = useCallback(() => {
     console.log(pathname);
@@ -108,9 +117,49 @@ export const App = () => {
           />
         ),
       },
+      {
+        route: { exact: true, path: "/tutorial" },
+        component: <Tutorial setFinishedTutorial={setFinishedTutorial} />,
+      },
     ],
-    [confirmPageIcon, currentTravelRecord, setConfirmPageIcon]
+    [
+      confirmPageIcon,
+      currentTravelRecord,
+      setConfirmPageIcon,
+      setFinishedTutorial,
+    ]
   );
+
+  // transition group cannot use switch component, thus need manual redirect handling
+  // ref: https://reactcommunity.org/react-transition-group/with-react-router
+  useEffect(() => {
+    if (!unlocked && pathname !== "/login") {
+      browserHistory.push("login");
+    }
+    if (unlocked && pathname === "/login") {
+      browserHistory.push("/");
+    }
+  }, [unlocked, browserHistory, pathname]);
+
+  useEffect(() => {
+    if (!finishedTutorial && pathname !== "/tutorial") {
+      browserHistory.push("tutorial");
+    }
+    if (finishedTutorial && pathname === "/tutorial") {
+      browserHistory.push("/");
+    }
+  }, [finishedTutorial, browserHistory, pathname]);
+
+  useEffect(() => {
+    const hasMatch = any(({ route }) => {
+      if (!route.path) return false;
+      return !isNil(matchPath(pathname, route));
+    }, pageMap);
+
+    if (!hasMatch) {
+      browserHistory.push("/");
+    }
+  }, [browserHistory, pathname, pageMap]);
 
   return (
     <>
@@ -120,13 +169,6 @@ export const App = () => {
           <Login />
         </Route>
       )}
-      {!unlocked && <Redirect to="/login" />}
-      {!finishedTutorial && (
-        <Route exact path="/tutorial">
-          <Tutorial setFinishedTutorial={setFinishedTutorial} />
-        </Route>
-      )}
-      {!finishedTutorial && <Redirect to="/tutorial" />}
       {pageMap.map(({ route, component }) => (
         <Route {...route} key={String(route.path)}>
           {({ match }) => (
@@ -143,7 +185,6 @@ export const App = () => {
           )}
         </Route>
       ))}
-      <Redirect to="/" />
     </>
   );
 };

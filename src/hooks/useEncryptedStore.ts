@@ -48,11 +48,9 @@ export const useEncryptedStore = <T extends T[] | Object>({
 
   useUpdateEffect(() => {
     if (!unlocked || incognito) return;
-    setSavedValue(
-      password
-        ? encryptValue(JSON.stringify(decryptedValue || defaultValue), password)
-        : JSON.stringify(decryptedValue)
-    );
+    if (isEncrypted && !password) return;
+    const value = JSON.stringify(decryptedValue);
+    setSavedValue(password ? encryptValue(value, password) : value);
   }, [decryptedValue]);
 
   const initPassword = useCallback(

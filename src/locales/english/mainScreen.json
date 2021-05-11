@@ -10,7 +10,7 @@
       },
       "taxi": {
         "label": "I'm taking",
-        "placeholder": "Taxi Registration Mark"
+        "placeholder": "Taxi Reg Mark"
       }
     },
     "button": {

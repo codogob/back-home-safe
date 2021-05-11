@@ -1,8 +1,8 @@
-import React, { forwardRef, useImperativeHandle, useState } from "react";
-
-import styled from "styled-components";
-import Picker from "pickerjs";
 import "pickerjs/dist/picker.min.css";
+
+import Picker from "pickerjs";
+import React, { forwardRef, useImperativeHandle, useState } from "react";
+import styled from "styled-components";
 
 export type DatePickerHandler = {
   init: () => void;
@@ -23,9 +23,6 @@ export const DatePicker = forwardRef((props: any, ref: any) => {
         new Picker(ele, {
           inline: true,
           rows: 2,
-          pick: (e) => {
-            console.log(e);
-          },
         })
       );
     },

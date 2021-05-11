@@ -41,14 +41,11 @@ export const App = () => {
   const browserHistory = useHistory();
 
   const handleBlur = useCallback(() => {
-    console.log(pathname);
     if (pathname !== "/qrReader" && pathname !== "/cameraSetting")
       lockTravelRecord();
   }, [lockTravelRecord, pathname]);
 
   useEffect(() => {
-    console.log(adapter.browserDetails.browser, adapter.browserDetails.version);
-
     window.addEventListener("blur", handleBlur);
     return () => {
       window.removeEventListener("blur", handleBlur);

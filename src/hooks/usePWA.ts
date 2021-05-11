@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import { checkPwaInstalled } from "../utils/appCheck";
 
 interface IBeforeInstallPromptEvent extends Event {
@@ -33,7 +34,6 @@ export const usePWA = () => {
 
     const handleAppInstalled = (e: Event) => {
       e.preventDefault();
-      console.log("app installed");
       setState(null);
     };
 

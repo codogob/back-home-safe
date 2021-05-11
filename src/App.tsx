@@ -1,7 +1,6 @@
 import { any, isNil } from "ramda";
 import React, { Suspense, useCallback, useEffect, useMemo } from "react";
 import {
-  Redirect,
   Route,
   RouteProps,
   matchPath,

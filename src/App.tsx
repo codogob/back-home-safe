@@ -1,3 +1,5 @@
+import "webrtc-adapter";
+
 import { any, isNil } from "ramda";
 import React, { Suspense, useCallback, useEffect, useMemo } from "react";
 import {
@@ -10,7 +12,6 @@ import {
 import { CSSTransition } from "react-transition-group";
 import { useLocalStorage } from "react-use";
 import { createGlobalStyle } from "styled-components";
-import adapter from "webrtc-adapter";
 
 import { PageLoading } from "./components/PageLoading";
 import { Confirm } from "./containers/Confirm";

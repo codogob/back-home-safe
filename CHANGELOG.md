@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://gitlab.com/codogo-b/back-home-safe/compare/v1.1.0...v1.2.0) (2021-05-11)
+
+
+### Features
+
+* enforce encryption logic ([3aa13dc](https://gitlab.com/codogo-b/back-home-safe/commit/3aa13dc02c0af46930cb982fe1ad3182a89ccf14))
+* multiple enter location ([fac5c03](https://gitlab.com/codogo-b/back-home-safe/commit/fac5c036c917e697a9d5592c8e8f55670be0ed3b))
+* update home page input translation ([6700cd1](https://gitlab.com/codogo-b/back-home-safe/commit/6700cd1c298d3175caab647029c9c8274cefaf6d))
+* update tutorial translation ([dc0b80b](https://gitlab.com/codogo-b/back-home-safe/commit/dc0b80b0ad9cdc92551503b75afdac8bb6738b25))
+
+
+### Bug Fixes
+
+* route key ([1cd1fa6](https://gitlab.com/codogo-b/back-home-safe/commit/1cd1fa601777512c582c9d17b8c1f5481e6f0958))
+* route redirect logic ([62b6e86](https://gitlab.com/codogo-b/back-home-safe/commit/62b6e862dc627d3837f39c282a0681905a732bf7))
+
 ## [1.1.0](https://gitlab.com/codogo-b/back-home-safe/compare/v1.0.3...v1.1.0) (2021-05-02)
 
 

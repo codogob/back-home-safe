@@ -1,10 +1,10 @@
-import React, { Suspense, useCallback, useEffect } from "react";
-import { Redirect, Route, useLocation } from "react-router-dom";
+import React, { Suspense, useCallback, useEffect, useMemo } from "react";
+import { Redirect, Route, RouteProps, useLocation } from "react-router-dom";
+import { CSSTransition } from "react-transition-group";
 import { useLocalStorage } from "react-use";
 import { createGlobalStyle } from "styled-components";
 import adapter from "webrtc-adapter";
 
-import { AnimatedSwitch } from "./components/AnimatedSwitch";
 import { PageLoading } from "./components/PageLoading";
 import { Confirm } from "./containers/Confirm";
 import { useTravelRecord } from "./hooks/useTravelRecord";
@@ -47,53 +47,104 @@ export const App = () => {
     };
   }, [handleBlur]);
 
-  return (
-    <Suspense fallback={<PageLoading />}>
-      <GlobalStyle />
-      <AnimatedSwitch>
-        {!unlocked && (
-          <Route exact path="/login">
-            <Login />
-          </Route>
-        )}
-        {!unlocked && <Redirect to="/login" />}
-        {!finishedTutorial && (
-          <Route exact path="/tutorial">
-            <Tutorial setFinishedTutorial={setFinishedTutorial} />
-          </Route>
-        )}
-        {!finishedTutorial && <Redirect to="/tutorial" />}
-        <Route exact path="/">
-          <MainScreen />
-        </Route>
-        <Route exact path="/confirm">
-          {/* Don't split, to provide smooth transition between QR and confirm */}
+  const pageMap = useMemo<{ route: RouteProps; component: React.ReactNode }[]>(
+    () => [
+      {
+        route: {
+          exact: true,
+          path: "/",
+        },
+        component: <MainScreen />,
+      },
+      {
+        route: {
+          exact: true,
+          path: "/confirm",
+        },
+        component: (
           <Confirm
             confirmPageIcon={confirmPageIcon}
             currentTravelRecord={currentTravelRecord}
           />
-        </Route>
-        <Route exact path="/qrGenerator">
-          <QRGenerator />
-        </Route>
-        <Route exact path="/disclaimer">
-          <Disclaimer />
-        </Route>
-        <Route exact path="/qrReader">
-          <QRReader />
-        </Route>
-        <Route exact path="/cameraSetting">
-          <CameraSetting />
-        </Route>
-        <Route exact path="/confirmPageSetting">
+        ),
+      },
+      {
+        route: {
+          exact: true,
+          path: "/qrGenerator",
+        },
+        component: <QRGenerator />,
+      },
+      {
+        route: {
+          exact: true,
+          path: "/disclaimer",
+        },
+        component: <Disclaimer />,
+      },
+      {
+        route: {
+          exact: true,
+          path: "/qrReader",
+        },
+        component: <QRReader />,
+      },
+      {
+        route: {
+          exact: true,
+          path: "/cameraSetting",
+        },
+        component: <CameraSetting />,
+      },
+      {
+        route: {
+          exact: true,
+          path: "/confirmPageSetting",
+        },
+        component: (
           <ConfirmPageSetting
             confirmPageIcon={confirmPageIcon}
             setConfirmPageIcon={setConfirmPageIcon}
           />
+        ),
+      },
+    ],
+    [confirmPageIcon, currentTravelRecord, setConfirmPageIcon]
+  );
+
+  return (
+    <>
+      <GlobalStyle />
+      {!unlocked && (
+        <Route exact path="/login">
+          <Login />
         </Route>
-        <Redirect to="/" />
-      </AnimatedSwitch>
-    </Suspense>
+      )}
+      {!unlocked && <Redirect to="/login" />}
+      {!finishedTutorial && (
+        <Route exact path="/tutorial">
+          <Tutorial setFinishedTutorial={setFinishedTutorial} />
+        </Route>
+      )}
+      {!finishedTutorial && <Redirect to="/tutorial" />}
+      {pageMap.map(({ route, component }) => (
+        <Route {...route}>
+          {({ match }) => (
+            <CSSTransition
+              in={match != null}
+              timeout={300}
+              classNames="page"
+              unmountOnExit
+            >
+              <div className="page">
+                <Suspense fallback={<PageLoading />}>{component}</Suspense>
+              </div>
+            </CSSTransition>
+          )}
+        </Route>
+      ))}
+      <Redirect to="/" />
+    </>
   );
 };
 
@@ -113,6 +164,7 @@ body {
   background-color:#12b188;
   width: 100%;
   height: 100%;
+  position: relative;
 }
 
 textarea {
@@ -127,5 +179,39 @@ textarea {
 
 a {
   text-decoration: none;
+}
+
+.page {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #12b188;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.page-enter {
+  opacity: 0;
+  left: 100vw;
+  z-index: 1;
+}
+
+.page-enter-active {
+  opacity: 1;
+  left: 0vw;
+  z-index: 0;
+  transition: left 300ms cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.page-exit {
+  opacity: 1;
+  z-index: 0;
+  transform: scale(1);
+}
+
+.page-exit-active {
+  opacity: 0;
+  z-index: 0;
+  transform: scale(0.9);
+  transition: opacity 300ms, transform 300ms;
 }
 `;

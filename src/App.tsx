@@ -128,7 +128,7 @@ export const App = () => {
       )}
       {!finishedTutorial && <Redirect to="/tutorial" />}
       {pageMap.map(({ route, component }) => (
-        <Route {...route}>
+        <Route {...route} key={String(route.path)}>
           {({ match }) => (
             <CSSTransition
               in={match != null}

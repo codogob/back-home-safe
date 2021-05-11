@@ -15,6 +15,7 @@ import { createGlobalStyle } from "styled-components";
 
 import { PageLoading } from "./components/PageLoading";
 import { Confirm } from "./containers/Confirm";
+import { useMigration } from "./hooks/useMigration";
 import { useTravelRecord } from "./hooks/useTravelRecord";
 
 const QRGenerator = React.lazy(() => import("./containers/QRGenerator"));
@@ -29,6 +30,7 @@ const ConfirmPageSetting = React.lazy(
 );
 
 export const App = () => {
+  useMigration();
   const [finishedTutorial, setFinishedTutorial] = useLocalStorage(
     "finished_tutorial",
     false
@@ -37,7 +39,7 @@ export const App = () => {
     "confirmPageIcon",
     null
   );
-  const { lockTravelRecord, unlocked, currentTravelRecord } = useTravelRecord();
+  const { lockTravelRecord, unlocked, isEncrypted } = useTravelRecord();
   const { pathname } = useLocation();
   const browserHistory = useHistory();
 
@@ -53,9 +55,22 @@ export const App = () => {
     };
   }, [handleBlur]);
 
-  const pageMap = useMemo<{ route: RouteProps; component: React.ReactNode }[]>(
+  const pageMap = useMemo<
+    { route: RouteProps; component: React.ReactNode; privateRoute: boolean }[]
+  >(
     () => [
       {
+        privateRoute: false,
+        route: { exact: true, path: "/tutorial" },
+        component: <Tutorial setFinishedTutorial={setFinishedTutorial} />,
+      },
+      {
+        privateRoute: false,
+        route: { exact: true, path: "/login" },
+        component: <Login />,
+      },
+      {
+        privateRoute: true,
         route: {
           exact: true,
           path: "/",
@@ -63,18 +78,15 @@ export const App = () => {
         component: <MainScreen />,
       },
       {
+        privateRoute: true,
         route: {
           exact: true,
-          path: "/confirm",
+          path: "/confirm/:id",
         },
-        component: (
-          <Confirm
-            confirmPageIcon={confirmPageIcon}
-            currentTravelRecord={currentTravelRecord}
-          />
-        ),
+        component: <Confirm confirmPageIcon={confirmPageIcon} />,
       },
       {
+        privateRoute: true,
         route: {
           exact: true,
           path: "/qrGenerator",
@@ -82,6 +94,7 @@ export const App = () => {
         component: <QRGenerator />,
       },
       {
+        privateRoute: true,
         route: {
           exact: true,
           path: "/disclaimer",
@@ -89,6 +102,7 @@ export const App = () => {
         component: <Disclaimer />,
       },
       {
+        privateRoute: true,
         route: {
           exact: true,
           path: "/qrReader",
@@ -96,6 +110,7 @@ export const App = () => {
         component: <QRReader />,
       },
       {
+        privateRoute: true,
         route: {
           exact: true,
           path: "/cameraSetting",
@@ -103,6 +118,7 @@ export const App = () => {
         component: <CameraSetting />,
       },
       {
+        privateRoute: true,
         route: {
           exact: true,
           path: "/confirmPageSetting",
@@ -114,36 +130,28 @@ export const App = () => {
           />
         ),
       },
-      {
-        route: { exact: true, path: "/tutorial" },
-        component: <Tutorial setFinishedTutorial={setFinishedTutorial} />,
-      },
     ],
-    [
-      confirmPageIcon,
-      currentTravelRecord,
-      setConfirmPageIcon,
-      setFinishedTutorial,
-    ]
+    [confirmPageIcon, setConfirmPageIcon, setFinishedTutorial]
   );
 
   // transition group cannot use switch component, thus need manual redirect handling
   // ref: https://reactcommunity.org/react-transition-group/with-react-router
   useEffect(() => {
+    if (!isEncrypted) return;
     if (!unlocked && pathname !== "/login") {
-      browserHistory.push("login");
+      browserHistory.replace("/login");
     }
     if (unlocked && pathname === "/login") {
-      browserHistory.push("/");
+      browserHistory.replace("/");
     }
-  }, [unlocked, browserHistory, pathname]);
+  }, [isEncrypted, unlocked, browserHistory, pathname]);
 
   useEffect(() => {
     if (!finishedTutorial && pathname !== "/tutorial") {
-      browserHistory.push("tutorial");
+      browserHistory.replace("/tutorial");
     }
     if (finishedTutorial && pathname === "/tutorial") {
-      browserHistory.push("/");
+      browserHistory.replace("/");
     }
   }, [finishedTutorial, browserHistory, pathname]);
 
@@ -154,34 +162,33 @@ export const App = () => {
     }, pageMap);
 
     if (!hasMatch) {
-      browserHistory.push("/");
+      browserHistory.replace("/");
     }
   }, [browserHistory, pathname, pageMap]);
 
   return (
     <>
       <GlobalStyle />
-      {!unlocked && (
-        <Route exact path="/login">
-          <Login />
-        </Route>
+      {pageMap.map(({ route, component, privateRoute }) =>
+        privateRoute && !unlocked ? (
+          <React.Fragment key={String(route.path)} />
+        ) : (
+          <Route {...route} key={String(route.path)}>
+            {({ match }) => (
+              <CSSTransition
+                in={match != null}
+                timeout={300}
+                classNames="page"
+                unmountOnExit
+              >
+                <div className="page">
+                  <Suspense fallback={<PageLoading />}>{component}</Suspense>
+                </div>
+              </CSSTransition>
+            )}
+          </Route>
+        )
       )}
-      {pageMap.map(({ route, component }) => (
-        <Route {...route} key={String(route.path)}>
-          {({ match }) => (
-            <CSSTransition
-              in={match != null}
-              timeout={300}
-              classNames="page"
-              unmountOnExit
-            >
-              <div className="page">
-                <Suspense fallback={<PageLoading />}>{component}</Suspense>
-              </div>
-            </CSSTransition>
-          )}
-        </Route>
-      ))}
     </>
   );
 };

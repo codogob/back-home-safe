@@ -3,15 +3,22 @@ import {
   Card,
   CardActions,
   CardContent,
+  CardHeader,
   Typography,
 } from "@material-ui/core";
-import { isEmpty, isNil, trim } from "ramda";
-import React, { useMemo, useState } from "react";
+import LocalTaxiIcon from "@material-ui/icons/LocalTaxi";
+import StoreIcon from "@material-ui/icons/Store";
+import { Dayjs } from "dayjs";
+import { isEmpty, trim } from "ramda";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
+import { v4 as uuid } from "uuid";
 
+import { LeaveModal } from "../../components/LeaveModal";
 import { Place } from "../../components/Place";
+import { useI18n } from "../../hooks/useI18n";
 import { useTime } from "../../hooks/useTime";
 import {
   travelRecordInputType,
@@ -19,49 +26,93 @@ import {
   useTravelRecord,
 } from "../../hooks/useTravelRecord";
 import { dayjs } from "../../utils/dayjs";
+import { getVenueName } from "../../utils/qr";
 
 export const Home = () => {
   const { t } = useTranslation("main_screen");
   const [place, setPlace] = useState("");
   const [license, setLicense] = useState("");
-
+  const [leaveModalOpen, setLeaveModalOpen] = useState(false);
+  const [leaveId, setLeaveId] = useState<null | string>(null);
+  const { currentTravelRecord, updateTravelRecord } = useTravelRecord();
   const browserHistory = useHistory();
-  const { createTravelRecord, currentTravelRecord } = useTravelRecord();
+  const { createTravelRecord } = useTravelRecord();
   const { currentTime } = useTime();
+  const { language } = useI18n();
 
   const today = useMemo(() => {
     return currentTime.format("YYYY-MM-DD, dddd");
   }, [currentTime]);
 
   const handlePlaceSubmit = () => {
-    createTravelRecord({
+    const id = uuid();
+    const now = dayjs();
+    const record = {
+      id,
       nameZh: place,
       type: travelRecordType.PLACE,
       inputType: travelRecordInputType.MANUALLY,
-      inTime: dayjs().toISOString(),
-    });
+      inTime: now.toISOString(),
+      outTime: now.add(4, "hour").toISOString(),
+    };
 
-    browserHistory.push({ pathname: "/confirm" });
+    createTravelRecord(record);
+
+    browserHistory.push({ pathname: `/confirm/${id}`, state: record });
   };
 
   const handleTaxiSubmit = () => {
-    createTravelRecord({
+    const id = uuid();
+    const now = dayjs();
+    const record = {
+      id,
       venueId: license,
       type: travelRecordType.TAXI,
       inputType: travelRecordInputType.MANUALLY,
-      inTime: dayjs().toISOString(),
-    });
+      inTime: now.toISOString(),
+      outTime: now.add(4, "hour").toISOString(),
+    };
 
-    browserHistory.push({ pathname: "/confirm" });
+    createTravelRecord(record);
+
+    browserHistory.push({ pathname: `/confirm/${id}`, state: record });
   };
 
+  const handleLeave = (date: Dayjs) => {
+    if (!leaveId) return;
+    updateTravelRecord(leaveId, {
+      outTime: date.startOf("minute").toISOString(),
+    });
+    setLeaveModalOpen(false);
+  };
+
+  useEffect(() => {
+    if (leaveId) setLeaveModalOpen(true);
+  }, [leaveId]);
+
+  useEffect(() => {
+    if (!leaveModalOpen) setLeaveId(null);
+  }, [leaveModalOpen]);
+
   return (
-    <>
+    <PageWrapper>
+      {leaveId && (
+        <LeaveModal
+          id={leaveId}
+          visible={leaveModalOpen}
+          onDiscard={() => {
+            setLeaveModalOpen(false);
+          }}
+          onFinish={handleLeave}
+        />
+      )}
       <Welcome>
         <Title>
           <div>{today}</div>
           <h2>{t("home.record_your_visit")}</h2>
         </Title>
+      </Welcome>
+      <SliderWrapper>
         <Slider>
           <StyledCard>
             <CardContent>
@@ -72,29 +123,22 @@ export const Home = () => {
                 value={place}
                 onChange={setPlace}
                 placeholder={t("home.form.venue_name.placeholder")}
-                readOnly={!isNil(currentTravelRecord)}
               />
             </CardContent>
             <CardActions>
               <Button
                 size="small"
                 color="primary"
-                disabled={isEmpty(trim(place)) || !isNil(currentTravelRecord)}
+                disabled={isEmpty(trim(place))}
                 onClick={handlePlaceSubmit}
               >
                 {t("home.button.go")}
               </Button>
-              {isNil(currentTravelRecord) ? (
-                <Link to="/qrReader">
-                  <Button size="small" color="primary">
-                    {t("home.button.scan_qr_code")}
-                  </Button>
-                </Link>
-              ) : (
-                <Button size="small" color="primary" disabled>
+              <Link to="/qrReader">
+                <Button size="small" color="primary">
                   {t("home.button.scan_qr_code")}
                 </Button>
-              )}
+              </Link>
             </CardActions>
           </StyledCard>
           <StyledCard>
@@ -106,14 +150,13 @@ export const Home = () => {
                 value={license}
                 onChange={setLicense}
                 placeholder={t("home.form.taxi.placeholder")}
-                readOnly={!isNil(currentTravelRecord)}
               />
             </CardContent>
             <CardActions>
               <Button
                 size="small"
                 color="primary"
-                disabled={isEmpty(trim(license)) || !isNil(currentTravelRecord)}
+                disabled={isEmpty(trim(license))}
                 onClick={handleTaxiSubmit}
               >
                 {t("home.button.ride")}
@@ -121,15 +164,68 @@ export const Home = () => {
             </CardActions>
           </StyledCard>
         </Slider>
-      </Welcome>
-      <ContentWrapper />
-    </>
+      </SliderWrapper>
+      <TravelRecordWrapper>
+        <TravelRecordInner>
+          <h3>{t("home.you_have_entered")}</h3>
+          {isEmpty(currentTravelRecord) && (
+            <Msg>{t("travel_record.message.empty")}</Msg>
+          )}
+          {currentTravelRecord.map((item) => (
+            <Item key={item.id}>
+              <CardHeader
+                avatar={
+                  item.type === travelRecordType.TAXI ? (
+                    <LocalTaxiIcon />
+                  ) : (
+                    <StoreIcon />
+                  )
+                }
+                title={getVenueName(item, language)}
+                subheader={`${dayjs(item.inTime).format(
+                  "YYYY-MM-DD HH:mm"
+                )} - ${
+                  item.outTime
+                    ? dayjs(item.outTime).format("YYYY-MM-DD HH:mm")
+                    : ""
+                }`}
+              />
+              <CardActions disableSpacing>
+                <Button
+                  size="small"
+                  color="primary"
+                  onClick={() => {
+                    setLeaveId(item.id);
+                  }}
+                >
+                  {t("global:button.leave")}
+                </Button>
+                <Link to={`/confirm/${item.id}`}>
+                  <Button size="small" color="primary">
+                    {t("global:button.confirm_page")}
+                  </Button>
+                </Link>
+              </CardActions>
+            </Item>
+          ))}
+        </TravelRecordInner>
+      </TravelRecordWrapper>
+    </PageWrapper>
   );
 };
+
+const PageWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+`;
 
 const Welcome = styled.div`
   color: #fff;
   padding: 40px 24px 32px 24px;
+  flex-shrink: 0;
 `;
 
 const Title = styled.div`
@@ -142,12 +238,13 @@ const StyledCard = styled(Card)`
 `;
 
 const Slider = styled.div`
-  position: absolute;
+  position: relative;
   display: flex;
   overflow: auto;
   width: 100%;
   left: 0;
-  padding: 16px 0;
+  top: -24px;
+  padding: 8px 0;
 
   &::before {
     content: "";
@@ -168,8 +265,31 @@ const StyledPlace = styled(Place)`
   text-align: left;
 `;
 
-const ContentWrapper = styled.div`
+const SliderWrapper = styled.div`
   background-color: #fff;
+  border-radius: 32px 32px 0 0;
+  flex-shrink: 0;
+`;
+
+const TravelRecordWrapper = styled.div`
+  background-color: #fff;
+
+  width: 100%;
   height: 100%;
   overflow: auto;
+`;
+
+const TravelRecordInner = styled.div`
+  padding: 0 16px;
+`;
+
+const Item = styled(Card)`
+  margin-bottom: 16px;
+`;
+
+const Msg = styled.div`
+  text-align: center;
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 0.875rem;
+  line-height: 48px;
 `;

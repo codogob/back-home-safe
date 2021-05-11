@@ -1,6 +1,5 @@
 import { AES, enc } from "crypto-js";
-import { isNil } from "ramda";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useLocalStorage, useMount, useUpdateEffect } from "react-use";
 
 const encryptValue = (input: string, password: string) =>
@@ -20,23 +19,13 @@ export const useEncryptedStore = <T extends T[] | Object>({
   const [defaultValue] = useState<T>(fallbackValue);
 
   const [password, setPassword] = useState<string | null>(null);
-
+  const [unlocked, setUnlocked] = useState(false);
   const [savedValue, setSavedValue] = useLocalStorage<string>(
     key,
     password
       ? encryptValue(JSON.stringify(defaultValue), password)
       : JSON.stringify(defaultValue)
   );
-
-  const [, , removePasswordHash] = useLocalStorage<string | null>(
-    "password_hash",
-    null
-  );
-
-  useEffect(() => {
-    // Old version store password with SHA256, which can be brute-forced
-    removePasswordHash();
-  }, [removePasswordHash]);
 
   const [decryptedValue, setDecryptedValue] = useState<T>(defaultValue);
 
@@ -50,14 +39,10 @@ export const useEncryptedStore = <T extends T[] | Object>({
     return false;
   }, [savedValue]);
 
-  const unlocked = useMemo(() => (isEncrypted ? !isNil(password) : true), [
-    password,
-    isEncrypted,
-  ]);
-
   useMount(() => {
     if (!isEncrypted) {
       setDecryptedValue(savedValue ? JSON.parse(savedValue) : defaultValue);
+      setUnlocked(true);
     }
   });
 
@@ -92,6 +77,7 @@ export const useEncryptedStore = <T extends T[] | Object>({
         );
         setDecryptedValue(JSON.parse(decryptedValue));
         setPassword(password);
+        setUnlocked(true);
 
         return true;
       } catch (e) {
@@ -103,11 +89,13 @@ export const useEncryptedStore = <T extends T[] | Object>({
 
   const lockStore = useCallback(() => {
     if (!isEncrypted) return;
+    setUnlocked(false);
     setPassword(null);
     setDecryptedValue(defaultValue);
   }, [isEncrypted, defaultValue]);
 
   return {
+    isEncrypted,
     unlockStore,
     lockStore,
     value: decryptedValue,

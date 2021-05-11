@@ -2,6 +2,7 @@
   "home": {
     "name": "Home",
     "record_your_visit": "Record your visit",
+    "you_have_entered": "You have entered",
     "form": {
       "venue_name": {
         "label": "I want to go",

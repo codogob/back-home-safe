@@ -8,13 +8,13 @@ import checkboxChecked from "../assets/checkboxChecked.svg";
 
 type Props = {
   checked: boolean;
-  onChange: (value: boolean) => void;
+  onChange?: (value: boolean) => void;
   readOnly?: boolean;
 };
 
 export const CheckBox = ({ onChange, checked, readOnly = false }: Props) => {
   const handleClick = () => {
-    onChange(!checked);
+    onChange && onChange(!checked);
   };
 
   return isAndroid ? (

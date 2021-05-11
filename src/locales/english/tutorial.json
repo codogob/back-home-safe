@@ -2,11 +2,11 @@
   "add_to_home_screen": {
     "name": "Add to Home screen",
     "message": {
-      "add_to_home_screen_first": "First things first: add BackHomeSafe to Home screen.",
-      "to_act_as_an_app": "Add to Home screen for a full-native app experience."
+      "add_to_home_screen_first": "First things first: add to Home screen.",
+      "to_act_as_an_app": "For a full-native app experience."
     },
     "step": {
-      "ios": "Launch with \"Safari\" => Tap the \"Bookmark\" icon at the bottom of the screen (a box with an upward-pointing arrow) => Tap \"Add to Home screen\"",
+      "ios": "Launch with \"Safari\" => Tap the \"Share\" icon at the bottom of the screen (a box with an upward-pointing arrow) => Tap \"Add to Home screen\"",
       "android": "Launch with \"Chrome\" => Tap the menu icon (3 dots in upper right-hand corner) => Tap \"Add to Home screen\"."
     }
   },

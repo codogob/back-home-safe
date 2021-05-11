@@ -24,7 +24,7 @@ import { getVenueName } from "../../utils/qr";
 
 export const TravelRecord = () => {
   const { t } = useTranslation("main_screen");
-  const { travelRecord, removeTravelRecord, incognito } = useTravelRecord();
+  const { pastTravelRecord, removeTravelRecord, incognito } = useTravelRecord();
   const { language } = useI18n();
 
   return (
@@ -38,13 +38,13 @@ export const TravelRecord = () => {
               {t("travel_record.message.incognito_activated")}
             </Msg>
           )}
-          {isEmpty(travelRecord) && (
+          {isEmpty(pastTravelRecord) && (
             <Msg>{t("travel_record.message.empty")}</Msg>
           )}
-          {travelRecord.map((item, index) => {
+          {pastTravelRecord.map((item) => {
             const name = getVenueName(item, language);
             return (
-              <React.Fragment key={index}>
+              <React.Fragment key={item.id}>
                 <ListItem>
                   <ListItemIcon>
                     {item.type === travelRecordType.TAXI ? (
@@ -68,7 +68,7 @@ export const TravelRecord = () => {
                       edge="end"
                       aria-label="delete"
                       onClick={() => {
-                        removeTravelRecord(index);
+                        removeTravelRecord(item.id);
                       }}
                       disabled={incognito}
                     >

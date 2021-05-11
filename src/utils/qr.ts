@@ -33,20 +33,11 @@ export type EnhancedEncodeParam = EncodeParam & {
 export const qrDecode = (input: string): DecodedJSON | null => {
   if (!input.startsWith("HKEN:")) return null;
   const venueId = input.substring(6, 14);
-  const computedHash = getHash(venueId);
 
   const base64Data = input.substring(14);
   const json: DecodedJSON = JSON.parse(
     decodeURIComponent(escape(window.atob(base64Data)))
   );
-
-  console.log({
-    input,
-    venueId,
-    decodedData: json,
-    computedHash,
-    hashMatch: computedHash === json.hash,
-  });
 
   return { ...json, venueId };
 };

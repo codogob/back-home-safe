@@ -16,7 +16,8 @@
     "preview": "預覽",
     "unlock": "解鎖",
     "change": "變更",
-    "confirm": "確認"
+    "confirm": "確認",
+    "confirm_page": "確認頁"
   },
   "form": {
     "optional": "選用"

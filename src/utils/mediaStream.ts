@@ -14,7 +14,7 @@ export const getMediaStream = async (cameraId?: string) => {
         audio: false,
       });
     } catch (e) {
-      console.log(e);
+      console.error(e);
       throw new Error(mediaStreamErrorType.CAMERA_ACTIVATE_ERROR);
     }
   } else {

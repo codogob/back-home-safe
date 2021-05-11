@@ -1,12 +1,21 @@
-import React, { Suspense, useCallback, useEffect } from "react";
-import { Redirect, Route, useLocation } from "react-router-dom";
+import "webrtc-adapter";
+
+import { any, isNil } from "ramda";
+import React, { Suspense, useCallback, useEffect, useMemo } from "react";
+import {
+  Route,
+  RouteProps,
+  matchPath,
+  useHistory,
+  useLocation,
+} from "react-router-dom";
+import { CSSTransition } from "react-transition-group";
 import { useLocalStorage } from "react-use";
 import { createGlobalStyle } from "styled-components";
-import adapter from "webrtc-adapter";
 
-import { AnimatedSwitch } from "./components/AnimatedSwitch";
 import { PageLoading } from "./components/PageLoading";
 import { Confirm } from "./containers/Confirm";
+import { useMigration } from "./hooks/useMigration";
 import { useTravelRecord } from "./hooks/useTravelRecord";
 
 const QRGenerator = React.lazy(() => import("./containers/QRGenerator"));
@@ -21,6 +30,7 @@ const ConfirmPageSetting = React.lazy(
 );
 
 export const App = () => {
+  useMigration();
   const [finishedTutorial, setFinishedTutorial] = useLocalStorage(
     "finished_tutorial",
     false
@@ -29,71 +39,157 @@ export const App = () => {
     "confirmPageIcon",
     null
   );
-  const { lockTravelRecord, unlocked, currentTravelRecord } = useTravelRecord();
+  const { lockTravelRecord, unlocked, isEncrypted } = useTravelRecord();
   const { pathname } = useLocation();
+  const browserHistory = useHistory();
 
   const handleBlur = useCallback(() => {
-    console.log(pathname);
     if (pathname !== "/qrReader" && pathname !== "/cameraSetting")
       lockTravelRecord();
   }, [lockTravelRecord, pathname]);
 
   useEffect(() => {
-    console.log(adapter.browserDetails.browser, adapter.browserDetails.version);
-
     window.addEventListener("blur", handleBlur);
     return () => {
       window.removeEventListener("blur", handleBlur);
     };
   }, [handleBlur]);
 
-  return (
-    <Suspense fallback={<PageLoading />}>
-      <GlobalStyle />
-      <AnimatedSwitch>
-        {!unlocked && (
-          <Route exact path="/login">
-            <Login />
-          </Route>
-        )}
-        {!unlocked && <Redirect to="/login" />}
-        {!finishedTutorial && (
-          <Route exact path="/tutorial">
-            <Tutorial setFinishedTutorial={setFinishedTutorial} />
-          </Route>
-        )}
-        {!finishedTutorial && <Redirect to="/tutorial" />}
-        <Route exact path="/">
-          <MainScreen />
-        </Route>
-        <Route exact path="/confirm">
-          {/* Don't split, to provide smooth transition between QR and confirm */}
-          <Confirm
-            confirmPageIcon={confirmPageIcon}
-            currentTravelRecord={currentTravelRecord}
-          />
-        </Route>
-        <Route exact path="/qrGenerator">
-          <QRGenerator />
-        </Route>
-        <Route exact path="/disclaimer">
-          <Disclaimer />
-        </Route>
-        <Route exact path="/qrReader">
-          <QRReader />
-        </Route>
-        <Route exact path="/cameraSetting">
-          <CameraSetting />
-        </Route>
-        <Route exact path="/confirmPageSetting">
+  const pageMap = useMemo<
+    { route: RouteProps; component: React.ReactNode; privateRoute: boolean }[]
+  >(
+    () => [
+      {
+        privateRoute: false,
+        route: { exact: true, path: "/tutorial" },
+        component: <Tutorial setFinishedTutorial={setFinishedTutorial} />,
+      },
+      {
+        privateRoute: false,
+        route: { exact: true, path: "/login" },
+        component: <Login />,
+      },
+      {
+        privateRoute: true,
+        route: {
+          exact: true,
+          path: "/",
+        },
+        component: <MainScreen />,
+      },
+      {
+        privateRoute: true,
+        route: {
+          exact: true,
+          path: "/confirm/:id",
+        },
+        component: <Confirm confirmPageIcon={confirmPageIcon} />,
+      },
+      {
+        privateRoute: true,
+        route: {
+          exact: true,
+          path: "/qrGenerator",
+        },
+        component: <QRGenerator />,
+      },
+      {
+        privateRoute: true,
+        route: {
+          exact: true,
+          path: "/disclaimer",
+        },
+        component: <Disclaimer />,
+      },
+      {
+        privateRoute: true,
+        route: {
+          exact: true,
+          path: "/qrReader",
+        },
+        component: <QRReader />,
+      },
+      {
+        privateRoute: true,
+        route: {
+          exact: true,
+          path: "/cameraSetting",
+        },
+        component: <CameraSetting />,
+      },
+      {
+        privateRoute: true,
+        route: {
+          exact: true,
+          path: "/confirmPageSetting",
+        },
+        component: (
           <ConfirmPageSetting
             confirmPageIcon={confirmPageIcon}
             setConfirmPageIcon={setConfirmPageIcon}
           />
-        </Route>
-        <Redirect to="/" />
-      </AnimatedSwitch>
-    </Suspense>
+        ),
+      },
+    ],
+    [confirmPageIcon, setConfirmPageIcon, setFinishedTutorial]
+  );
+
+  // transition group cannot use switch component, thus need manual redirect handling
+  // ref: https://reactcommunity.org/react-transition-group/with-react-router
+  useEffect(() => {
+    if (!isEncrypted) return;
+    if (!unlocked && pathname !== "/login") {
+      browserHistory.replace("/login");
+    }
+    if (unlocked && pathname === "/login") {
+      browserHistory.replace("/");
+    }
+  }, [isEncrypted, unlocked, browserHistory, pathname]);
+
+  useEffect(() => {
+    if (!finishedTutorial && pathname !== "/tutorial") {
+      browserHistory.replace("/tutorial");
+    }
+    if (finishedTutorial && pathname === "/tutorial") {
+      browserHistory.replace("/");
+    }
+  }, [finishedTutorial, browserHistory, pathname]);
+
+  useEffect(() => {
+    const hasMatch = any(({ route }) => {
+      if (!route.path) return false;
+      return !isNil(matchPath(pathname, route));
+    }, pageMap);
+
+    if (!hasMatch) {
+      browserHistory.replace("/");
+    }
+  }, [browserHistory, pathname, pageMap]);
+
+  return (
+    <>
+      <GlobalStyle />
+      {pageMap.map(({ route, component, privateRoute }) =>
+        privateRoute && !unlocked ? (
+          <React.Fragment key={String(route.path)} />
+        ) : (
+          <Route {...route} key={String(route.path)}>
+            {({ match }) => (
+              <CSSTransition
+                in={match != null}
+                timeout={300}
+                classNames="page"
+                unmountOnExit
+              >
+                <div className="page">
+                  <Suspense fallback={<PageLoading />}>{component}</Suspense>
+                </div>
+              </CSSTransition>
+            )}
+          </Route>
+        )
+      )}
+    </>
   );
 };
 
@@ -113,6 +209,7 @@ body {
   background-color:#12b188;
   width: 100%;
   height: 100%;
+  position: relative;
 }
 
 textarea {
@@ -127,5 +224,39 @@ textarea {
 
 a {
   text-decoration: none;
+}
+
+.page {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #12b188;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.page-enter {
+  opacity: 0;
+  left: 100vw;
+  z-index: 1;
+}
+
+.page-enter-active {
+  opacity: 1;
+  left: 0vw;
+  z-index: 0;
+  transition: left 300ms cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.page-exit {
+  opacity: 1;
+  z-index: 0;
+  transform: scale(1);
+}
+
+.page-exit-active {
+  opacity: 0;
+  z-index: 0;
+  transform: scale(0.9);
+  transition: opacity 300ms, transform 300ms;
 }
 `;

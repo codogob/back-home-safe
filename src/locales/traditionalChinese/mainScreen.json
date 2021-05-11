@@ -2,6 +2,7 @@
   "home": {
     "name": "主頁",
     "record_your_visit": "記錄你的到訪",
+    "you_have_entered": "你已進入",
     "form": {
       "venue_name": {
         "label": "我想去",

@@ -69,9 +69,6 @@ export const MediaStream = ({ onFrame, suppressError = false }: Props) => {
   const initMediaStream = useCallback(async () => {
     const videoElement = videoRef.current;
     if (!videoElement) return;
-
-    console.log("preferredCameraId", preferredCameraId);
-
     try {
       const stream = await getMediaStream(
         preferredCameraId === "AUTO" ? undefined : preferredCameraId
@@ -91,7 +88,7 @@ export const MediaStream = ({ onFrame, suppressError = false }: Props) => {
           setShowCameraActivationErrorModal(true);
           break;
         default:
-          console.log(e);
+          console.error(e);
       }
     }
   }, [loopStart, preferredCameraId, suppressError]);

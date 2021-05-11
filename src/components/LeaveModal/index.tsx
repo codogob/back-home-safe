@@ -14,18 +14,24 @@ type Props = {
   visible: boolean;
   onDiscard: () => void;
   onFinish: (leaveTime: Dayjs) => void;
+  id: string;
 };
 
-export const LeaveModal = ({ visible, onDiscard, onFinish }: Props) => {
+export const LeaveModal = ({ id, visible, onDiscard, onFinish }: Props) => {
   const { currentTime } = useTime();
-  const { currentTravelRecord } = useTravelRecord();
+  const { getTravelRecord } = useTravelRecord();
   const [isTimePickModalOpen, setIsTimePickModalOpen] = useState(false);
   const { language } = useI18n();
 
-  const place = useMemo(() => getVenueName(currentTravelRecord, language), [
-    currentTravelRecord,
-    language,
+  const travelRecord = useMemo(() => getTravelRecord(id), [
+    id,
+    getTravelRecord,
   ]);
+
+  const place = useMemo(
+    () => (travelRecord ? getVenueName(travelRecord, language) : ""),
+    [travelRecord, language]
+  );
 
   const handleLeaveNow = () => {
     onFinish(currentTime);
@@ -37,11 +43,11 @@ export const LeaveModal = ({ visible, onDiscard, onFinish }: Props) => {
 
   const venueType = propOr<
     travelRecordType,
-    typeof currentTravelRecord,
+    typeof travelRecord,
     travelRecordType
-  >(travelRecordType.PLACE, "type", currentTravelRecord);
+  >(travelRecordType.PLACE, "type", travelRecord);
 
-  return !currentTravelRecord ? (
+  return !travelRecord ? (
     <></>
   ) : (
     <>
@@ -56,8 +62,8 @@ export const LeaveModal = ({ visible, onDiscard, onFinish }: Props) => {
           setIsTimePickModalOpen(true);
         }}
         place={place || ""}
-        date={dayjs(currentTravelRecord.inTime)}
-        outTime={currentTravelRecord.outTime}
+        date={dayjs(travelRecord.inTime)}
+        outTime={travelRecord.outTime}
         venueType={venueType}
       />
       <TimePickModal
@@ -67,7 +73,7 @@ export const LeaveModal = ({ visible, onDiscard, onFinish }: Props) => {
           onDiscard();
         }}
         onConfirm={handleLeaveEarly}
-        date={dayjs(currentTravelRecord.inTime)}
+        date={dayjs(travelRecord.inTime)}
       />
     </>
   );

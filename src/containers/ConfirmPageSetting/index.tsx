@@ -3,6 +3,7 @@ import { head } from "ramda";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
+import { v4 as uuid } from "uuid";
 
 import { Header } from "../../components/Header";
 import {
@@ -10,7 +11,7 @@ import {
   travelRecordType,
 } from "../../hooks/useTravelRecord";
 import { dayjs } from "../../utils/dayjs";
-import { Confirm } from "../Confirm";
+import { ConfirmPage } from "../Confirm/ConfirmPage";
 
 type Props = {
   confirmPageIcon?: string | null;
@@ -59,9 +60,10 @@ const ConfirmPageSetting = ({ confirmPageIcon, setConfirmPageIcon }: Props) => {
           </Actions>
         )}
         <PreviewPageWrapper>
-          <Confirm
+          <ConfirmPage
             confirmPageIcon={confirmPageIcon}
-            currentTravelRecord={{
+            travelRecord={{
+              id: uuid(),
               nameEn: t("message.test_place"),
               type: travelRecordType.PLACE,
               inputType: travelRecordInputType.MANUALLY,

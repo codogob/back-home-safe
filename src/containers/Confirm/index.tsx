@@ -1,56 +1,50 @@
 import { Dayjs } from "dayjs";
-import { propOr } from "ramda";
+import { isNil } from "ramda";
 import React, { useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Link, useHistory } from "react-router-dom";
-import styled from "styled-components";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 
-import cross from "../../assets/cross.svg";
-import tick from "../../assets/tick.svg";
-import { ConfirmButton } from "../../components/Button";
-import { CheckBox } from "../../components/CheckBox";
 import { LeaveModal } from "../../components/LeaveModal";
-import { Place } from "../../components/Place";
-import { useI18n } from "../../hooks/useI18n";
-import {
-  TravelRecord,
-  travelRecordType,
-  useTravelRecord,
-} from "../../hooks/useTravelRecord";
+import { TravelRecord, useTravelRecord } from "../../hooks/useTravelRecord";
 import { dayjs } from "../../utils/dayjs";
-import { getVenueName } from "../../utils/qr";
 import { AutoLeaveModal } from "./AutoLeaveModal";
+import { ConfirmPage } from "./ConfirmPage";
 
 type Props = {
-  currentTravelRecord: TravelRecord | null;
-  readOnly?: boolean;
   confirmPageIcon?: string | null;
 };
 
-export const Confirm = ({
-  currentTravelRecord,
-  readOnly = false,
-  confirmPageIcon,
-}: Props) => {
-  const { t } = useTranslation("confirm");
+export const Confirm = ({ confirmPageIcon }: Props) => {
   const browserHistory = useHistory();
-  const { updateCurrentTravelRecord } = useTravelRecord();
-  const [autoLeave, setAutoLeave] = useState(true);
-  const [autoLeaveHour, setAutoLeaveHour] = useState(4);
+  const { id } = useParams<{ id: string }>();
+  const { state } = useLocation<TravelRecord>();
+  const { updateTravelRecord, getTravelRecord } = useTravelRecord();
+
   const [isAutoLeaveModalOpen, setIsAutoLeaveModalOpen] = useState(false);
   const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
-  const { language } = useI18n();
+
+  const travelRecord = useMemo(() => (state ? state : getTravelRecord(id)), [
+    state,
+    getTravelRecord,
+    id,
+  ]);
 
   useEffect(() => {
-    if (!currentTravelRecord) browserHistory.push("/");
-  }, [currentTravelRecord, browserHistory]);
+    if (!travelRecord) browserHistory.replace("/");
+  }, [travelRecord, browserHistory]);
 
-  const date = useMemo(() => dayjs(), []);
+  const [autoLeave, setAutoLeave] = useState(
+    travelRecord ? !isNil(travelRecord.outTime) : true
+  );
+  const [autoLeaveHour, setAutoLeaveHour] = useState(
+    travelRecord && travelRecord.outTime
+      ? dayjs(travelRecord.outTime).diff(travelRecord.inTime, "hour")
+      : 4
+  );
 
-  const place = useMemo(() => getVenueName(currentTravelRecord, language), [
-    currentTravelRecord,
-    language,
-  ]);
+  const inTime = useMemo(
+    () => (travelRecord ? travelRecord.inTime : dayjs().toISOString()),
+    [travelRecord]
+  );
 
   const handleSetAutoLeaveHour = (value: number) => {
     setAutoLeaveHour(value);
@@ -64,86 +58,34 @@ export const Confirm = ({
   };
 
   const handleLeave = (date: Dayjs) => {
-    updateCurrentTravelRecord({
+    updateTravelRecord(id, {
       outTime: date.startOf("minute").toISOString(),
     });
     handleLeavePage();
   };
 
   useEffect(() => {
-    const toDate = date.add(autoLeaveHour, "hour");
-    updateCurrentTravelRecord({
+    const toDate = dayjs(inTime).add(autoLeaveHour, "hour");
+    updateTravelRecord(id, {
       outTime: autoLeave ? toDate.toISOString() : undefined,
     });
-  }, [autoLeave, date, autoLeaveHour, updateCurrentTravelRecord]);
+  }, [autoLeave, autoLeaveHour, updateTravelRecord, id, inTime]);
 
-  const venueType = propOr(travelRecordType.PLACE, "type", currentTravelRecord);
-
-  return (
+  return travelRecord ? (
     <>
-      <PageWrapper>
-        <Header>
-          {confirmPageIcon && <Logo src={confirmPageIcon} />}
-          {readOnly ? (
-            <Cross src={cross} />
-          ) : (
-            <Link to="/">
-              <Cross src={cross} />
-            </Link>
-          )}
-        </Header>
-        <MessageWrapper>
-          {venueType === travelRecordType.TAXI ? (
-            <>
-              <Msg>{t("message.you_have_entered_taxi")}</Msg>
-              <License>{t("message.res_mark")}:</License>
-            </>
-          ) : (
-            <Msg>{t("message.you_have_entered_venue")}</Msg>
-          )}
-          <PlaceWrapper>
-            <Place value={place || ""} readOnly />
-          </PlaceWrapper>
-          <Time>{date.format("YYYY-MM-DD HH:mm")}</Time>
-        </MessageWrapper>
-        <TickWrapper>
-          <TickWrapperInner>
-            <Tick src={tick} />
-          </TickWrapperInner>
-        </TickWrapper>
-        <ActionGroup>
-          <AutoLeave>
-            <CheckBoxWrapper>
-              <CheckBox
-                checked={autoLeave}
-                onChange={setAutoLeave}
-                readOnly={readOnly}
-              />
-              {t("form.auto_leave_after_x_hour", { hour: autoLeaveHour })}
-            </CheckBoxWrapper>
-            <Change
-              onClick={() => {
-                if (readOnly) return;
-                setIsAutoLeaveModalOpen(true);
-              }}
-            >
-              {t("global:button.change")}
-            </Change>
-          </AutoLeave>
-          <ConfirmButton
-            shadowed
-            onClick={() => {
-              if (readOnly) return;
-              setIsLeaveModalOpen(true);
-            }}
-          >
-            {venueType === travelRecordType.TAXI
-              ? t("button.get_off")
-              : t("button.leave")}
-          </ConfirmButton>
-          <LeaveMessage>{t("message.remember_to_leave")}</LeaveMessage>
-        </ActionGroup>
-      </PageWrapper>
+      <ConfirmPage
+        travelRecord={travelRecord}
+        confirmPageIcon={confirmPageIcon}
+        autoLeave={autoLeave}
+        setAutoLeave={setAutoLeave}
+        autoLeaveHour={autoLeaveHour}
+        handleChangeAutoLeaveHour={() => {
+          setIsAutoLeaveModalOpen(true);
+        }}
+        handleLeave={() => {
+          setIsLeaveModalOpen(true);
+        }}
+      />
       <AutoLeaveModal
         isModalOpen={isAutoLeaveModalOpen}
         onCancel={() => {
@@ -151,9 +93,10 @@ export const Confirm = ({
         }}
         onConfirm={handleSetAutoLeaveHour}
         selectedAutoLeaveHour={autoLeaveHour}
-        date={date}
+        date={dayjs(inTime)}
       />
       <LeaveModal
+        id={id}
         visible={isLeaveModalOpen}
         onDiscard={() => {
           setIsLeaveModalOpen(false);
@@ -161,114 +104,7 @@ export const Confirm = ({
         onFinish={handleLeave}
       />
     </>
+  ) : (
+    <></>
   );
 };
-
-const PageWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.8);
-  display: flex;
-  flex-direction: column;
-  color: #fff;
-`;
-
-const Logo = styled.img`
-  height: 72px;
-`;
-
-const Header = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  flex-shrink: 0;
-  margin: 24px 0 16px 0;
-`;
-
-const Cross = styled.img`
-  height: 20px;
-  margin: 8px 24px;
-  position: absolute;
-  right: 0;
-`;
-
-const PlaceWrapper = styled.div`
-  padding: 0 32px;
-`;
-
-const MessageWrapper = styled.div`
-  width: 100%;
-  height: 50%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
-
-const TickWrapper = styled.div`
-  height: 100%;
-  width: 100%;
-  text-align: center;
-`;
-
-const TickWrapperInner = styled.div`
-  height: 100%;
-  max-height: 200px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
-
-const Tick = styled.img`
-  display: inline-block;
-  height: 100%;
-  max-height: 110px;
-`;
-
-const Msg = styled.div`
-  color: #ffffff;
-  text-align: center;
-  font-size: 15px;
-`;
-
-const License = styled(Msg)`
-  margin-top: 8px;
-`;
-
-const Time = styled.div`
-  color: #ffffff;
-  text-align: center;
-`;
-
-const AutoLeave = styled.div`
-  margin-bottom: 16px;
-  width: 100%;
-  max-width: 380px;
-  margin: 16px auto;
-  display: flex;
-  flex-shrink: 0;
-  font-size: 14px;
-`;
-
-const CheckBoxWrapper = styled.div`
-  width: 100%;
-  text-align: left;
-  padding-left: 24px;
-  line-height: 32px;
-`;
-
-const Change = styled.div`
-  flex-shrink: 0;
-  padding-right: 24px;
-  line-height: 32px;
-`;
-
-const LeaveMessage = styled.div`
-  text-align: center;
-  padding-bottom: 40px;
-  flex-shrink: 0;
-`;
-
-const ActionGroup = styled.div`
-  width: 100%;
-  flex-shrink: 0;
-`;

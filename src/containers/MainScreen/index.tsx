@@ -1,17 +1,12 @@
 import { BottomNavigation, BottomNavigationAction } from "@material-ui/core";
-import { Fab } from "@material-ui/core";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import HomeIcon from "@material-ui/icons/Home";
 import PlaceIcon from "@material-ui/icons/Place";
 import SettingsIcon from "@material-ui/icons/Settings";
-import { Dayjs } from "dayjs";
 import { TFunction } from "i18next";
 import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
-import { LeaveModal } from "../../components/LeaveModal";
-import { useTravelRecord } from "../../hooks/useTravelRecord";
 import { Home } from "./Home";
 import { Settings } from "./Settings";
 import { TravelRecord } from "./TravelRecord";
@@ -46,22 +41,12 @@ const tabsArr = ({ t }: { t: TFunction }) => [
 const MainScreen = () => {
   const { t } = useTranslation("main_screen");
   const [activePage, setActivePage] = useState(0);
-  const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
-
-  const { currentTravelRecord, updateCurrentTravelRecord } = useTravelRecord();
   const tabs = useMemo(() => tabsArr({ t }), [t]);
 
   const { component } = useMemo(() => tabs[activePage] || {}, [
     activePage,
     tabs,
   ]);
-
-  const handleLeave = (date: Dayjs) => {
-    updateCurrentTravelRecord({
-      outTime: date.startOf("minute").toISOString(),
-    });
-    setIsLeaveModalOpen(false);
-  };
 
   return (
     <PageWrapper>
@@ -79,29 +64,6 @@ const MainScreen = () => {
           ))}
         </BottomNavigation>
       </NavWrapper>
-      {currentTravelRecord && (
-        <>
-          <FloatingButton>
-            <Fab
-              variant="extended"
-              color="secondary"
-              onClick={() => {
-                setIsLeaveModalOpen(true);
-              }}
-            >
-              <ExitToAppIcon />
-              {t("global:button.leave")}
-            </Fab>
-          </FloatingButton>
-          <LeaveModal
-            visible={isLeaveModalOpen}
-            onDiscard={() => {
-              setIsLeaveModalOpen(false);
-            }}
-            onFinish={handleLeave}
-          />
-        </>
-      )}
     </PageWrapper>
   );
 };
@@ -113,21 +75,6 @@ const PageWrapper = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-`;
-
-const FloatingButton = styled.div`
-  position: absolute;
-  z-index: 1000;
-  bottom: 80px;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  pointer-events: none;
-
-  & button {
-    pointer-events: all;
-  }
 `;
 
 const NavWrapper = styled.div`

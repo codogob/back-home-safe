@@ -1,7 +1,6 @@
 import constate from "constate";
-import { Dayjs } from "dayjs";
-import { head, remove, tail } from "ramda";
-import { useCallback, useMemo } from "react";
+import { adjust, find, findIndex, reject } from "ramda";
+import { useCallback, useEffect, useMemo } from "react";
 
 import { dayjs } from "../utils/dayjs";
 import { useEncryptedStore } from "./useEncryptedStore";
@@ -19,6 +18,7 @@ export enum travelRecordType {
 
 export type TravelRecord =
   | {
+      id: string;
       venueId?: string;
       nameEn?: string;
       nameZh?: string;
@@ -28,6 +28,7 @@ export type TravelRecord =
       outTime?: string;
     }
   | {
+      id: string;
       venueId?: string;
       type: travelRecordType.TAXI;
       inputType: travelRecordInputType;
@@ -46,71 +47,93 @@ export const [UseTravelRecordProvider, useTravelRecord] = constate(() => {
     unlocked,
     incognito,
     setIncognito,
+    isEncrypted,
   } = useEncryptedStore<TravelRecord[]>({
     key: "travel_record",
     defaultValue: [],
   });
 
-  const getCurrentTravelRecord = useCallback(
-    (records: TravelRecord[], currentTime: Dayjs) => {
-      const firstItem = head(records);
-      if (
-        !firstItem ||
-        (firstItem.outTime && dayjs(firstItem.outTime).isBefore(currentTime))
-      )
-        return null;
+  const { pastTravelRecord, currentTravelRecord } = useMemo(() => {
+    const { pastTravelRecord, currentTravelRecord } = travelRecord.reduce<{
+      pastTravelRecord: TravelRecord[];
+      currentTravelRecord: TravelRecord[];
+    }>(
+      (acc, item) => {
+        const isPast =
+          item.outTime && dayjs(item.outTime).isBefore(currentTime);
 
-      return firstItem;
-    },
-    []
-  );
-
-  const currentTravelRecord = useMemo(
-    () => getCurrentTravelRecord(travelRecord, currentTime),
-    [getCurrentTravelRecord, travelRecord, currentTime]
-  );
+        return isPast
+          ? {
+              pastTravelRecord: [item, ...acc.pastTravelRecord],
+              currentTravelRecord: [...acc.currentTravelRecord],
+            }
+          : {
+              pastTravelRecord: [...acc.pastTravelRecord],
+              currentTravelRecord: [item, ...acc.currentTravelRecord],
+            };
+      },
+      {
+        pastTravelRecord: [],
+        currentTravelRecord: [],
+      }
+    );
+    return {
+      pastTravelRecord: pastTravelRecord.sort((a, b) =>
+        dayjs(a.inTime).isSame(b.inTime)
+          ? 0
+          : dayjs(a.inTime).isBefore(b.inTime)
+          ? 1
+          : -1
+      ),
+      currentTravelRecord: currentTravelRecord.sort((a, b) =>
+        dayjs(a.inTime).isSame(b.inTime)
+          ? 0
+          : dayjs(a.inTime).isBefore(b.inTime)
+          ? 1
+          : -1
+      ),
+    };
+  }, [travelRecord, currentTime]);
 
   const createTravelRecord = useCallback(
     (record: TravelRecord) => {
-      setTravelRecord((prev) => {
-        const currentRecord = getCurrentTravelRecord(prev, currentTime);
-        if (currentRecord) {
-          return [
-            record,
-            { ...currentRecord, outTime: currentTime.toISOString() },
-            ...tail(prev),
-          ];
-        } else {
-          return [record, ...prev];
-        }
-      });
+      setTravelRecord((prev) => [record, ...prev]);
     },
-    [getCurrentTravelRecord, currentTime, setTravelRecord]
+    [setTravelRecord]
   );
 
-  const updateCurrentTravelRecord = useCallback(
-    (data: Partial<TravelRecord>) => {
-      setTravelRecord((prev) => {
-        const currentRecord = getCurrentTravelRecord(prev, currentTime);
-        if (currentRecord) {
-          return [{ ...currentRecord, ...data }, ...tail(prev)];
-        }
-        return prev;
-      });
-    },
-    [getCurrentTravelRecord, currentTime, setTravelRecord]
+  const getTravelRecord = useCallback(
+    (id: string) => find(({ id: itemId }) => itemId === id, travelRecord),
+    [travelRecord]
   );
 
-  const removeTravelRecord = (index: number) => {
-    setTravelRecord((prev) => remove(index, 1, prev));
+  const updateTravelRecord = useCallback(
+    (id: string, data: Partial<TravelRecord>) => {
+      setTravelRecord((prev) => {
+        const index = findIndex(({ id: itemId }) => itemId === id, prev);
+        if (index < 0) return prev;
+        return adjust(
+          index,
+          (currentRecord) => ({ ...currentRecord, ...data }),
+          prev
+        );
+      });
+    },
+    [setTravelRecord]
+  );
+
+  const removeTravelRecord = (id: string) => {
+    setTravelRecord((prev) => reject(({ id: itemId }) => itemId === id, prev));
   };
 
   return {
     travelRecord,
     setTravelRecord,
     currentTravelRecord,
+    pastTravelRecord,
     createTravelRecord,
-    updateCurrentTravelRecord,
+    getTravelRecord,
+    updateTravelRecord,
     removeTravelRecord,
     lockTravelRecord,
     unlockTravelRecord,
@@ -118,5 +141,6 @@ export const [UseTravelRecordProvider, useTravelRecord] = constate(() => {
     unlocked,
     incognito,
     setIncognito,
+    isEncrypted,
   };
 });

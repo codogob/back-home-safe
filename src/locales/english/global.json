@@ -16,7 +16,8 @@
     "preview": "Preview",
     "unlock": "Unlock",
     "change": "Change",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "confirm_page": "Confirm Page"
   },
   "form": {
     "optional": "Optional"

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import { v4 as uuid } from "uuid";
 
 import qrOverlay from "../../assets/qrOverlay.svg";
 import { Header } from "../../components/Header";
@@ -38,17 +39,21 @@ const QRReader = () => {
     if (!decodedJson || !getVenueName(decodedJson, language)) return;
     const trimmedZhName = trim(propOr("", "nameZh", decodedJson));
     const trimmedEnName = trim(propOr("", "nameEn", decodedJson));
-
-    createTravelRecord({
+    const id = uuid();
+    const now = dayjs();
+    const record = {
+      id: uuid(),
       venueId: decodedJson.venueId,
       nameZh: trimmedZhName,
       nameEn: trimmedEnName,
       type: travelRecordType.PLACE,
       inputType: travelRecordInputType.SCAN,
-      inTime: dayjs().toISOString(),
-    });
+      inTime: now.toISOString(),
+      outTime: now.add(4, "hour").toISOString(),
+    };
+    createTravelRecord(record);
 
-    browserHistory.push({ pathname: "/confirm" });
+    browserHistory.push({ pathname: `/confirm/${id}`, state: record });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [qrResult, browserHistory]);
 

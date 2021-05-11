@@ -1,6 +1,6 @@
 import constate from "constate";
 import { adjust, find, findIndex, reject } from "ramda";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 
 import { dayjs } from "../utils/dayjs";
 import { useEncryptedStore } from "./useEncryptedStore";

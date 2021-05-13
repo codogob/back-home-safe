@@ -36,6 +36,15 @@ export type TravelRecord =
       outTime?: string;
     };
 
+const sortRecord = (record: TravelRecord[]) =>
+  record.sort((a, b) =>
+    dayjs(a.inTime).isSame(b.inTime)
+      ? 0
+      : dayjs(a.inTime).isBefore(b.inTime)
+      ? 1
+      : -1
+  );
+
 export const [UseTravelRecordProvider, useTravelRecord] = constate(() => {
   const { currentTime } = useTime();
   const {
@@ -77,21 +86,10 @@ export const [UseTravelRecordProvider, useTravelRecord] = constate(() => {
         currentTravelRecord: [],
       }
     );
+
     return {
-      pastTravelRecord: pastTravelRecord.sort((a, b) =>
-        dayjs(a.inTime).isSame(b.inTime)
-          ? 0
-          : dayjs(a.inTime).isBefore(b.inTime)
-          ? 1
-          : -1
-      ),
-      currentTravelRecord: currentTravelRecord.sort((a, b) =>
-        dayjs(a.inTime).isSame(b.inTime)
-          ? 0
-          : dayjs(a.inTime).isBefore(b.inTime)
-          ? 1
-          : -1
-      ),
+      pastTravelRecord: sortRecord(pastTravelRecord),
+      currentTravelRecord: sortRecord(currentTravelRecord),
     };
   }, [travelRecord, currentTime]);
 

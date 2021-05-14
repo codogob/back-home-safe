@@ -24,7 +24,7 @@
     "message": {
       "incognito_activated": "Incognito Mode Activated",
       "empty": "No Visit Record",
-      "auto_remove_record": "Record will be auto deleted after {{day}}day(s)"
+      "auto_remove_record": "Record will be auto deleted after {{day}} day(s)"
     }
   },
   "setting": {

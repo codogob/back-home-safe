@@ -50,7 +50,7 @@ ReactDOM.render(
 // Learn more about service workers: https://cra.link/PWA
 serviceWorkerRegistration.register({
   onUpdate: () => {
-    const shouldReload = window.confirm("已有新版本, 按確定重新載入頁面");
+    const shouldReload = window.confirm("已有新版本, 請完全關閉後重新開啟");
     shouldReload && window.location.reload();
   },
 });

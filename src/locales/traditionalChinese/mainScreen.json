@@ -48,7 +48,8 @@
       "change_log": "更新紀錄",
       "report_issue": "回報問題",
       "language": "語言",
-      "auto_delete_record": "自動刪除紀錄"
+      "auto_delete_record": "自動刪除紀錄",
+      "export_data": "導出紀錄"
     },
     "form": {
       "day": "天",

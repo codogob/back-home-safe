@@ -48,7 +48,8 @@
       "change_log": "Change Log",
       "report_issue": "Bug Report",
       "language": "Language",
-      "auto_delete_record": "Auto Delete Record"
+      "auto_delete_record": "Auto Delete Record",
+      "export_data": "Export Records"
     },
     "form": {
       "day": "day",

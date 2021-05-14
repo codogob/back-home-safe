@@ -24,6 +24,7 @@ import styled from "styled-components";
 import packageJson from "../../../package.json";
 import { Header } from "../../components/Header";
 import { languageType } from "../../constants/languageType";
+import { useBookmarkLocation } from "../../hooks/useBookmark";
 import { useCamera } from "../../hooks/useCamera";
 import { useI18n } from "../../hooks/useI18n";
 import { useTravelRecord } from "../../hooks/useTravelRecord";
@@ -37,12 +38,31 @@ export const Settings = () => {
     setIncognito,
     autoRemoveRecordDay,
     setAutoRemoveRecordDay,
+    travelRecord,
   } = useTravelRecord();
+  const { bookmarkLocation } = useBookmarkLocation();
   const [languageOpen, setLanguageOpen] = useState(false);
   const { language, setLanguage } = useI18n();
 
   const handleLanguageClick = () => {
     setLanguageOpen(!languageOpen);
+  };
+
+  const handleExportData = () => {
+    const data = {
+      travelRecord,
+      bookmarkLocation,
+    };
+
+    const dataStr =
+      "data:text/json;charset=utf-8," +
+      encodeURIComponent(JSON.stringify(data));
+    const downloadAnchorNode = document.createElement("a");
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", "export.json");
+    document.body.appendChild(downloadAnchorNode); // required for firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
   };
 
   return (
@@ -142,6 +162,9 @@ export const Settings = () => {
               <ListItemText primary={t("setting.item.qr_generator")} />
             </ListItem>
           </StyledLink>
+          <ListItem onClick={handleExportData}>
+            <ListItemText primary={t("setting.item.export_data")} />
+          </ListItem>
           <ListItem button>
             <ListItemText
               primary={t("setting.item.reset")}

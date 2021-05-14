@@ -1,5 +1,5 @@
 import constate from "constate";
-import { equals, find, omit, pick, reject } from "ramda";
+import { equals, find, pick, reject } from "ramda";
 import { useCallback } from "react";
 import { v4 as uuid } from "uuid";
 

@@ -6,17 +6,17 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
-import { useTravelRecord } from "../../hooks/useTravelRecord";
+import { useLock } from "../../hooks/useLock";
 import { clearAllData } from "../../utils/clearAllData";
 
 const Login = () => {
   const { t } = useTranslation("login");
   const [password, setPassword] = useState("");
-  const { unlockTravelRecord } = useTravelRecord();
+  const { unlock } = useLock();
   const [showPasswordError, setShowPasswordError] = useState(false);
 
   const handleLogin = () => {
-    const success = unlockTravelRecord(password);
+    const success = unlock(password);
 
     if (!success) {
       setShowPasswordError(true);

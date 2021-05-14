@@ -9,8 +9,9 @@ import tick from "../../assets/tick.svg";
 import { ConfirmButton } from "../../components/Button";
 import { CheckBox } from "../../components/CheckBox";
 import { Place } from "../../components/Place";
+import { locationType } from "../../hooks/useBookmark";
 import { useI18n } from "../../hooks/useI18n";
-import { TravelRecord, travelRecordType } from "../../hooks/useTravelRecord";
+import { TravelRecord } from "../../hooks/useTravelRecord";
 import { dayjs } from "../../utils/dayjs";
 import { getVenueName } from "../../utils/qr";
 
@@ -40,12 +41,12 @@ export const ConfirmPage = ({
 
   const date = useMemo(() => dayjs(travelRecord.inTime), [travelRecord]);
 
-  const place = useMemo(() => getVenueName(travelRecord, language), [
-    travelRecord,
-    language,
-  ]);
+  const place = useMemo(
+    () => getVenueName(travelRecord, language),
+    [travelRecord, language]
+  );
 
-  const venueType = propOr(travelRecordType.PLACE, "type", travelRecord);
+  const venueType = propOr(locationType.PLACE, "type", travelRecord);
 
   return (
     <>
@@ -61,7 +62,7 @@ export const ConfirmPage = ({
           )}
         </Header>
         <MessageWrapper>
-          {venueType === travelRecordType.TAXI ? (
+          {venueType === locationType.TAXI ? (
             <>
               <Msg>{t("message.you_have_entered_taxi")}</Msg>
               <License>{t("message.res_mark")}:</License>
@@ -94,7 +95,7 @@ export const ConfirmPage = ({
             </Change>
           </AutoLeave>
           <ConfirmButton shadowed onClick={handleLeave}>
-            {venueType === travelRecordType.TAXI
+            {venueType === locationType.TAXI
               ? t("button.get_off")
               : t("button.leave")}
           </ConfirmButton>

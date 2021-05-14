@@ -2,9 +2,9 @@ import { SHA256 } from "crypto-js";
 import { isEmpty, propOr, trim } from "ramda";
 
 import { languageType } from "./../constants/languageType";
-import { TravelRecord } from "./../hooks/useTravelRecord";
+import { Location } from "../hooks/useBookmark";
 
-type DecodedJSON = {
+export type DecodedJSON = {
   hash: string;
   metadata: { typeEn: string; typeZh: string };
   nameEn: string;
@@ -43,7 +43,7 @@ export const qrDecode = (input: string): DecodedJSON | null => {
 };
 
 export const getVenueName = (
-  decodedJson: DecodedJSON | TravelRecord | null,
+  decodedJson: DecodedJSON | Location | null,
   language: languageType
 ) => {
   if (!decodedJson) return "";

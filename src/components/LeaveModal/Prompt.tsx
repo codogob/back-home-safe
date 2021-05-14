@@ -5,7 +5,7 @@ import Modal from "react-modal";
 import styled from "styled-components";
 
 import crossBlack from "../../assets/crossBlack.svg";
-import { travelRecordType } from "../../hooks/useTravelRecord";
+import { locationType } from "../../hooks/useBookmark";
 import { ModalConfirmButton } from "../Button";
 
 type Props = {
@@ -16,7 +16,7 @@ type Props = {
   place: string;
   date: Dayjs;
   outTime?: string;
-  venueType: travelRecordType;
+  venueType: locationType;
 };
 
 export const Prompt = ({
@@ -53,7 +53,7 @@ export const Prompt = ({
           left: "50%",
           transform: "translate(-50%, -50%)",
           height:
-            venueType === travelRecordType.TAXI
+            venueType === locationType.TAXI
               ? `${heightBase + 24}px`
               : `${heightBase}px`,
           overflow: "hidden",
@@ -64,7 +64,7 @@ export const Prompt = ({
       <CrossWrapper>
         <Cross src={crossBlack} onClick={onCancel} />
       </CrossWrapper>
-      {venueType === travelRecordType.TAXI ? (
+      {venueType === locationType.TAXI ? (
         <>
           <Msg>{t("message.you_have_entered_taxi")}</Msg>
           <License>{t("message.res_mark")}:</License>

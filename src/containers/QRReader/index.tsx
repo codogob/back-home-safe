@@ -9,10 +9,10 @@ import { v4 as uuid } from "uuid";
 import qrOverlay from "../../assets/qrOverlay.svg";
 import { Header } from "../../components/Header";
 import { QRCodeReader } from "../../components/QRCodeReader";
+import { locationType } from "../../hooks/useBookmark";
 import { useI18n } from "../../hooks/useI18n";
 import {
   travelRecordInputType,
-  travelRecordType,
   useTravelRecord,
 } from "../../hooks/useTravelRecord";
 import { dayjs } from "../../utils/dayjs";
@@ -46,10 +46,11 @@ const QRReader = () => {
       venueId: decodedJson.venueId,
       nameZh: trimmedZhName,
       nameEn: trimmedEnName,
-      type: travelRecordType.PLACE,
+      type: locationType.PLACE,
       inputType: travelRecordInputType.SCAN,
       inTime: now.toISOString(),
       outTime: now.add(4, "hour").toISOString(),
+      originalData: decodedJson,
     };
     createTravelRecord(record);
 

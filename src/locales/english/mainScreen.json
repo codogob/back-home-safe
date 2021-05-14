@@ -54,5 +54,11 @@
       "day": "day",
       "days": "days"
     }
+  },
+  "bookmark": {
+    "name": "Bookmark",
+    "message": {
+      "empty": "No Bookmark"
+    }
   }
 }

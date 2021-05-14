@@ -15,8 +15,8 @@ import { createGlobalStyle } from "styled-components";
 
 import { PageLoading } from "./components/PageLoading";
 import { Confirm } from "./containers/Confirm";
+import { useLock } from "./hooks/useLock";
 import { useMigration } from "./hooks/useMigration";
-import { useTravelRecord } from "./hooks/useTravelRecord";
 
 const QRGenerator = React.lazy(() => import("./containers/QRGenerator"));
 const QRReader = React.lazy(() => import("./containers/QRReader"));
@@ -39,14 +39,14 @@ export const App = () => {
     "confirmPageIcon",
     null
   );
-  const { lockTravelRecord, unlocked, isEncrypted } = useTravelRecord();
+  const { lock, unlocked, isEncrypted } = useLock();
+
   const { pathname } = useLocation();
   const browserHistory = useHistory();
 
   const handleBlur = useCallback(() => {
-    if (pathname !== "/qrReader" && pathname !== "/cameraSetting")
-      lockTravelRecord();
-  }, [lockTravelRecord, pathname]);
+    if (pathname !== "/qrReader" && pathname !== "/cameraSetting") lock();
+  }, [lock, pathname]);
 
   useEffect(() => {
     window.addEventListener("blur", handleBlur);

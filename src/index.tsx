@@ -7,8 +7,10 @@ import ReactDOM from "react-dom";
 import { HashRouter } from "react-router-dom";
 
 import { App } from "./App";
+import { UseBookmarkLocationProvider } from "./hooks/useBookmark";
 import { UseCameraProvider } from "./hooks/useCamera";
 import { UseI18nProvider } from "./hooks/useI18n";
+import { UseLockProvider } from "./hooks/useLock";
 import { UseTimeProvider } from "./hooks/useTime";
 import { UseTravelRecordProvider } from "./hooks/useTravelRecord";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
@@ -27,9 +29,13 @@ ReactDOM.render(
         <ThemeProvider theme={theme}>
           <UseTimeProvider>
             <UseTravelRecordProvider>
-              <UseCameraProvider>
-                <App />
-              </UseCameraProvider>
+              <UseBookmarkLocationProvider>
+                <UseCameraProvider>
+                  <UseLockProvider>
+                    <App />
+                  </UseLockProvider>
+                </UseCameraProvider>
+              </UseBookmarkLocationProvider>
             </UseTravelRecordProvider>
           </UseTimeProvider>
         </ThemeProvider>

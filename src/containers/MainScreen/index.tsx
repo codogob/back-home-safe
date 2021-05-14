@@ -1,4 +1,5 @@
 import { BottomNavigation, BottomNavigationAction } from "@material-ui/core";
+import BookmarkIcon from "@material-ui/icons/Bookmark";
 import HomeIcon from "@material-ui/icons/Home";
 import PlaceIcon from "@material-ui/icons/Place";
 import SettingsIcon from "@material-ui/icons/Settings";
@@ -7,6 +8,7 @@ import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
+import { Bookmark } from "./Bookmark";
 import { Home } from "./Home";
 import { Settings } from "./Settings";
 import { TravelRecord } from "./TravelRecord";
@@ -15,6 +17,7 @@ enum tabs {
   HOME = "HOME",
   TRAVEL_RECORD = "TRAVEL_RECORD",
   SETTINGS = "SETTINGS",
+  BOOKMARK = "BOOKMARK",
 }
 
 const tabsArr = ({ t }: { t: TFunction }) => [
@@ -31,6 +34,12 @@ const tabsArr = ({ t }: { t: TFunction }) => [
     icon: <PlaceIcon />,
   },
   {
+    key: tabs.BOOKMARK,
+    label: t("bookmark.name"),
+    component: <Bookmark />,
+    icon: <BookmarkIcon />,
+  },
+  {
     key: tabs.SETTINGS,
     label: t("setting.name"),
     component: <Settings />,
@@ -43,10 +52,10 @@ const MainScreen = () => {
   const [activePage, setActivePage] = useState(0);
   const tabs = useMemo(() => tabsArr({ t }), [t]);
 
-  const { component } = useMemo(() => tabs[activePage] || {}, [
-    activePage,
-    tabs,
-  ]);
+  const { component } = useMemo(
+    () => tabs[activePage] || {},
+    [activePage, tabs]
+  );
 
   return (
     <PageWrapper>

@@ -1,41 +1,27 @@
 import constate from "constate";
 import { adjust, find, findIndex, reject } from "ramda";
 import { useCallback, useEffect, useMemo } from "react";
+import { useHistory } from "react-router-dom";
 import { useLocalStorage } from "react-use";
+import { v4 as uuid } from "uuid";
 
 import { dayjs } from "../utils/dayjs";
+import { Location } from "./useBookmark";
 import { useEncryptedStore } from "./useEncryptedStore";
 import { useTime } from "./useTime";
 
 export enum travelRecordInputType {
   MANUALLY = "MANUALLY",
   SCAN = "SCAN",
+  BOOKMARK = "BOOKMARK",
 }
 
-export enum travelRecordType {
-  PLACE = "PLACE",
-  TAXI = "TAXI",
-}
-
-export type TravelRecord =
-  | {
-      id: string;
-      venueId?: string;
-      nameEn?: string;
-      nameZh?: string;
-      type: travelRecordType.PLACE;
-      inputType: travelRecordInputType;
-      inTime: string;
-      outTime?: string;
-    }
-  | {
-      id: string;
-      venueId?: string;
-      type: travelRecordType.TAXI;
-      inputType: travelRecordInputType;
-      inTime: string;
-      outTime?: string;
-    };
+export type TravelRecord = Location & {
+  id: string;
+  inputType: travelRecordInputType;
+  inTime: string;
+  outTime?: string;
+};
 
 const sortRecord = (record: TravelRecord[]) =>
   record.sort((a, b) =>
@@ -58,10 +44,13 @@ export const [UseTravelRecordProvider, useTravelRecord] = constate(() => {
     incognito,
     setIncognito,
     isEncrypted,
+    password,
   } = useEncryptedStore<TravelRecord[]>({
     key: "travel_record",
     defaultValue: [],
   });
+  const browserHistory = useHistory();
+
   const [autoRemoveRecordDay, setAutoRemoveRecordDay] = useLocalStorage(
     "auto_remove_record_after",
     30
@@ -134,9 +123,33 @@ export const [UseTravelRecordProvider, useTravelRecord] = constate(() => {
     [setTravelRecord]
   );
 
-  const removeTravelRecord = (id: string) => {
-    setTravelRecord((prev) => reject(({ id: itemId }) => itemId === id, prev));
-  };
+  const removeTravelRecord = useCallback(
+    (id: string) => {
+      setTravelRecord((prev) =>
+        reject(({ id: itemId }) => itemId === id, prev)
+      );
+    },
+    [setTravelRecord]
+  );
+
+  const enterLocation = useCallback(
+    (location: Location & { inputType: travelRecordInputType }) => {
+      const id = uuid();
+      const now = dayjs();
+
+      const record = {
+        ...location,
+        id,
+        inTime: now.toISOString(),
+        outTime: now.add(4, "hour").toISOString(),
+      };
+
+      createTravelRecord(record);
+
+      browserHistory.push({ pathname: `/confirm/${id}`, state: record });
+    },
+    [createTravelRecord, browserHistory]
+  );
 
   return {
     travelRecord,
@@ -156,5 +169,7 @@ export const [UseTravelRecordProvider, useTravelRecord] = constate(() => {
     isEncrypted,
     setAutoRemoveRecordDay,
     autoRemoveRecordDay,
+    password,
+    enterLocation,
   };
 });

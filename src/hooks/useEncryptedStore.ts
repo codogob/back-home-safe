@@ -102,5 +102,6 @@ export const useEncryptedStore = <T extends T[] | Object>({
     unlocked,
     incognito,
     setIncognito,
+    password,
   };
 };

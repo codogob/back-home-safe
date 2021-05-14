@@ -54,5 +54,11 @@
       "day": "天",
       "days": "天"
     }
+  },
+  "bookmark": {
+    "name": "書籤",
+    "message": {
+      "empty": "沒有書籤"
+    }
   }
 }

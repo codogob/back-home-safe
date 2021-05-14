@@ -35,9 +35,10 @@ This software is not in any way endorsed by nor affiliated with the Government o
 - [x] 儲存常用場所
 - [x] 自動離開
 - [x] 定時刪除紀錄
-- [x] 查看/刪除訪問出行記錄
-- [x] 加密出行紀錄
-- [x] 隱私模式(不儲存出行紀錄)
+- [x] 查看/刪除記錄
+- [x] 加密紀錄
+- [x] 導出紀錄
+- [x] 隱私模式(不儲存紀錄)
 - [x] 生成二維碼
 - [x] i18n
 - [ ] 查看確診個案

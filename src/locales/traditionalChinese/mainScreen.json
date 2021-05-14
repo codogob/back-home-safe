@@ -23,7 +23,8 @@
     "name": "出行紀錄",
     "message": {
       "incognito_activated": "隱私模式已開啟",
-      "empty": "沒有出行紀錄"
+      "empty": "沒有出行紀錄",
+      "auto_remove_record": "紀錄在{{day}}天後自動刪除"
     }
   },
   "setting": {
@@ -46,7 +47,12 @@
       "disclaimer": "免責聲明",
       "change_log": "更新紀錄",
       "report_issue": "回報問題",
-      "language": "語言"
+      "language": "語言",
+      "auto_delete_record": "自動刪除紀錄"
+    },
+    "form": {
+      "day": "天",
+      "days": "天"
     }
   }
 }

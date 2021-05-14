@@ -7,12 +7,15 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   ListSubheader,
+  MenuItem,
   Radio,
   RadioGroup,
+  Select,
   Switch,
 } from "@material-ui/core";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
+import { range } from "ramda";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -29,7 +32,12 @@ import { clearAllData } from "../../utils/clearAllData";
 export const Settings = () => {
   const { t } = useTranslation("main_screen");
   const { hasCameraSupport } = useCamera();
-  const { incognito, setIncognito } = useTravelRecord();
+  const {
+    incognito,
+    setIncognito,
+    autoRemoveRecordDay,
+    setAutoRemoveRecordDay,
+  } = useTravelRecord();
   const [languageOpen, setLanguageOpen] = useState(false);
   const { language, setLanguage } = useI18n();
 
@@ -62,6 +70,26 @@ export const Settings = () => {
               <ListItemText primary={t("setting.item.confirm_page_setting")} />
             </ListItem>
           </StyledLink>
+          <ListItem>
+            <ListItemText primary={t("setting.item.auto_delete_record")} />
+            <ListItemSecondaryAction>
+              <Select
+                labelId="cameraId"
+                id="demo-simple-select"
+                value={autoRemoveRecordDay}
+                onChange={(e) => {
+                  setAutoRemoveRecordDay(e.target.value as number);
+                }}
+              >
+                {range(1, 100).map((day) => (
+                  <MenuItem value={day} key={day}>
+                    {day}{" "}
+                    {day === 1 ? t("setting.form.day") : t("setting.form.days")}
+                  </MenuItem>
+                ))}
+              </Select>
+            </ListItemSecondaryAction>
+          </ListItem>
           <ListItem>
             <ListItemText
               primary={t("setting.item.incognito_mode.name")}

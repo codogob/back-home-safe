@@ -1,6 +1,7 @@
 import constate from "constate";
 import { adjust, find, findIndex, reject } from "ramda";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
+import { useLocalStorage } from "react-use";
 
 import { dayjs } from "../utils/dayjs";
 import { useEncryptedStore } from "./useEncryptedStore";
@@ -61,6 +62,10 @@ export const [UseTravelRecordProvider, useTravelRecord] = constate(() => {
     key: "travel_record",
     defaultValue: [],
   });
+  const [autoRemoveRecordDay, setAutoRemoveRecordDay] = useLocalStorage(
+    "auto_remove_record_after",
+    30
+  );
 
   const { pastTravelRecord, currentTravelRecord } = useMemo(() => {
     const { pastTravelRecord, currentTravelRecord } = travelRecord.reduce<{
@@ -92,6 +97,15 @@ export const [UseTravelRecordProvider, useTravelRecord] = constate(() => {
       currentTravelRecord: sortRecord(currentTravelRecord),
     };
   }, [travelRecord, currentTime]);
+
+  useEffect(() => {
+    setTravelRecord((prev) =>
+      prev.filter(
+        ({ inTime }) =>
+          currentTime.diff(inTime, "day") <= (autoRemoveRecordDay || 30)
+      )
+    );
+  }, [currentTime, setTravelRecord, autoRemoveRecordDay]);
 
   const createTravelRecord = useCallback(
     (record: TravelRecord) => {
@@ -140,5 +154,7 @@ export const [UseTravelRecordProvider, useTravelRecord] = constate(() => {
     incognito,
     setIncognito,
     isEncrypted,
+    setAutoRemoveRecordDay,
+    autoRemoveRecordDay,
   };
 });

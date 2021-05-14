@@ -23,7 +23,8 @@
     "name": "Visit Records",
     "message": {
       "incognito_activated": "Incognito Mode Activated",
-      "empty": "No Visit Record"
+      "empty": "No Visit Record",
+      "auto_remove_record": "Record will be auto deleted after {{day}}day(s)"
     }
   },
   "setting": {
@@ -46,7 +47,12 @@
       "disclaimer": "Disclaimer",
       "change_log": "Change Log",
       "report_issue": "Bug Report",
-      "language": "Language"
+      "language": "Language",
+      "auto_delete_record": "Auto Delete Record"
+    },
+    "form": {
+      "day": "day",
+      "days": "days"
     }
   }
 }

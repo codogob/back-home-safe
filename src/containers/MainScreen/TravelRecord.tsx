@@ -24,7 +24,12 @@ import { getVenueName } from "../../utils/qr";
 
 export const TravelRecord = () => {
   const { t } = useTranslation("main_screen");
-  const { pastTravelRecord, removeTravelRecord, incognito } = useTravelRecord();
+  const {
+    pastTravelRecord,
+    removeTravelRecord,
+    incognito,
+    autoRemoveRecordDay,
+  } = useTravelRecord();
   const { language } = useI18n();
 
   return (
@@ -82,6 +87,11 @@ export const TravelRecord = () => {
           })}
         </List>
       </ContentWrapper>
+      <AutoRemoveMessage>
+        {t("travel_record.message.auto_remove_record", {
+          day: autoRemoveRecordDay,
+        })}
+      </AutoRemoveMessage>
     </PageWrapper>
   );
 };
@@ -112,4 +122,11 @@ const IncognitoIcon = styled.img`
   display: block;
   width: 24px;
   margin: 8px auto 0 auto;
+`;
+
+const AutoRemoveMessage = styled.div`
+  background-color: #efefef;
+  text-align: center;
+  line-height: 40px;
+  color: rgba(0, 0, 0, 0.54);
 `;

@@ -7,12 +7,15 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   ListSubheader,
+  MenuItem,
   Radio,
   RadioGroup,
+  Select,
   Switch,
 } from "@material-ui/core";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
+import { range } from "ramda";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -21,6 +24,7 @@ import styled from "styled-components";
 import packageJson from "../../../package.json";
 import { Header } from "../../components/Header";
 import { languageType } from "../../constants/languageType";
+import { useBookmarkLocation } from "../../hooks/useBookmark";
 import { useCamera } from "../../hooks/useCamera";
 import { useI18n } from "../../hooks/useI18n";
 import { useTravelRecord } from "../../hooks/useTravelRecord";
@@ -29,12 +33,36 @@ import { clearAllData } from "../../utils/clearAllData";
 export const Settings = () => {
   const { t } = useTranslation("main_screen");
   const { hasCameraSupport } = useCamera();
-  const { incognito, setIncognito } = useTravelRecord();
+  const {
+    incognito,
+    setIncognito,
+    autoRemoveRecordDay,
+    setAutoRemoveRecordDay,
+    travelRecord,
+  } = useTravelRecord();
+  const { bookmarkLocation } = useBookmarkLocation();
   const [languageOpen, setLanguageOpen] = useState(false);
   const { language, setLanguage } = useI18n();
 
   const handleLanguageClick = () => {
     setLanguageOpen(!languageOpen);
+  };
+
+  const handleExportData = () => {
+    const data = {
+      travelRecord,
+      bookmarkLocation,
+    };
+
+    const dataStr =
+      "data:text/json;charset=utf-8," +
+      encodeURIComponent(JSON.stringify(data));
+    const downloadAnchorNode = document.createElement("a");
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", "export.json");
+    document.body.appendChild(downloadAnchorNode); // required for firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
   };
 
   return (
@@ -62,6 +90,26 @@ export const Settings = () => {
               <ListItemText primary={t("setting.item.confirm_page_setting")} />
             </ListItem>
           </StyledLink>
+          <ListItem>
+            <ListItemText primary={t("setting.item.auto_delete_record")} />
+            <ListItemSecondaryAction>
+              <Select
+                labelId="cameraId"
+                id="demo-simple-select"
+                value={autoRemoveRecordDay}
+                onChange={(e) => {
+                  setAutoRemoveRecordDay(e.target.value as number);
+                }}
+              >
+                {range(1, 100).map((day) => (
+                  <MenuItem value={day} key={day}>
+                    {day}{" "}
+                    {day === 1 ? t("setting.form.day") : t("setting.form.days")}
+                  </MenuItem>
+                ))}
+              </Select>
+            </ListItemSecondaryAction>
+          </ListItem>
           <ListItem>
             <ListItemText
               primary={t("setting.item.incognito_mode.name")}
@@ -114,6 +162,9 @@ export const Settings = () => {
               <ListItemText primary={t("setting.item.qr_generator")} />
             </ListItem>
           </StyledLink>
+          <ListItem onClick={handleExportData}>
+            <ListItemText primary={t("setting.item.export_data")} />
+          </ListItem>
           <ListItem button>
             <ListItemText
               primary={t("setting.item.reset")}

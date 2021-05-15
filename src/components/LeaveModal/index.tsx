@@ -2,9 +2,10 @@ import { Dayjs } from "dayjs";
 import { propOr } from "ramda";
 import React, { useMemo, useState } from "react";
 
+import { locationType } from "../../hooks/useBookmark";
 import { useI18n } from "../../hooks/useI18n";
 import { useTime } from "../../hooks/useTime";
-import { travelRecordType, useTravelRecord } from "../../hooks/useTravelRecord";
+import { useTravelRecord } from "../../hooks/useTravelRecord";
 import { dayjs } from "../../utils/dayjs";
 import { getVenueName } from "../../utils/qr";
 import { Prompt } from "./Prompt";
@@ -23,10 +24,10 @@ export const LeaveModal = ({ id, visible, onDiscard, onFinish }: Props) => {
   const [isTimePickModalOpen, setIsTimePickModalOpen] = useState(false);
   const { language } = useI18n();
 
-  const travelRecord = useMemo(() => getTravelRecord(id), [
-    id,
-    getTravelRecord,
-  ]);
+  const travelRecord = useMemo(
+    () => getTravelRecord(id),
+    [id, getTravelRecord]
+  );
 
   const place = useMemo(
     () => (travelRecord ? getVenueName(travelRecord, language) : ""),
@@ -41,11 +42,11 @@ export const LeaveModal = ({ id, visible, onDiscard, onFinish }: Props) => {
     onFinish(time);
   };
 
-  const venueType = propOr<
-    travelRecordType,
-    typeof travelRecord,
-    travelRecordType
-  >(travelRecordType.PLACE, "type", travelRecord);
+  const venueType = propOr<locationType, typeof travelRecord, locationType>(
+    locationType.PLACE,
+    "type",
+    travelRecord
+  );
 
   return !travelRecord ? (
     <></>

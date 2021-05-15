@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useLocalStorage, useShallowCompareEffect } from "react-use";
 import { v4 as uuid } from "uuid";
 
+import { useBookmarkLocation } from "./useBookmark";
 import { TravelRecord, useTravelRecord } from "./useTravelRecord";
 
 export const useMigration = () => {
@@ -16,7 +17,8 @@ export const useMigration = () => {
     removePasswordHash();
   }, [removePasswordHash]);
 
-  const { unlocked, setTravelRecord, travelRecord } = useTravelRecord();
+  const { unlocked, setTravelRecord, travelRecord, password } =
+    useTravelRecord();
 
   useShallowCompareEffect(() => {
     setTravelRecord((prev) =>
@@ -26,4 +28,12 @@ export const useMigration = () => {
       })
     );
   }, [unlocked, travelRecord, setTravelRecord]);
+
+  const { encryptBookmarkLocation, isEncrypted } = useBookmarkLocation();
+
+  useEffect(() => {
+    if (password && !isEncrypted) {
+      encryptBookmarkLocation(password);
+    }
+  }, [password, encryptBookmarkLocation, isEncrypted]);
 };

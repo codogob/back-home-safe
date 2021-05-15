@@ -7,56 +7,41 @@ import {
   ListItemSecondaryAction,
   ListItemText,
 } from "@material-ui/core";
-import BookmarkIcon from "@material-ui/icons/Bookmark";
-import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import DeleteIcon from "@material-ui/icons/Delete";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import LocalTaxiIcon from "@material-ui/icons/LocalTaxi";
 import StoreIcon from "@material-ui/icons/Store";
-import dayjs from "dayjs";
 import { isEmpty } from "ramda";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
-import incognitoIcon from "../../assets/incognito.svg";
 import { Header } from "../../components/Header";
 import { locationType, useBookmarkLocation } from "../../hooks/useBookmark";
 import { useI18n } from "../../hooks/useI18n";
-import { useTravelRecord } from "../../hooks/useTravelRecord";
+import {
+  travelRecordInputType,
+  useTravelRecord,
+} from "../../hooks/useTravelRecord";
+import { dayjs } from "../../utils/dayjs";
 import { getVenueName } from "../../utils/qr";
 
-export const TravelRecord = () => {
+export const Bookmark = () => {
   const { t } = useTranslation("main_screen");
-  const {
-    pastTravelRecord,
-    removeTravelRecord,
-    incognito,
-    autoRemoveRecordDay,
-  } = useTravelRecord();
+  const { bookmarkLocation, removeBookmarkLocation } = useBookmarkLocation();
   const { language } = useI18n();
-  const {
-    createBookmarkLocation,
-    getBookmarkLocationId,
-    removeBookmarkLocation,
-  } = useBookmarkLocation();
+  const { enterLocation } = useTravelRecord();
 
   return (
     <PageWrapper>
-      <Header name={t("travel_record.name")} />
+      <Header name={t("bookmark.name")} />
       <ContentWrapper>
         <List component="nav">
-          {incognito && (
-            <Msg>
-              <IncognitoIcon src={incognitoIcon} />
-              {t("travel_record.message.incognito_activated")}
-            </Msg>
+          {isEmpty(bookmarkLocation) && (
+            <Msg>{t("bookmark.message.empty")}</Msg>
           )}
-          {isEmpty(pastTravelRecord) && (
-            <Msg>{t("travel_record.message.empty")}</Msg>
-          )}
-          {pastTravelRecord.map((item) => {
+          {bookmarkLocation.map((item) => {
             const name = getVenueName(item, language);
-            const bookmarkId = getBookmarkLocationId(item);
             return (
               <React.Fragment key={item.id}>
                 <ListItem>
@@ -69,32 +54,27 @@ export const TravelRecord = () => {
                   </ListItemIcon>
                   <ListItemText
                     primary={name}
-                    secondary={`${dayjs(item.inTime).format(
-                      "YYYY-MM-DD HH:mm"
-                    )} - ${
-                      item.outTime
-                        ? dayjs(item.outTime).format("YYYY-MM-DD HH:mm")
-                        : ""
-                    }`}
+                    secondary={dayjs(item.createdAt).format("YYYY-MM-DD HH:mm")}
                   />
                   <ListItemSecondaryAction>
                     <IconButton
-                      aria-label="settings"
+                      edge="end"
+                      aria-label="enter"
                       onClick={() => {
-                        bookmarkId
-                          ? removeBookmarkLocation(bookmarkId)
-                          : createBookmarkLocation(item);
+                        enterLocation({
+                          ...item,
+                          inputType: travelRecordInputType.BOOKMARK,
+                        });
                       }}
                     >
-                      {bookmarkId ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+                      <ExitToAppIcon />
                     </IconButton>
                     <IconButton
                       edge="end"
                       aria-label="delete"
                       onClick={() => {
-                        removeTravelRecord(item.id);
+                        removeBookmarkLocation(item.id);
                       }}
-                      disabled={incognito}
                     >
                       <DeleteIcon />
                     </IconButton>
@@ -106,11 +86,6 @@ export const TravelRecord = () => {
           })}
         </List>
       </ContentWrapper>
-      <AutoRemoveMessage>
-        {t("travel_record.message.auto_remove_record", {
-          day: autoRemoveRecordDay,
-        })}
-      </AutoRemoveMessage>
     </PageWrapper>
   );
 };
@@ -135,17 +110,4 @@ const Msg = styled.div`
   color: rgba(0, 0, 0, 0.54);
   font-size: 0.875rem;
   line-height: 48px;
-`;
-
-const IncognitoIcon = styled.img`
-  display: block;
-  width: 24px;
-  margin: 8px auto 0 auto;
-`;
-
-const AutoRemoveMessage = styled.div`
-  background-color: #efefef;
-  text-align: center;
-  line-height: 40px;
-  color: rgba(0, 0, 0, 0.54);
 `;

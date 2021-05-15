@@ -5,6 +5,7 @@
   "homepage": "./",
   "repository": "gitlab:codogo-b/back-home-safe",
   "dependencies": {
+    "@brainhubeu/react-carousel": "^2.0.3",
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "4.0.0-alpha.58",
@@ -12,7 +13,7 @@
     "crypto-js": "^4.0.0",
     "dayjs": "^1.10.4",
     "delete-all-cookies": "^0.3.0",
-    "i18next": "^20.2.2",
+    "i18next": "^20.2.3",
     "jsqr": "^1.4.0",
     "pickerjs": "^1.2.1",
     "qrcode-with-logos": "^1.0.3",
@@ -30,8 +31,8 @@
     "react-use": "^17.2.4",
     "styled-components": "^5.3.0",
     "typescript": "^4.2.4",
-    "uuid": "^3.4.0",
-    "webrtc-adapter": "^7.7.1"
+    "uuid": "^8.3.2",
+    "webrtc-adapter": "^8.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -61,13 +62,14 @@
     ]
   },
   "devDependencies": {
-    "@commitlint/cli": "^12.1.1",
-    "@commitlint/config-conventional": "^12.1.1",
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
+    "@types/brainhubeu__react-carousel": "^2.0.2",
     "@types/crypto-js": "^4.0.1",
-    "@types/node": "^15.0.2",
+    "@types/node": "^15.3.0",
     "@types/ramda": "^0.27.40",
     "@types/react": "^17.0.5",
-    "@types/react-dom": "^17.0.3",
+    "@types/react-dom": "^17.0.5",
     "@types/react-modal": "^3.12.0",
     "@types/react-router": "^5.1.14",
     "@types/react-router-dom": "^5.1.7",
@@ -79,9 +81,9 @@
     "import-sort-parser-babylon": "^6.0.0",
     "import-sort-parser-typescript": "^6.0.0",
     "import-sort-style-module": "^6.0.0",
-    "lint-staged": "^10.5.4",
+    "lint-staged": "^11.0.0",
     "precompress": "^6.3.2",
-    "prettier": "^2.2.1",
+    "prettier": "^2.3.0",
     "standard-version": "^9.3.0"
   }
 }

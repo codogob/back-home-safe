@@ -4,25 +4,27 @@ import {
   CardActions,
   CardContent,
   CardHeader,
+  IconButton,
   Typography,
 } from "@material-ui/core";
+import BookmarkIcon from "@material-ui/icons/Bookmark";
+import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import LocalTaxiIcon from "@material-ui/icons/LocalTaxi";
 import StoreIcon from "@material-ui/icons/Store";
 import { Dayjs } from "dayjs";
 import { isEmpty, trim } from "ramda";
 import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { v4 as uuid } from "uuid";
 
 import { LeaveModal } from "../../components/LeaveModal";
 import { Place } from "../../components/Place";
+import { locationType, useBookmarkLocation } from "../../hooks/useBookmark";
 import { useI18n } from "../../hooks/useI18n";
 import { useTime } from "../../hooks/useTime";
 import {
   travelRecordInputType,
-  travelRecordType,
   useTravelRecord,
 } from "../../hooks/useTravelRecord";
 import { dayjs } from "../../utils/dayjs";
@@ -35,47 +37,33 @@ export const Home = () => {
   const [leaveModalOpen, setLeaveModalOpen] = useState(false);
   const [leaveId, setLeaveId] = useState<null | string>(null);
   const { currentTravelRecord, updateTravelRecord } = useTravelRecord();
-  const browserHistory = useHistory();
-  const { createTravelRecord } = useTravelRecord();
+  const { enterLocation } = useTravelRecord();
   const { currentTime } = useTime();
   const { language } = useI18n();
+  const {
+    createBookmarkLocation,
+    getBookmarkLocationId,
+    removeBookmarkLocation,
+  } = useBookmarkLocation();
 
   const today = useMemo(() => {
     return currentTime.format("YYYY-MM-DD, dddd");
   }, [currentTime]);
 
   const handlePlaceSubmit = () => {
-    const id = uuid();
-    const now = dayjs();
-    const record = {
-      id,
+    enterLocation({
       nameZh: place,
-      type: travelRecordType.PLACE,
+      type: locationType.PLACE,
       inputType: travelRecordInputType.MANUALLY,
-      inTime: now.toISOString(),
-      outTime: now.add(4, "hour").toISOString(),
-    };
-
-    createTravelRecord(record);
-
-    browserHistory.push({ pathname: `/confirm/${id}`, state: record });
+    });
   };
 
   const handleTaxiSubmit = () => {
-    const id = uuid();
-    const now = dayjs();
-    const record = {
-      id,
+    enterLocation({
       venueId: license,
-      type: travelRecordType.TAXI,
+      type: locationType.TAXI,
       inputType: travelRecordInputType.MANUALLY,
-      inTime: now.toISOString(),
-      outTime: now.add(4, "hour").toISOString(),
-    };
-
-    createTravelRecord(record);
-
-    browserHistory.push({ pathname: `/confirm/${id}`, state: record });
+    });
   };
 
   const handleLeave = (date: Dayjs) => {
@@ -171,43 +159,58 @@ export const Home = () => {
           {isEmpty(currentTravelRecord) && (
             <Msg>{t("travel_record.message.empty")}</Msg>
           )}
-          {currentTravelRecord.map((item) => (
-            <Item key={item.id}>
-              <CardHeader
-                avatar={
-                  item.type === travelRecordType.TAXI ? (
-                    <LocalTaxiIcon />
-                  ) : (
-                    <StoreIcon />
-                  )
-                }
-                title={getVenueName(item, language)}
-                subheader={`${dayjs(item.inTime).format(
-                  "YYYY-MM-DD HH:mm"
-                )} - ${
-                  item.outTime
-                    ? dayjs(item.outTime).format("YYYY-MM-DD HH:mm")
-                    : ""
-                }`}
-              />
-              <CardActions disableSpacing>
-                <Button
-                  size="small"
-                  color="primary"
-                  onClick={() => {
-                    setLeaveId(item.id);
-                  }}
-                >
-                  {t("global:button.leave")}
-                </Button>
-                <Link to={`/confirm/${item.id}`}>
-                  <Button size="small" color="primary">
-                    {t("global:button.confirm_page")}
+          {currentTravelRecord.map((item) => {
+            const bookmarkId = getBookmarkLocationId(item);
+            return (
+              <Item key={item.id}>
+                <CardHeader
+                  avatar={
+                    item.type === locationType.TAXI ? (
+                      <LocalTaxiIcon />
+                    ) : (
+                      <StoreIcon />
+                    )
+                  }
+                  action={
+                    <IconButton
+                      aria-label="settings"
+                      onClick={() => {
+                        bookmarkId
+                          ? removeBookmarkLocation(bookmarkId)
+                          : createBookmarkLocation(item);
+                      }}
+                    >
+                      {bookmarkId ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+                    </IconButton>
+                  }
+                  title={getVenueName(item, language)}
+                  subheader={`${dayjs(item.inTime).format(
+                    "YYYY-MM-DD HH:mm"
+                  )} - ${
+                    item.outTime
+                      ? dayjs(item.outTime).format("YYYY-MM-DD HH:mm")
+                      : ""
+                  }`}
+                />
+                <CardActions disableSpacing>
+                  <Button
+                    size="small"
+                    color="primary"
+                    onClick={() => {
+                      setLeaveId(item.id);
+                    }}
+                  >
+                    {t("global:button.leave")}
                   </Button>
-                </Link>
-              </CardActions>
-            </Item>
-          ))}
+                  <Link to={`/confirm/${item.id}`}>
+                    <Button size="small" color="primary">
+                      {t("global:button.confirm_page")}
+                    </Button>
+                  </Link>
+                </CardActions>
+              </Item>
+            );
+          })}
         </TravelRecordInner>
       </TravelRecordWrapper>
     </PageWrapper>

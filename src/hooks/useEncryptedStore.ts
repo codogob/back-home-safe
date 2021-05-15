@@ -55,6 +55,7 @@ export const useEncryptedStore = <T extends T[] | Object>({
 
   const initPassword = useCallback(
     (newPassword: string) => {
+      if (isEncrypted) return;
       const data = encryptValue(
         savedValue || JSON.stringify(defaultValue),
         newPassword
@@ -62,7 +63,7 @@ export const useEncryptedStore = <T extends T[] | Object>({
       setSavedValue(data);
       setPassword(newPassword);
     },
-    [savedValue, setSavedValue, defaultValue]
+    [savedValue, setSavedValue, defaultValue, isEncrypted]
   );
 
   const unlockStore = useCallback(
@@ -102,5 +103,6 @@ export const useEncryptedStore = <T extends T[] | Object>({
     unlocked,
     incognito,
     setIncognito,
+    password,
   };
 };

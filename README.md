@@ -4,16 +4,16 @@
 
 ![logo](https://gitlab.com/codogo-b/back-home-safe/-/raw/master/public/icon-192x192.png)
 
-以 PWA(progressive web app) 形式模擬及實現安心出行功能\
+以 PWA(progressive web app) 形式模擬及實現安心出行功能
 
 ## 連結
 
-主要: <https://codogo-b.gitlab.io/back-home-safe/>
+主要: <https://codogo-b.gitlab.io/back-home-safe/> \
 分流: <https://codogob.github.io/back-home-safe/>
 
 ## 免責聲明
 
-安心回家（下簡稱「本軟件」）只用作漸進式網路應用程式 (Progressive Web Apps) 學術討論用途，
+安心回家（下簡稱「本軟件」）只用作漸進式網路應用程式 (Progressive Web Apps) 學術討論用途，\
 用於示範不同 mobile app 功能於網頁上的實現方式（如 QR code 掃瞄，前端資料加密等等）。\
 本軟件未有以任何方式得到香港特別行政區政府（下簡稱「特區政府」）的認可。\
 與特區政府推出的「安心出行」應用程式沒有任何關係，亦不是特區政府官方的追踪程式。\
@@ -31,10 +31,14 @@ This software is not in any way endorsed by nor affiliated with the Government o
 
 - [x] 紀錄出行場所
 - [x] 紀錄的士號碼
+- [x] 進入多個場所
+- [x] 儲存常用場所
 - [x] 自動離開
-- [x] 查看/刪除訪問出行記錄
-- [x] 加密出行紀錄
-- [x] 隱私模式(不儲存出行紀錄)
+- [x] 定時刪除紀錄
+- [x] 查看/刪除記錄
+- [x] 加密紀錄
+- [x] 導出紀錄
+- [x] 隱私模式(不儲存紀錄)
 - [x] 生成二維碼
 - [x] i18n
 - [ ] 查看確診個案
@@ -43,16 +47,16 @@ This software is not in any way endorsed by nor affiliated with the Government o
 
 ### 注意
 
-GitHub Repository是Mirror GitLab
-所有Development需在GitLab進行，在GitHub的PR將不會理會
+GitHub Repository 是 Mirror GitLab\
+所有 Development 需在 GitLab 進行，在 GitHub 的 PR 將不會理會
 
-此外本人未有Idea如何甄選Repo的Developer role
-所以建議在自行Fork的Repo進行Development再Merge back
+此外本人未有甄選 Repo 的 Developer role 的計劃\
+所以建議在自行 Fork 的 Repo 進行 Development 再 Merge back
 
 ### Repository Links
 
-GitHub: <https://github.com/codogob/back-home-safe>
-GitLab: <https://gitlab.com/codogo-b/back-home-safe>
+GitLab[Main]: <https://gitlab.com/codogo-b/back-home-safe> \
+GitHub[Mirror]: <https://github.com/codogob/back-home-safe>
 
 ### Local testing
 

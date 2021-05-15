@@ -6,10 +6,8 @@ import styled from "styled-components";
 import { v4 as uuid } from "uuid";
 
 import { Header } from "../../components/Header";
-import {
-  travelRecordInputType,
-  travelRecordType,
-} from "../../hooks/useTravelRecord";
+import { locationType } from "../../hooks/useBookmark";
+import { travelRecordInputType } from "../../hooks/useTravelRecord";
 import { dayjs } from "../../utils/dayjs";
 import { ConfirmPage } from "../Confirm/ConfirmPage";
 
@@ -65,7 +63,7 @@ const ConfirmPageSetting = ({ confirmPageIcon, setConfirmPageIcon }: Props) => {
             travelRecord={{
               id: uuid(),
               nameEn: t("message.test_place"),
-              type: travelRecordType.PLACE,
+              type: locationType.PLACE,
               inputType: travelRecordInputType.MANUALLY,
               inTime: dayjs().toISOString(),
             }}

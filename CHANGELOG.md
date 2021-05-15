@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://gitlab.com/codogo-b/back-home-safe/compare/v1.2.0...v1.3.0) (2021-05-15)
+
+
+### Features
+
+* animated main page tab transition ([c7235a4](https://gitlab.com/codogo-b/back-home-safe/commit/c7235a423d97fc593be4546ed25ac1b127ba82cc))
+* auto delete record ([f981023](https://gitlab.com/codogo-b/back-home-safe/commit/f98102362346b3685c608c594a7e7c64244196d6))
+* bookmark location ([bc716d2](https://gitlab.com/codogo-b/back-home-safe/commit/bc716d21679fb9f970271c9868fed5c217843c19))
+* enforce encryption logic ([8d6aa2a](https://gitlab.com/codogo-b/back-home-safe/commit/8d6aa2a4030ef56facba595f1976ed29040c7a42))
+* export records ([6793294](https://gitlab.com/codogo-b/back-home-safe/commit/6793294bd5c2a803b1625e5454819d8326b4eda4))
+* update new version message ([6e0cf4e](https://gitlab.com/codogo-b/back-home-safe/commit/6e0cf4ee8f3b7edd2c76c8bf3e1e5dd88c2275a6))
+
 ## [1.2.0](https://gitlab.com/codogo-b/back-home-safe/compare/v1.1.0...v1.2.0) (2021-05-11)
 
 

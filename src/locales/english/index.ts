@@ -8,6 +8,7 @@ import mainScreen from "./mainScreen.json";
 import qrGenerator from "./qrGenerator.json";
 import qrReader from "./qrReader.json";
 import tutorial from "./tutorial.json";
+import vaccinationQrReader from "./vaccination_qr_reader.json";
 
 const locals = {
   global,
@@ -20,6 +21,7 @@ const locals = {
   confirm,
   confirm_page_setting: confirmPageSetting,
   camera_setting: cameraSetting,
+  vaccination_qr_reader: vaccinationQrReader,
 };
 
 export default locals;

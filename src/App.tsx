@@ -28,6 +28,9 @@ const Login = React.lazy(() => import("./containers/Login"));
 const ConfirmPageSetting = React.lazy(
   () => import("./containers/ConfirmPageSetting")
 );
+const VaccinationQRReader = React.lazy(
+  () => import("./containers/VaccinationQRReader")
+);
 
 export const App = () => {
   useMigration();
@@ -129,6 +132,14 @@ export const App = () => {
             setConfirmPageIcon={setConfirmPageIcon}
           />
         ),
+      },
+      {
+        privateRoute: true,
+        route: {
+          exact: true,
+          path: "/vaccinationQRReader",
+        },
+        component: <VaccinationQRReader />,
       },
     ],
     [confirmPageIcon, setConfirmPageIcon, setFinishedTutorial]

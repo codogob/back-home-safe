@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://gitlab.com/codogo-b/back-home-safe/compare/v1.3.0...v1.4.0) (2021-06-07)
+
+
+### Features
+
+* vaccination qr reader ([f2eb96b](https://gitlab.com/codogo-b/back-home-safe/commit/f2eb96bc23322b1aae5703a58469f837b5f4603f))
+* vaccination QR result display ([757c708](https://gitlab.com/codogo-b/back-home-safe/commit/757c7085f4304a488f6dc42b6f1e5787e1dcd644))
+
 ## [1.3.0](https://gitlab.com/codogo-b/back-home-safe/compare/v1.2.0...v1.3.0) (2021-05-15)
 
 

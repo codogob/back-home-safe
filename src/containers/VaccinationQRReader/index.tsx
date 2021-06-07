@@ -1,16 +1,18 @@
 import { QRCode } from "jsqr";
 import { isEmpty } from "ramda";
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import ReactJson from "react-json-view";
 import styled from "styled-components";
 
 import qrOverlay from "../../assets/qrOverlay.svg";
 import { Header } from "../../components/Header";
 import { QRCodeReader } from "../../components/QRCodeReader";
-import { qrDecode } from "../../utils/vaccinationQRHelper";
+import { DecodedJSON, qrDecode } from "../../utils/vaccinationQRHelper";
 
 const VaccinationQRReader = () => {
   const { t } = useTranslation("vaccination_qr_reader");
+  const [result, setResult] = useState<DecodedJSON | null>(null);
 
   const handleScan = async ({ data }: QRCode) => {
     if (!data || isEmpty(data)) return;
@@ -18,6 +20,7 @@ const VaccinationQRReader = () => {
     if (!decodedJson) return;
 
     console.log(data, decodedJson);
+    setResult(decodedJson);
   };
 
   return (
@@ -25,6 +28,11 @@ const VaccinationQRReader = () => {
       <Header backPath="/" name={t("name")} />
       <Message>{t("message.scan_qr_code")}</Message>
       <VideoContainer>
+        {result && (
+          <ResultOverlay>
+            <ReactJson src={result} />
+          </ResultOverlay>
+        )}
         <Overlay />
         <QRCodeReader onDecode={handleScan} />
       </VideoContainer>
@@ -73,4 +81,13 @@ const Message = styled.div`
   text-align: center;
   color: #ffffff;
   font-size: 16px;
+`;
+
+const ResultOverlay = styled.div`
+  background-color: #ffffff;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 100;
+  text-shadow: unset;
 `;

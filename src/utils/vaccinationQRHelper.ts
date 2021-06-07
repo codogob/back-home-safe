@@ -2,7 +2,9 @@ import { init, join, split, startsWith } from "ramda";
 
 import { ecdsaVerify } from "./sign";
 
-type DecodedJSON = {};
+export type DecodedJSON =
+  | ReturnType<typeof parseQRCode1>
+  | ReturnType<typeof parseQRCode2>;
 
 enum schemaVersionType {
   UNKNOWN = "UNKNOWN",

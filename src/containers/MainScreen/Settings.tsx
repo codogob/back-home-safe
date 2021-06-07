@@ -162,6 +162,11 @@ export const Settings = () => {
               <ListItemText primary={t("setting.item.qr_generator")} />
             </ListItem>
           </StyledLink>
+          <StyledLink to="/vaccinationQRReader">
+            <ListItem button>
+              <ListItemText primary={t("setting.item.vaccinationQRReader")} />
+            </ListItem>
+          </StyledLink>
           <ListItem onClick={handleExportData}>
             <ListItemText primary={t("setting.item.export_data")} />
           </ListItem>

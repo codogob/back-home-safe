@@ -49,7 +49,8 @@
       "report_issue": "回報問題",
       "language": "語言",
       "auto_delete_record": "自動刪除紀錄",
-      "export_data": "導出紀錄"
+      "export_data": "導出紀錄",
+      "vaccinationQRReader": "讀取電子針卡二維碼"
     },
     "form": {
       "day": "天",

@@ -21,7 +21,6 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-import packageJson from "../../../package.json";
 import { Header } from "../../components/Header";
 import { languageType } from "../../constants/languageType";
 import { useBookmarkLocation } from "../../hooks/useBookmark";
@@ -181,7 +180,7 @@ export const Settings = () => {
         <StyledList
           subheader={
             <ListSubheader>
-              {t("setting.section.version")}: {packageJson.version}
+              {t("setting.section.version")}: {__APP_VERSION__}
             </ListSubheader>
           }
         >

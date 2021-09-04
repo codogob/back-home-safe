@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://gitlab.com/codogo-b/back-home-safe/compare/v1.4.0...v1.5.0) (2021-09-04)
+
+
+### Features
+
+* update confirm page style ([3813b96](https://gitlab.com/codogo-b/back-home-safe/commit/3813b9640da3d4ef428e404573fc99211cbb3875))
+
 ## [1.4.0](https://gitlab.com/codogo-b/back-home-safe/compare/v1.3.0...v1.4.0) (2021-06-07)
 
 

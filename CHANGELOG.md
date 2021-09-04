@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.5.1](https://gitlab.com/codogo-b/back-home-safe/compare/v1.5.0...v1.5.1) (2021-09-04)
+
+
+### Bug Fixes
+
+* auto leave button ([8b4e74a](https://gitlab.com/codogo-b/back-home-safe/commit/8b4e74af68c42f1915a0e50d7db5606923513c9d))
+
 ## [1.5.0](https://gitlab.com/codogo-b/back-home-safe/compare/v1.4.0...v1.5.0) (2021-09-04)
 
 

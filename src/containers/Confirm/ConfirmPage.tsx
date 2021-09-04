@@ -81,6 +81,12 @@ export const ConfirmPage = ({
           </TickWrapperInner>
         </TickWrapper>
         <ActionGroup>
+          <ConfirmButton shadowed onClick={handleLeave}>
+            {venueType === locationType.TAXI
+              ? t("button.get_off")
+              : t("button.leave")}
+          </ConfirmButton>
+          <LeaveMessage>{t("message.remember_to_leave")}</LeaveMessage>
           <AutoLeave>
             <CheckBoxWrapper>
               <CheckBox
@@ -94,12 +100,6 @@ export const ConfirmPage = ({
               {t("global:button.change")}
             </Change>
           </AutoLeave>
-          <ConfirmButton shadowed onClick={handleLeave}>
-            {venueType === locationType.TAXI
-              ? t("button.get_off")
-              : t("button.leave")}
-          </ConfirmButton>
-          <LeaveMessage>{t("message.remember_to_leave")}</LeaveMessage>
         </ActionGroup>
       </PageWrapper>
     </>
@@ -202,11 +202,12 @@ const Change = styled.div`
   flex-shrink: 0;
   padding-right: 24px;
   line-height: 32px;
+  color: #fed426;
+  text-decoration: underline;
 `;
 
 const LeaveMessage = styled.div`
   text-align: center;
-  padding-bottom: 40px;
   flex-shrink: 0;
 `;
 

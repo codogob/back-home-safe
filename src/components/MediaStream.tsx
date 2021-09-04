@@ -25,10 +25,8 @@ export const MediaStream = ({ onFrame, suppressError = false }: Props) => {
   const { t } = useTranslation("qr_reader");
   const { preferredCameraId } = useCamera();
   const [showUnSupportErrorModal, setShowUnSupportErrorModal] = useState(false);
-  const [
-    showCameraActivationErrorModal,
-    setShowCameraActivationErrorModal,
-  ] = useState(false);
+  const [showCameraActivationErrorModal, setShowCameraActivationErrorModal] =
+    useState(false);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -79,16 +77,18 @@ export const MediaStream = ({ onFrame, suppressError = false }: Props) => {
       videoElement.play();
       loopStart();
     } catch (e) {
-      switch (e.message) {
-        case mediaStreamErrorType.GET_USER_MEDIA_NOT_FOUND:
-          setShowUnSupportErrorModal(true);
-          break;
-        case mediaStreamErrorType.CAMERA_ACTIVATE_ERROR:
-          if (suppressError) return;
-          setShowCameraActivationErrorModal(true);
-          break;
-        default:
-          console.error(e);
+      if (e instanceof Error) {
+        switch (e.message) {
+          case mediaStreamErrorType.GET_USER_MEDIA_NOT_FOUND:
+            setShowUnSupportErrorModal(true);
+            break;
+          case mediaStreamErrorType.CAMERA_ACTIVATE_ERROR:
+            if (suppressError) return;
+            setShowCameraActivationErrorModal(true);
+            break;
+          default:
+            console.error(e);
+        }
       }
     }
   }, [loopStart, preferredCameraId, suppressError]);

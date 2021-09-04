@@ -6,6 +6,7 @@ import {
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
+  withStyles,
 } from "@material-ui/core";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
@@ -59,7 +60,7 @@ export const TravelRecord = () => {
             const bookmarkId = getBookmarkLocationId(item);
             return (
               <React.Fragment key={item.id}>
-                <ListItem>
+                <ListItemWithWiderSecondaryAction dense button>
                   <ListItemIcon>
                     {item.type === locationType.TAXI ? (
                       <LocalTaxiIcon />
@@ -99,7 +100,7 @@ export const TravelRecord = () => {
                       <DeleteIcon />
                     </IconButton>
                   </ListItemSecondaryAction>
-                </ListItem>
+                </ListItemWithWiderSecondaryAction>
                 <Divider />
               </React.Fragment>
             );
@@ -114,6 +115,12 @@ export const TravelRecord = () => {
     </PageWrapper>
   );
 };
+
+const ListItemWithWiderSecondaryAction = withStyles({
+  secondaryAction: {
+    paddingRight: 96,
+  },
+})(ListItem);
 
 const PageWrapper = styled.div`
   width: 100%;

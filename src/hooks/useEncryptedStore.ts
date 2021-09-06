@@ -1,6 +1,7 @@
 import { AES, enc } from "crypto-js";
+import { isNil } from "ramda";
 import { useCallback, useMemo, useState } from "react";
-import { useLocalStorage, useMount, useUpdateEffect } from "react-use";
+import { useDeepCompareEffect, useLocalStorage } from "react-use";
 
 const encryptValue = (input: string, password: string) =>
   AES.encrypt(input, password).toString();
@@ -11,23 +12,24 @@ const decryptValue = (input: string, password: string) =>
 export const useEncryptedStore = <T extends T[] | Object>({
   key,
   defaultValue: fallbackValue,
+  passthroughOnly = false,
 }: {
   key: string;
   defaultValue: T;
+  passthroughOnly?: boolean;
 }) => {
   const [incognito, setIncognito] = useLocalStorage("incognito", false);
   const [defaultValue] = useState<T>(fallbackValue);
 
   const [password, setPassword] = useState<string | null>(null);
-  const [unlocked, setUnlocked] = useState(false);
-  const [savedValue, setSavedValue] = useLocalStorage<string>(
+  const [savedValue, setSavedValue, removeSavedValue] = useLocalStorage<string>(
     key,
-    password
+    passthroughOnly
+      ? undefined
+      : password
       ? encryptValue(JSON.stringify(defaultValue), password)
       : JSON.stringify(defaultValue)
   );
-
-  const [decryptedValue, setDecryptedValue] = useState<T>(defaultValue);
 
   const isEncrypted = useMemo(() => {
     try {
@@ -39,23 +41,23 @@ export const useEncryptedStore = <T extends T[] | Object>({
     return false;
   }, [savedValue]);
 
-  useMount(() => {
-    if (!isEncrypted) {
-      setDecryptedValue(savedValue ? JSON.parse(savedValue) : defaultValue);
-      setUnlocked(true);
-    }
-  });
+  const [decryptedValue, setDecryptedValue] = useState<T>(
+    !isEncrypted && savedValue ? JSON.parse(savedValue) : defaultValue
+  );
 
-  useUpdateEffect(() => {
-    if (!unlocked || incognito) return;
+  const [unlocked, setUnlocked] = useState(!isEncrypted);
+
+  useDeepCompareEffect(() => {
+    if (!unlocked || incognito || passthroughOnly) return;
     if (isEncrypted && !password) return;
     const value = JSON.stringify(decryptedValue);
+    console.log(value);
     setSavedValue(password ? encryptValue(value, password) : value);
   }, [decryptedValue]);
 
   const initPassword = useCallback(
     (newPassword: string) => {
-      if (isEncrypted) return;
+      if (isEncrypted || passthroughOnly) return;
       const data = encryptValue(
         savedValue || JSON.stringify(defaultValue),
         newPassword
@@ -63,7 +65,7 @@ export const useEncryptedStore = <T extends T[] | Object>({
       setSavedValue(data);
       setPassword(newPassword);
     },
-    [savedValue, setSavedValue, defaultValue, isEncrypted]
+    [passthroughOnly, savedValue, setSavedValue, defaultValue, isEncrypted]
   );
 
   const unlockStore = useCallback(
@@ -104,5 +106,7 @@ export const useEncryptedStore = <T extends T[] | Object>({
     incognito,
     setIncognito,
     password,
+    destroy: removeSavedValue,
+    hasData: !isNil(savedValue),
   };
 };

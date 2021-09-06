@@ -9,8 +9,8 @@ import { HashRouter } from "react-router-dom";
 import { App } from "./App";
 import { UseBookmarkLocationProvider } from "./hooks/useBookmark";
 import { UseCameraProvider } from "./hooks/useCamera";
+import { UseDataProvider } from "./hooks/useData";
 import { UseI18nProvider } from "./hooks/useI18n";
-import { UseLockProvider } from "./hooks/useLock";
 import { UseTimeProvider } from "./hooks/useTime";
 import { UseTravelRecordProvider } from "./hooks/useTravelRecord";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
@@ -28,15 +28,15 @@ ReactDOM.render(
       <HashRouter basename="/">
         <ThemeProvider theme={theme}>
           <UseTimeProvider>
-            <UseTravelRecordProvider>
-              <UseBookmarkLocationProvider>
-                <UseCameraProvider>
-                  <UseLockProvider>
+            <UseDataProvider>
+              <UseTravelRecordProvider>
+                <UseBookmarkLocationProvider>
+                  <UseCameraProvider>
                     <App />
-                  </UseLockProvider>
-                </UseCameraProvider>
-              </UseBookmarkLocationProvider>
-            </UseTravelRecordProvider>
+                  </UseCameraProvider>
+                </UseBookmarkLocationProvider>
+              </UseTravelRecordProvider>
+            </UseDataProvider>
           </UseTimeProvider>
         </ThemeProvider>
       </HashRouter>

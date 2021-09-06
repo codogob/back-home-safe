@@ -23,8 +23,8 @@ import styled from "styled-components";
 
 import { Header } from "../../components/Header";
 import { languageType } from "../../constants/languageType";
-import { useBookmarkLocation } from "../../hooks/useBookmark";
 import { useCamera } from "../../hooks/useCamera";
+import { useData } from "../../hooks/useData";
 import { useI18n } from "../../hooks/useI18n";
 import { useTravelRecord } from "../../hooks/useTravelRecord";
 import { clearAllData } from "../../utils/clearAllData";
@@ -32,14 +32,8 @@ import { clearAllData } from "../../utils/clearAllData";
 export const Settings = () => {
   const { t } = useTranslation("main_screen");
   const { hasCameraSupport } = useCamera();
-  const {
-    incognito,
-    setIncognito,
-    autoRemoveRecordDay,
-    setAutoRemoveRecordDay,
-    travelRecord,
-  } = useTravelRecord();
-  const { bookmarkLocation } = useBookmarkLocation();
+  const { autoRemoveRecordDay, setAutoRemoveRecordDay } = useTravelRecord();
+  const { incognito, setIncognito, value } = useData();
   const [languageOpen, setLanguageOpen] = useState(false);
   const { language, setLanguage } = useI18n();
 
@@ -48,14 +42,9 @@ export const Settings = () => {
   };
 
   const handleExportData = () => {
-    const data = {
-      travelRecord,
-      bookmarkLocation,
-    };
-
     const dataStr =
       "data:text/json;charset=utf-8," +
-      encodeURIComponent(JSON.stringify(data));
+      encodeURIComponent(JSON.stringify(value));
     const downloadAnchorNode = document.createElement("a");
     downloadAnchorNode.setAttribute("href", dataStr);
     downloadAnchorNode.setAttribute("download", "export.json");

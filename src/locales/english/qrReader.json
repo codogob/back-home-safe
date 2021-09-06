@@ -3,7 +3,7 @@
   "message": {
     "scan_qr_code": "Scan the QR Code",
     "doesnt_support_get_user_media": "This device doesn't support getUserMedia API",
-    "sure_above_ios_14": "Make sure the device is running iOS 14 or above"
+    "sure_latest_ios": "Make sure the device is running the latest version of iOS"
   },
   "button": {
     "back_home": "Back To Home Screen",

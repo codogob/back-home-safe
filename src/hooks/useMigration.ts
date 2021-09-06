@@ -1,10 +1,10 @@
 import { has } from "ramda";
 import { useEffect } from "react";
-import { useLocalStorage, useShallowCompareEffect } from "react-use";
+import { useLocalStorage } from "react-use";
 import { v4 as uuid } from "uuid";
 
-import { useBookmarkLocation } from "./useBookmark";
-import { TravelRecord, useTravelRecord } from "./useTravelRecord";
+import { useData } from "./useData";
+import { TravelRecord } from "./useTravelRecord";
 
 export const useMigration = () => {
   const [, , removePasswordHash] = useLocalStorage<string | null>(
@@ -17,23 +17,16 @@ export const useMigration = () => {
     removePasswordHash();
   }, [removePasswordHash]);
 
-  const { unlocked, setTravelRecord, travelRecord, password } =
-    useTravelRecord();
+  const { unlocked, setValue } = useData();
 
-  useShallowCompareEffect(() => {
-    setTravelRecord((prev) =>
-      prev.map((item) => {
+  // Old versions travel records has no unique id
+  useEffect(() => {
+    setValue((prev) => ({
+      ...prev,
+      travelRecords: prev.travelRecords.map((item) => {
         if (has("id", item)) return item;
         return { ...(item as TravelRecord), id: uuid() };
-      })
-    );
-  }, [unlocked, travelRecord, setTravelRecord]);
-
-  const { encryptBookmarkLocation, isEncrypted } = useBookmarkLocation();
-
-  useEffect(() => {
-    if (password && !isEncrypted) {
-      encryptBookmarkLocation(password);
-    }
-  }, [password, encryptBookmarkLocation, isEncrypted]);
+      }),
+    }));
+  }, [unlocked, setValue]);
 };

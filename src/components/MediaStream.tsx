@@ -127,7 +127,7 @@ export const MediaStream = ({ onFrame, suppressError = false }: Props) => {
         <DialogContent>
           <DialogContentText id="unsupported-device-description">
             {t("message.doesnt_support_get_user_media")}
-            {isIOS && <>{t("message.sure_above_ios_14")}</>}
+            {isIOS && <>{t("message.sure_latest_ios")}</>}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

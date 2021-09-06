@@ -22,18 +22,16 @@ import styled from "styled-components";
 import incognitoIcon from "../../assets/incognito.svg";
 import { Header } from "../../components/Header";
 import { locationType, useBookmarkLocation } from "../../hooks/useBookmark";
+import { useData } from "../../hooks/useData";
 import { useI18n } from "../../hooks/useI18n";
 import { useTravelRecord } from "../../hooks/useTravelRecord";
 import { getVenueName } from "../../utils/qr";
 
 export const TravelRecord = () => {
   const { t } = useTranslation("main_screen");
-  const {
-    pastTravelRecord,
-    removeTravelRecord,
-    incognito,
-    autoRemoveRecordDay,
-  } = useTravelRecord();
+  const { pastTravelRecord, removeTravelRecord, autoRemoveRecordDay } =
+    useTravelRecord();
+  const { incognito } = useData();
   const { language } = useI18n();
   const {
     createBookmarkLocation,

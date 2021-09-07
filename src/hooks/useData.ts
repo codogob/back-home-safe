@@ -112,12 +112,12 @@ export const [UseDataProvider, useData] = constate(() => {
         if (!unlockMasterStore) return false;
       }
 
-      if (legacyTravelRecord && isLegacyTravelRecordEncrypted) {
+      if (hasLegacyTravelRecord && isLegacyTravelRecordEncrypted) {
         const unlockStore = unlockLegacyTravelRecord(password);
         if (!unlockStore) return false;
       }
 
-      if (legacyBookmarkLocation && isLegacyBookmarkLocationEncrypted) {
+      if (hasLegacyBookmarkLocation && isLegacyBookmarkLocationEncrypted) {
         const unlockStore = unlockLegacyBookmarkLocation(password);
         if (!unlockStore) return false;
       }
@@ -131,9 +131,9 @@ export const [UseDataProvider, useData] = constate(() => {
     [
       unlockStore,
       unlockLegacyTravelRecord,
-      legacyTravelRecord,
+      hasLegacyTravelRecord,
       unlockLegacyBookmarkLocation,
-      legacyBookmarkLocation,
+      hasLegacyBookmarkLocation,
       isEncrypted,
       isLegacyBookmarkLocationEncrypted,
       isLegacyTravelRecordEncrypted,
@@ -165,6 +165,7 @@ export const [UseDataProvider, useData] = constate(() => {
     setValue,
     destroyLegacyBookmarkLocation,
     destroyLegacyTravelRecord,
+    hasLegacyTravelRecord,
   ]);
 
   return {

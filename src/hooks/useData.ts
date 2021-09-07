@@ -99,10 +99,10 @@ export const [UseDataProvider, useData] = constate(() => {
 
     return isLegacyTravelRecordUnlocked && isLegacyBookmarkLocationUnlocked;
   }, [
-    legacyTravelRecord,
     isTravelRecordUnlocked,
-    legacyBookmarkLocation,
     isBookmarkLocationUnlocked,
+    hasLegacyTravelRecord,
+    hasLegacyBookmarkLocation,
   ]);
 
   const handleUnlock = useCallback(
@@ -137,6 +137,7 @@ export const [UseDataProvider, useData] = constate(() => {
       isEncrypted,
       isLegacyBookmarkLocationEncrypted,
       isLegacyTravelRecordEncrypted,
+      initPassword,
     ]
   );
 

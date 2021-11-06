@@ -44,7 +44,7 @@ export const Bookmark = () => {
             const name = getVenueName(item, language);
             return (
               <React.Fragment key={item.id}>
-                <ListItem>
+                <ListItem dense>
                   <ListItemIcon>
                     {item.type === locationType.TAXI ? (
                       <LocalTaxiIcon />

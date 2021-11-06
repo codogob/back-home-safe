@@ -6,6 +6,7 @@ import {
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
+  withStyles,
 } from "@material-ui/core";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
@@ -21,18 +22,16 @@ import styled from "styled-components";
 import incognitoIcon from "../../assets/incognito.svg";
 import { Header } from "../../components/Header";
 import { locationType, useBookmarkLocation } from "../../hooks/useBookmark";
+import { useData } from "../../hooks/useData";
 import { useI18n } from "../../hooks/useI18n";
 import { useTravelRecord } from "../../hooks/useTravelRecord";
 import { getVenueName } from "../../utils/qr";
 
 export const TravelRecord = () => {
   const { t } = useTranslation("main_screen");
-  const {
-    pastTravelRecord,
-    removeTravelRecord,
-    incognito,
-    autoRemoveRecordDay,
-  } = useTravelRecord();
+  const { pastTravelRecord, removeTravelRecord, autoRemoveRecordDay } =
+    useTravelRecord();
+  const { incognito } = useData();
   const { language } = useI18n();
   const {
     createBookmarkLocation,
@@ -59,7 +58,7 @@ export const TravelRecord = () => {
             const bookmarkId = getBookmarkLocationId(item);
             return (
               <React.Fragment key={item.id}>
-                <ListItem>
+                <ListItemWithWiderSecondaryAction dense button>
                   <ListItemIcon>
                     {item.type === locationType.TAXI ? (
                       <LocalTaxiIcon />
@@ -99,7 +98,7 @@ export const TravelRecord = () => {
                       <DeleteIcon />
                     </IconButton>
                   </ListItemSecondaryAction>
-                </ListItem>
+                </ListItemWithWiderSecondaryAction>
                 <Divider />
               </React.Fragment>
             );
@@ -114,6 +113,12 @@ export const TravelRecord = () => {
     </PageWrapper>
   );
 };
+
+const ListItemWithWiderSecondaryAction = withStyles({
+  secondaryAction: {
+    paddingRight: 96,
+  },
+})(ListItem);
 
 const PageWrapper = styled.div`
   width: 100%;

@@ -7,7 +7,7 @@ import { v4 as uuid } from "uuid";
 
 import { dayjs } from "../utils/dayjs";
 import { Location } from "./useBookmark";
-import { useEncryptedStore } from "./useEncryptedStore";
+import { useData } from "./useData";
 import { useTime } from "./useTime";
 
 export enum travelRecordInputType {
@@ -35,20 +35,9 @@ const sortRecord = (record: TravelRecord[]) =>
 export const [UseTravelRecordProvider, useTravelRecord] = constate(() => {
   const { currentTime } = useTime();
   const {
-    unlockStore: unlockTravelRecord,
-    lockStore: lockTravelRecord,
-    value: travelRecord,
-    setValue: setTravelRecord,
-    initPassword: encryptTravelRecord,
-    unlocked,
-    incognito,
-    setIncognito,
-    isEncrypted,
-    password,
-  } = useEncryptedStore<TravelRecord[]>({
-    key: "travel_record",
-    defaultValue: [],
-  });
+    value: { travelRecords },
+    setValue,
+  } = useData();
   const browserHistory = useHistory();
 
   const [autoRemoveRecordDay, setAutoRemoveRecordDay] = useLocalStorage(
@@ -57,7 +46,7 @@ export const [UseTravelRecordProvider, useTravelRecord] = constate(() => {
   );
 
   const { pastTravelRecord, currentTravelRecord } = useMemo(() => {
-    const { pastTravelRecord, currentTravelRecord } = travelRecord.reduce<{
+    const { pastTravelRecord, currentTravelRecord } = travelRecords.reduce<{
       pastTravelRecord: TravelRecord[];
       currentTravelRecord: TravelRecord[];
     }>(
@@ -85,51 +74,65 @@ export const [UseTravelRecordProvider, useTravelRecord] = constate(() => {
       pastTravelRecord: sortRecord(pastTravelRecord),
       currentTravelRecord: sortRecord(currentTravelRecord),
     };
-  }, [travelRecord, currentTime]);
+  }, [travelRecords, currentTime]);
 
   useEffect(() => {
-    setTravelRecord((prev) =>
-      prev.filter(
+    setValue((prev) => ({
+      ...prev,
+      travelRecords: prev.travelRecords.filter(
         ({ inTime }) =>
           currentTime.diff(inTime, "day") <= (autoRemoveRecordDay || 30)
-      )
-    );
-  }, [currentTime, setTravelRecord, autoRemoveRecordDay]);
+      ),
+    }));
+  }, [currentTime, setValue, autoRemoveRecordDay]);
 
   const createTravelRecord = useCallback(
     (record: TravelRecord) => {
-      setTravelRecord((prev) => [record, ...prev]);
+      setValue((prev) => ({
+        ...prev,
+        travelRecords: [record, ...prev.travelRecords],
+      }));
     },
-    [setTravelRecord]
+    [setValue]
   );
 
   const getTravelRecord = useCallback(
-    (id: string) => find(({ id: itemId }) => itemId === id, travelRecord),
-    [travelRecord]
+    (id: string) => find(({ id: itemId }) => itemId === id, travelRecords),
+    [travelRecords]
   );
 
   const updateTravelRecord = useCallback(
     (id: string, data: Partial<TravelRecord>) => {
-      setTravelRecord((prev) => {
-        const index = findIndex(({ id: itemId }) => itemId === id, prev);
-        if (index < 0) return prev;
-        return adjust(
-          index,
-          (currentRecord) => ({ ...currentRecord, ...data }),
-          prev
+      setValue((prev) => {
+        const index = findIndex(
+          ({ id: itemId }) => itemId === id,
+          prev.travelRecords
         );
+        if (index < 0) return prev;
+        return {
+          ...prev,
+          travelRecords: adjust(
+            index,
+            (currentRecord) => ({ ...currentRecord, ...data }),
+            prev.travelRecords
+          ),
+        };
       });
     },
-    [setTravelRecord]
+    [setValue]
   );
 
   const removeTravelRecord = useCallback(
     (id: string) => {
-      setTravelRecord((prev) =>
-        reject(({ id: itemId }) => itemId === id, prev)
-      );
+      setValue((prev) => ({
+        ...prev,
+        travelRecords: reject(
+          ({ id: itemId }) => itemId === id,
+          prev.travelRecords
+        ),
+      }));
     },
-    [setTravelRecord]
+    [setValue]
   );
 
   const enterLocation = useCallback(
@@ -152,24 +155,15 @@ export const [UseTravelRecordProvider, useTravelRecord] = constate(() => {
   );
 
   return {
-    travelRecord,
-    setTravelRecord,
+    travelRecords,
     currentTravelRecord,
     pastTravelRecord,
     createTravelRecord,
     getTravelRecord,
     updateTravelRecord,
     removeTravelRecord,
-    lockTravelRecord,
-    unlockTravelRecord,
-    encryptTravelRecord,
-    unlocked,
-    incognito,
-    setIncognito,
-    isEncrypted,
     setAutoRemoveRecordDay,
     autoRemoveRecordDay,
-    password,
     enterLocation,
   };
 });

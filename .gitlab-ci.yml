@@ -42,12 +42,12 @@ pages:
       if [[ -z ${GIT_LAB_USERNAME+x} ]]; then
         npm run build
         rm -rf ./public
-        mv ./build ./public
+        mv ./dist ./public
       else
         npm run release
         npm run build
         rm -rf ../public
-        mv ./build ../public
+        mv ./dist ../public
         cd ../
       fi
 

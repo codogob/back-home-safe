@@ -10,7 +10,7 @@ export const [UseCameraProvider, useCamera] = constate(() => {
     "preferred_camera_id",
     "AUTO"
   );
-  const [cameraList, setCameraList] = useState<InputDeviceInfo[] | null>(null);
+  const [cameraList, setCameraList] = useState<MediaDeviceInfo[] | null>(null);
 
   const initCameraList = useCallback(async () => {
     try {
@@ -24,8 +24,8 @@ export const [UseCameraProvider, useCamera] = constate(() => {
 
       const deviceList = await navigator.mediaDevices.enumerateDevices();
 
-      const cameraList = deviceList.filter<InputDeviceInfo>(
-        (device): device is InputDeviceInfo => device.kind === "videoinput"
+      const cameraList = deviceList.filter<MediaDeviceInfo>(
+        (device): device is MediaDeviceInfo => device.kind === "videoinput"
       );
 
       setCameraList(cameraList);

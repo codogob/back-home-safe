@@ -6,17 +6,17 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
-import { useLock } from "../../hooks/useLock";
+import { useData } from "../../hooks/useData";
 import { clearAllData } from "../../utils/clearAllData";
 
 const Login = () => {
   const { t } = useTranslation("login");
   const [password, setPassword] = useState("");
-  const { unlock } = useLock();
+  const { unlockStore } = useData();
   const [showPasswordError, setShowPasswordError] = useState(false);
 
   const handleLogin = () => {
-    const success = unlock(password);
+    const success = unlockStore(password);
 
     if (!success) {
       setShowPasswordError(true);

@@ -5,7 +5,7 @@ import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 
-import { useLock } from "../../hooks/useLock";
+import { useData } from "../../hooks/useData";
 import { AddToHomeScreen } from "./AddToHomeScreen";
 import { Disclaimer } from "./Disclaimer";
 import { Language } from "./Language";
@@ -61,7 +61,7 @@ const Tutorial = ({
   setFinishedTutorial: (value: boolean) => void;
 }) => {
   const { t } = useTranslation("tutorial");
-  const { encrypt } = useLock();
+  const { initPassword } = useData();
 
   const [activeStep, setActiveStep] = useState(0);
   const [password, setPassword] = useState("");
@@ -82,7 +82,7 @@ const Tutorial = ({
 
   const handleNext = () => {
     if (isLastStep) {
-      !isEmpty(password) && encrypt(password);
+      !isEmpty(password) && initPassword(password);
       setFinishedTutorial(true);
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);

@@ -15,7 +15,7 @@ import { createGlobalStyle } from "styled-components";
 
 import { PageLoading } from "./components/PageLoading";
 import { Confirm } from "./containers/Confirm";
-import { useLock } from "./hooks/useLock";
+import { useData } from "./hooks/useData";
 import { useMigration } from "./hooks/useMigration";
 
 const QRGenerator = React.lazy(() => import("./containers/QRGenerator"));
@@ -42,14 +42,14 @@ export const App = () => {
     "confirmPageIcon",
     null
   );
-  const { lock, unlocked, isEncrypted } = useLock();
+  const { lockStore, unlocked, isEncrypted } = useData();
 
   const { pathname } = useLocation();
   const browserHistory = useHistory();
 
   const handleBlur = useCallback(() => {
-    if (pathname !== "/qrReader" && pathname !== "/cameraSetting") lock();
-  }, [lock, pathname]);
+    if (pathname !== "/qrReader" && pathname !== "/cameraSetting") lockStore();
+  }, [lockStore, pathname]);
 
   useEffect(() => {
     window.addEventListener("blur", handleBlur);
@@ -148,7 +148,6 @@ export const App = () => {
   // transition group cannot use switch component, thus need manual redirect handling
   // ref: https://reactcommunity.org/react-transition-group/with-react-router
   useEffect(() => {
-    if (!isEncrypted) return;
     if (!unlocked && pathname !== "/login") {
       browserHistory.replace("/login");
     }

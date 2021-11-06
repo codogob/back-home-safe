@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { v4 as uuid } from "uuid";
 
 import { DecodedJSON } from "../utils/qr";
-import { useEncryptedStore } from "./useEncryptedStore";
+import { useData } from "./useData";
 import { useTime } from "./useTime";
 
 export enum locationType {
@@ -35,40 +35,38 @@ export const [UseBookmarkLocationProvider, useBookmarkLocation] = constate(
   () => {
     const { currentTime } = useTime();
     const {
-      unlockStore: unlockBookmarkLocation,
-      lockStore: lockBookmarkLocation,
-      value: bookmarkLocation,
-      setValue: setBookmarkLocation,
-      initPassword: encryptBookmarkLocation,
-      unlocked,
-      isEncrypted,
-      password,
-    } = useEncryptedStore<SavedLocation[]>({
-      key: "bookmark_location",
-      defaultValue: [],
-    });
+      value: { savedLocations },
+      setValue,
+    } = useData();
 
     const removeBookmarkLocation = useCallback(
       (id: string) => {
-        setBookmarkLocation((prev) =>
-          reject(({ id: itemId }) => itemId === id, prev)
-        );
+        setValue((prev) => ({
+          ...prev,
+          savedLocations: reject(
+            ({ id: itemId }) => itemId === id,
+            prev.savedLocations
+          ),
+        }));
       },
-      [setBookmarkLocation]
+      [setValue]
     );
 
     const createBookmarkLocation = useCallback(
       (record: Omit<SavedLocation, "createdAt">) => {
-        setBookmarkLocation((prev) => [
-          {
-            ...trimData(record),
-            createdAt: currentTime.toISOString(),
-            id: uuid(),
-          },
+        setValue((prev) => ({
           ...prev,
-        ]);
+          savedLocations: [
+            {
+              ...trimData(record),
+              createdAt: currentTime.toISOString(),
+              id: uuid(),
+            },
+            ...prev.savedLocations,
+          ],
+        }));
       },
-      [setBookmarkLocation, currentTime]
+      [setValue, currentTime]
     );
 
     const getBookmarkLocationId = useCallback(
@@ -78,24 +76,17 @@ export const [UseBookmarkLocationProvider, useBookmarkLocation] = constate(
         const result = find((item) => {
           const trimmedItem = trimData(item);
           return equals(trimmedData, trimmedItem);
-        }, bookmarkLocation);
+        }, savedLocations);
 
         if (!result) return null;
 
         return result.id;
       },
-      [bookmarkLocation]
+      [savedLocations]
     );
 
     return {
-      unlockBookmarkLocation,
-      lockBookmarkLocation,
-      bookmarkLocation,
-      setBookmarkLocation,
-      encryptBookmarkLocation,
-      unlocked,
-      isEncrypted,
-      password,
+      bookmarkLocation: savedLocations,
       removeBookmarkLocation,
       createBookmarkLocation,
       getBookmarkLocationId,

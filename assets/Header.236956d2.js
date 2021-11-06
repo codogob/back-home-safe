@@ -1,4 +1,4 @@
-import{s as e,R as t,L as a}from"./vendor.edeed207.js";const o=({name:e,backPath:o})=>t.createElement(r,null,o&&t.createElement(a,{to:o},t.createElement(s,{src:"/assets/back.2d372998.svg"})),e),s=e.img`
+import{s as e,R as t,L as a}from"./vendor.edeed207.js";const o=({name:e,backPath:o})=>t.createElement(r,null,o&&t.createElement(a,{to:o},t.createElement(s,{src:"assets/back.2d372998.svg"})),e),s=e.img`
   height: 20px;
   top: 14px;
   left: 16px;

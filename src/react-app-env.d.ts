@@ -1,4 +1,5 @@
 /// <reference types="react-scripts" />
 
-declare module "react-qr-scanner";
-declare module "react-webcam-qr-scanner";
+declare module "delete-all-cookies";
+declare module "ec-key";
+declare let __APP_VERSION__: string;

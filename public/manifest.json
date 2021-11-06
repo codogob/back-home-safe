@@ -2,8 +2,8 @@
   "theme_color": "#12b188",
   "background_color": "#12b188",
   "display": "standalone",
-  "scope": "/back-home-safe",
-  "start_url": "/back-home-safe",
+  "scope": ".",
+  "start_url": "./#mode=standalone",
   "name": "安心回家",
   "short_name": "安心回家",
   "icons": [

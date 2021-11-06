@@ -1,0 +1,18 @@
+{
+  "name": "掃瞄二維碼",
+  "message": {
+    "scan_qr_code": "掃瞄二維碼",
+    "doesnt_support_get_user_media": "此裝置不支援 getUserMedia API",
+    "sure_latest_ios": "，請確保裝置在最新的IOS版本"
+  },
+  "button": {
+    "back_home": "回到主頁",
+    "camera_setting": "相機設定"
+  },
+  "dialog": {
+    "cannot_open_camera": {
+      "title": "未能開啟相機鏡頭",
+      "content": "未能開啟相機鏡頭，請到相機設定進行設置"
+    }
+  }
+}

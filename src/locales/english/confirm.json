@@ -1,0 +1,26 @@
+{
+  "message": {
+    "you_have_entered_taxi": "You have entered taxi",
+    "res_mark": "Registration Mark",
+    "you_have_entered_venue": "You have entered the venue",
+    "remember_to_leave": "Remember to press the \"Leave Venue\" button",
+    "set_auto_leave_time": "Set Auto-leave Time",
+    "enter_at": "Enter Venue at {{time}}",
+    "auto_leave_at": "Auto-leave at {{time}}",
+    "you_sure_want_to_leave": "Are you leaving now？",
+    "when_you_left": "When did you leave？",
+    "future_leave_time": "Leave time cannot be future",
+    "leave_time_earlier_than_enter": "Leave time cannot be earlier than enter time"
+  },
+  "form": {
+    "auto_leave_after_x_hour": "Auto leave after {{hour}} hour(s)",
+    "auto_leave_at": "Auto Leave at {{time}}",
+    "hour": "Hours"
+  },
+  "button": {
+    "leave": "Leave Venue",
+    "get_off": "Get Off",
+    "leave_now": "Yes, I'm leaving now",
+    "already_left": "I've already left"
+  }
+}

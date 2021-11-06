@@ -1,140 +1,109 @@
+import { Dayjs } from "dayjs";
+import { isNil } from "ramda";
 import React, { useEffect, useMemo, useState } from "react";
-import styled from "styled-components";
-import cross from "../../assets/cross.svg";
-import tick from "../../assets/tick.svg";
-import checkbox from "../../assets/checkbox.svg";
-import checkboxChecked from "../../assets/checkboxChecked.svg";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 
-import { Link, useHistory } from "react-router-dom";
-import { Button } from "../../components/Button";
-import { zeroPadding } from "../../utils/zeroPadding";
-import { Place } from "../../components/Place";
+import { LeaveModal } from "../../components/LeaveModal";
+import { TravelRecord, useTravelRecord } from "../../hooks/useTravelRecord";
+import { dayjs } from "../../utils/dayjs";
+import { AutoLeaveModal } from "./AutoLeaveModal";
+import { ConfirmPage } from "./ConfirmPage";
 
 type Props = {
-  place: string;
+  confirmPageIcon?: string | null;
 };
 
-export const Confirm = ({ place }: Props) => {
+export const Confirm = ({ confirmPageIcon }: Props) => {
   const browserHistory = useHistory();
-  const [autoLeave, setAutoLeave] = useState(false);
+  const { id } = useParams<{ id: string }>();
+  const { state } = useLocation<TravelRecord>();
+  const { updateTravelRecord, getTravelRecord } = useTravelRecord();
+
+  const [isAutoLeaveModalOpen, setIsAutoLeaveModalOpen] = useState(false);
+  const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
+
+  const travelRecord = useMemo(
+    () => (state ? state : getTravelRecord(id)),
+    [state, getTravelRecord, id]
+  );
 
   useEffect(() => {
-    if (place === "") browserHistory.push("/");
-  }, [place]);
+    if (!travelRecord) browserHistory.replace("/");
+  }, [travelRecord, browserHistory]);
 
-  const { year, month, day, hour, minute } = useMemo(() => {
-    const date = new Date();
-    return {
-      year: date.getFullYear(),
-      month: date.getMonth() + 1,
-      day: date.getDate(),
-      hour: date.getHours(),
-      minute: date.getMinutes(),
-    };
-  }, []);
+  const [autoLeave, setAutoLeave] = useState(
+    travelRecord ? !isNil(travelRecord.outTime) : true
+  );
+  const [autoLeaveHour, setAutoLeaveHour] = useState(
+    travelRecord && travelRecord.outTime
+      ? dayjs(travelRecord.outTime).diff(travelRecord.inTime, "hour")
+      : 4
+  );
 
-  const handleCheckBoxClick = () => {
-    setAutoLeave((prev) => !prev);
+  const inTime = useMemo(
+    () => (travelRecord ? travelRecord.inTime : dayjs().toISOString()),
+    [travelRecord]
+  );
+
+  const handleSetAutoLeaveHour = (value: number) => {
+    setAutoLeaveHour(value);
+    setIsAutoLeaveModalOpen(false);
   };
 
-  return (
+  const handleLeavePage = () => {
+    setIsAutoLeaveModalOpen(false);
+    setIsLeaveModalOpen(false);
+    browserHistory.push("/");
+  };
+
+  const handleLeave = (date: Dayjs) => {
+    updateTravelRecord(id, {
+      outTime: date.startOf("minute").toISOString(),
+    });
+    handleLeavePage();
+  };
+
+  useEffect(() => {
+    const toDate = dayjs(inTime).add(autoLeaveHour, "hour");
+    updateTravelRecord(id, {
+      outTime: autoLeave ? toDate.toISOString() : undefined,
+    });
+  }, [autoLeave, autoLeaveHour, updateTravelRecord, id, inTime]);
+
+  return travelRecord ? (
     <>
-      <Link to="/">
-        <Cross src={cross} />
-      </Link>
-      <ContentWrapper>
-        <Msg>你已進入場所</Msg>
-        <Place value={place} readOnly />
-        <Time>{`${year}-${zeroPadding(month)}-${zeroPadding(day)} ${zeroPadding(
-          hour
-        )}:${zeroPadding(minute)}`}</Time>
-        <Tick src={tick} />
-      </ContentWrapper>
-      <ActionWrapper>
-        <AutoLeave>
-          <CheckBoxWrapper>
-            <CheckBox
-              src={autoLeave ? checkboxChecked : checkbox}
-              onClick={handleCheckBoxClick}
-            />
-            4小時後自動離開
-          </CheckBoxWrapper>
-          <Change>變更</Change>
-        </AutoLeave>
-        <Link to="/">
-          <Button>離開</Button>
-        </Link>
-        <div>當你離開時請緊記按"離開"</div>
-      </ActionWrapper>
+      <ConfirmPage
+        travelRecord={travelRecord}
+        confirmPageIcon={confirmPageIcon}
+        autoLeave={autoLeave}
+        setAutoLeave={setAutoLeave}
+        autoLeaveHour={autoLeaveHour}
+        handleChangeAutoLeaveHour={() => {
+          setIsAutoLeaveModalOpen(true);
+        }}
+        handleLeave={() => {
+          setIsLeaveModalOpen(true);
+        }}
+      />
+      <AutoLeaveModal
+        isModalOpen={isAutoLeaveModalOpen}
+        onCancel={() => {
+          setIsAutoLeaveModalOpen(false);
+        }}
+        onConfirm={handleSetAutoLeaveHour}
+        selectedAutoLeaveHour={autoLeaveHour}
+        date={dayjs(inTime)}
+      />
+      <LeaveModal
+        id={id}
+        visible={isLeaveModalOpen}
+        onDiscard={() => {
+          setIsLeaveModalOpen(false);
+        }}
+        onFinish={handleLeave}
+      />
     </>
+  ) : (
+    <></>
   );
 };
-
-const Cross = styled.img`
-  height: 20px;
-  float: right;
-  position: absolute;
-  top: 24px;
-  right: 24px;
-`;
-
-const Tick = styled.img`
-  margin: auto;
-  margin-top: 80px;
-  width: 32%;
-`;
-
-const ContentWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-`;
-
-const Msg = styled.div`
-  color: #ffffff;
-  text-align: center;
-  font-size: 15px;
-  margin-top: 120px;
-`;
-
-const Time = styled.div`
-  color: #ffffff;
-  text-align: center;
-`;
-
-const ActionWrapper = styled.div`
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  text-align: center;
-  color: #fff;
-  padding-bottom: 40px;
-`;
-
-const AutoLeave = styled.div`
-  margin-bottom: 16px;
-  width: 100%;
-  display: flex;
-`;
-
-const CheckBoxWrapper = styled.div`
-  width: 100%;
-  text-align: left;
-  padding-left: 24px;
-  line-height: 32px;
-`;
-
-const Change = styled.div`
-  flex-shrink: 0;
-  padding-right: 24px;
-  line-height: 32px;
-`;
-
-const CheckBox = styled.img`
-  height: 32px;
-  display: inline-block;
-  vertical-align: top;
-  margin-right: 8px;
-`;

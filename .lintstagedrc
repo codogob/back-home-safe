@@ -1,0 +1,13 @@
+{
+  "*.css": [
+    "prettier --write"
+  ],
+  "*.{ts,tsx,js}": [
+    "import-sort --write",
+    "prettier --write",
+    "eslint --fix"
+  ],
+  "*.json": [
+    "prettier --write"
+  ]
+}

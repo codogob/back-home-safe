@@ -1,0 +1,7 @@
+{
+  "message": {
+    "please_input_password": "請輸入密碼解鎖",
+    "wrong_password": "密碼錯誤"
+  },
+  "button": { "reset": "重設所有資料" }
+}

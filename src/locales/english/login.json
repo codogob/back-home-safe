@@ -1,0 +1,7 @@
+{
+  "message": {
+    "please_input_password": "Please Unlock",
+    "wrong_password": "Wrong Password"
+  },
+  "button": { "reset": "Clear All Data" }
+}
